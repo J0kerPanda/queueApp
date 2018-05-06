@@ -1,10 +1,10 @@
 package com.example.antony.queueapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 
 import com.example.antony.queueapp.http.data.ScheduleDatesData;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -15,7 +15,6 @@ import org.jetbrains.annotations.NotNull;
 import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class CalendarActivity extends AppCompatActivity {
 
@@ -37,8 +36,13 @@ public class CalendarActivity extends AppCompatActivity {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
                 widget.setDateSelected(date, !selected);
+                LocalDate localDate = new LocalDate(date.getDate());
                 if (!selected) {
                    Log.d("MY_CUSTOM_LOG", date.toString());
+                   Intent intent = new Intent(getBaseContext(), DateAppointmentsActivity.class);
+                   intent.putExtra(DateAppointmentsActivity.DATE_EXTRA, localDate);
+                   intent.putExtra(DateAppointmentsActivity.HOST_ID_EXTRA, hostId);
+                   startActivity(intent);
                 }
             }
         });
@@ -64,7 +68,7 @@ public class CalendarActivity extends AppCompatActivity {
         selectDates(datesData.customDates);
     }
 
-    private void selectDates(ArrayList<LocalDate> dates) {
+    private void selectDates(@NotNull ArrayList<LocalDate> dates) {
         for (int i = 0; i < dates.size(); ++i) {
             calendarView.setDateSelected(dates.get(i).toDate(), true);
         }
