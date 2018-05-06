@@ -18,6 +18,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.joda.time.LocalDate;
+import org.joda.time.Period;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,21 +68,19 @@ public class MainActivity extends AppCompatActivity {
 
         HashMap<String, String> params = new HashMap<>();
         params.put("hostId", hostInput.getText().toString());
-        LocalDate from = new LocalDate().withDayOfMonth(1);
-        params.put("from", from.toString());
-        params.put("to", from.plusMonths(1).toString());
 
-        ApiHttpClient.get("/schedule/interval", new RequestParams(params), new JsonHttpResponseHandler() {
+        ApiHttpClient.get("/schedule/dates/period", new RequestParams(params), new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
                 try {
+                    Period period = new Period(response.getLong("period"));
                     ArrayList<LocalDate> defaultDates = extractDates(response.getJSONArray("default"));
                     ArrayList<LocalDate> customDates = extractDates(response.getJSONArray("custom"));;
 
                     Intent intent = new Intent(getBaseContext(), CalendarActivity.class);
-                    intent.putExtra(CalendarActivity.SCHEDULE_DATES_EXTRA, new ScheduleDatesData(defaultDates, customDates));
+                    intent.putExtra(CalendarActivity.SCHEDULE_DATES_EXTRA, new ScheduleDatesData(period, defaultDates, customDates));
                     startActivity(intent);
 
                 } catch (Exception e) {
