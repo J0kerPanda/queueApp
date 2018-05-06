@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class CalendarActivity extends AppCompatActivity {
 
@@ -36,7 +37,7 @@ public class CalendarActivity extends AppCompatActivity {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
                 widget.setDateSelected(date, !selected);
-                if (selected) {
+                if (!selected) {
                    Log.d("MY_CUSTOM_LOG", date.toString());
                 }
             }

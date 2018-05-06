@@ -31,13 +31,6 @@ public class MainActivity extends AppCompatActivity {
         scheduleButton = findViewById(R.id.scheduleButton);
         refreshButton = findViewById(R.id.refreshButton);
 
-        refreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateHosts();
-            }
-        });
-
         hostSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -64,6 +57,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    public void refreshButtonHandler(View v) {
+        updateHosts();
     }
 
     private void updateHosts() {
