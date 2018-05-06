@@ -30,11 +30,12 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/scheduleButton"
         android:layout_width="wrap_content"
         android:layout_height="47dp"
         android:onClick="scheduleButtonHandler"
         android:text="График"
+        android:enabled="false"
         tools:layout_editor_absoluteX="136dp"
         tools:layout_editor_absoluteY="232dp" />
 

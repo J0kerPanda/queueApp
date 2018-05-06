@@ -6,6 +6,8 @@ import android.widget.CalendarView;
 
 public class CalendarActivity extends AppCompatActivity {
 
+    public static final String SCHEDULE_DATES = "SCHEDULE_DATES";
+
     private CalendarView calendarView;
 
     @Override

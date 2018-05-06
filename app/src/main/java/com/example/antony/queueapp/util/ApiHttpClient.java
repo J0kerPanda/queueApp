@@ -1,4 +1,4 @@
-package com.example.antony.queueapp;
+package com.example.antony.queueapp.util;
 
 import android.util.Log;
 
