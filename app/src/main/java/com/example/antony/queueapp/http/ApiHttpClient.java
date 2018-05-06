@@ -90,7 +90,7 @@ public class ApiHttpClient {
     }
 
     public static void getHosts(final ResponseHandler<ArrayList<HostData>> handler) {
-        ApiHttpClient.get("/schedule/dates/period", new RequestParams(), new JsonHttpResponseHandler() {
+        ApiHttpClient.get("/user/hosts", new RequestParams(), new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {

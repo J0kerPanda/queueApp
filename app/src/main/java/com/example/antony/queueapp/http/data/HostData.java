@@ -17,4 +17,10 @@ public class HostData {
     public String fullName() {
         return String.format("%s %s. %s.", surname, firstName.charAt(0), patronymic.charAt(0));
     }
+
+    //spinner display
+    @Override
+    public String toString() {
+        return fullName();
+    }
 }
