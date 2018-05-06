@@ -1,4 +1,4 @@
-package com.example.antony.queueapp.util.intent.data;
+package com.example.antony.queueapp.data;
 
 import org.joda.time.LocalDate;
 import org.joda.time.Period;

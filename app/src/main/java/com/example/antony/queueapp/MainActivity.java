@@ -11,9 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.antony.queueapp.util.ApiHttpClient;
-import com.example.antony.queueapp.util.error.UnexpectedErrorHandler;
-import com.example.antony.queueapp.util.intent.data.ScheduleDatesData;
-import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.example.antony.queueapp.util.UnexpectedErrorHandler;
+import com.example.antony.queueapp.data.ScheduleDatesData;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -23,7 +22,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
