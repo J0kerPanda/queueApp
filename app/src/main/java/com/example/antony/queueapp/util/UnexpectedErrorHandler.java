@@ -1,7 +1,6 @@
 package com.example.antony.queueapp.util;
 
 import android.util.Log;
-import android.view.View;
 
 public final class UnexpectedErrorHandler {
 

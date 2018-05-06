@@ -1,4 +1,4 @@
-package com.example.antony.queueapp.data;
+package com.example.antony.queueapp.http.data;
 
 public class HostData {
 

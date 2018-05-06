@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.example.antony.queueapp.data.ScheduleDatesData;
+import com.example.antony.queueapp.http.data.ScheduleDatesData;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
 import org.joda.time.LocalDate;

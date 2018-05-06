@@ -10,9 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.antony.queueapp.util.ApiHttpClient;
+import com.example.antony.queueapp.http.ApiHttpClient;
 import com.example.antony.queueapp.util.UnexpectedErrorHandler;
-import com.example.antony.queueapp.data.ScheduleDatesData;
+import com.example.antony.queueapp.http.data.ScheduleDatesData;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     UnexpectedErrorHandler.handle(e);
                 }
-                super.onSuccess(statusCode, headers, response);
             }
 
             @Override
