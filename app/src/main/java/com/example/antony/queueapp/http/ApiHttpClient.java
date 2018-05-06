@@ -2,6 +2,7 @@ package com.example.antony.queueapp.http;
 
 import android.util.Log;
 
+import com.example.antony.queueapp.http.data.HostData;
 import com.example.antony.queueapp.http.data.ScheduleDatesData;
 import com.example.antony.queueapp.util.UnexpectedErrorHandler;
 import com.loopj.android.http.AsyncHttpClient;
@@ -39,8 +40,15 @@ public class ApiHttpClient {
         return BASE_URL + relativeUrl;
     }
 
-    public static void getScheduleDates(String hostId, final ResponseHandler<ScheduleDatesData> handler) {
+    private static ArrayList<LocalDate> extractDates(@NotNull JSONArray array) throws JSONException {
+        ArrayList<LocalDate> dates = new ArrayList<>();
+        for (int i = 0; i < array.length(); ++i) {
+            dates.add(LocalDate.parse(array.get(i).toString()));
+        }
+        return dates;
+    }
 
+    public static void getScheduleDates(String hostId, final ResponseHandler<ScheduleDatesData> handler) {
         HashMap<String, String> params = new HashMap<>();
         params.put("hostId", hostId);
 
@@ -72,11 +80,43 @@ public class ApiHttpClient {
         });
     }
 
-    private static ArrayList<LocalDate> extractDates(@NotNull JSONArray array) throws JSONException {
-        ArrayList<LocalDate> dates = new ArrayList<>();
-        for (int i = 0; i < array.length(); ++i) {
-            dates.add(LocalDate.parse(array.get(i).toString()));
-        }
-        return dates;
+    private static HostData extractHostData(JSONObject object) throws JSONException {
+        return new HostData(
+                object.getInt("id"),
+                object.getString("firstName"),
+                object.getString("surname"),
+                object.getString("patronymic")
+        );
+    }
+
+    public static void getHosts(final ResponseHandler<ArrayList<HostData>> handler) {
+        ApiHttpClient.get("/schedule/dates/period", new RequestParams(), new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+
+                ArrayList<HostData> result = new ArrayList<>(response.length());
+
+                try {
+                    for (int i = 0; i < response.length(); ++i) {
+                        result.add(extractHostData((JSONObject) response.get(i)));
+                    }
+                    handler.handle(result);
+
+                } catch (Exception e) {
+                    UnexpectedErrorHandler.handle(e);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse) {
+                UnexpectedErrorHandler.handle(e);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable e) {
+                UnexpectedErrorHandler.handle(e);
+            }
+        });
     }
 }
