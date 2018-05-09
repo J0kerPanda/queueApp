@@ -3,8 +3,6 @@ package com.example.antony.queueapp.http;
 import android.util.Log;
 
 import com.example.antony.queueapp.http.data.HostData;
-import com.example.antony.queueapp.http.data.JsonExtractor;
-import com.example.antony.queueapp.http.data.Schedule;
 import com.example.antony.queueapp.http.data.ScheduleData;
 import com.example.antony.queueapp.util.UnexpectedErrorHandler;
 import com.google.gson.Gson;
@@ -13,12 +11,10 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import org.joda.time.Period;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -41,10 +37,6 @@ public class ApiHttpClient {
         return BASE_URL + relativeUrl;
     }
 
-    private static Schedule extractSchedule(JSONObject object) {
-        return gson.fromJson(object.toString(), Schedule.class);
-    }
-
     public static void getScheduleDates(String hostId, final ResponseHandler<ScheduleData> handler) {
         String url = String.format("/schedule/host/%s", hostId);
 
@@ -54,19 +46,7 @@ public class ApiHttpClient {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
                 try {
-                    Period period = Period.parse(response.getString("period"));
-                    ArrayList<Schedule> schedules = new ArrayList<>();
-                    JSONArray schedulesJson = response.getJSONArray("schedules");
-
-                    for (int i = 0; i < schedulesJson.length(); ++i) {
-                        Log.d("MY_CUSTOM_LOG", schedulesJson.getJSONObject(i).toString());
-                        schedules.add(extractSchedule(schedulesJson.getJSONObject(i)));
-                    }
-
-
-
                     handler.handle(gson.fromJson(response.toString(), ScheduleData.class));
-
                 } catch (Exception e) {
                     UnexpectedErrorHandler.handle(e);
                 }

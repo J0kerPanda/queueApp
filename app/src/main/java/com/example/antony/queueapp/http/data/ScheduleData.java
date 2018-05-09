@@ -10,6 +10,7 @@ public class ScheduleData implements Serializable {
     public Period period;
     public ArrayList<Schedule> schedules;
 
+
     public ScheduleData(Period period, ArrayList<Schedule> schedules) {
         this.period = period;
         this.schedules = schedules;
