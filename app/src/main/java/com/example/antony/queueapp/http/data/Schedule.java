@@ -14,5 +14,16 @@ public class Schedule implements Serializable {
     public LocalTime end;
     public Period appointmentDuration;
     public String place;
-    public Period period;
+
+    @Override
+    public String toString() {
+        return "Schedule{" +
+                "hostId=" + hostId +
+                ", date=" + date +
+                ", start=" + start +
+                ", end=" + end +
+                ", appointmentDuration=" + appointmentDuration +
+                ", place='" + place + '\'' +
+                '}';
+    }
 }
