@@ -1,6 +1,8 @@
 package com.example.antony.queueapp.http.data;
 
-public class HostData {
+import java.io.Serializable;
+
+public class HostData implements Serializable {
 
     public int id;
     public String firstName;

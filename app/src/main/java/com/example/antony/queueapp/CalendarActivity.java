@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.example.antony.queueapp.http.data.HostData;
 import com.example.antony.queueapp.http.data.Schedule;
 import com.example.antony.queueapp.http.data.ScheduleData;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -20,11 +21,11 @@ import java.util.ArrayList;
 public class CalendarActivity extends AppCompatActivity {
 
     public static final String SCHEDULE_DATA_EXTRA = "SCHEDULE_DATES";
-    public static final String HOST_ID_EXTRA = "HOST_ID";
+    public static final String HOST_EXTRA = "HOST";
 
     private MaterialCalendarView calendarView;
     private ScheduleData scheduleData;
-    private Integer hostId;
+    private HostData host;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,7 @@ public class CalendarActivity extends AppCompatActivity {
         calendarView = findViewById(R.id.calendarView);
         calendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_MULTIPLE);
 
-        hostId = (Integer) getIntent().getSerializableExtra(HOST_ID_EXTRA);
+        host = (HostData) getIntent().getSerializableExtra(HOST_EXTRA);
         updateCalendar((ScheduleData) getIntent().getSerializableExtra(SCHEDULE_DATA_EXTRA));
 
         calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
@@ -53,7 +54,7 @@ public class CalendarActivity extends AppCompatActivity {
                        }
 
                     intent.putExtra(AppointmentsActivity.DATE_EXTRA, localDate);
-                    intent.putExtra(AppointmentsActivity.HOST_ID_EXTRA, hostId);
+                    intent.putExtra(AppointmentsActivity.HOST_EXTRA, host);
                     intent.putExtra(AppointmentsActivity.SCHEDULES_EXTRA, dateSchedules);
                     startActivity(intent);
                 }

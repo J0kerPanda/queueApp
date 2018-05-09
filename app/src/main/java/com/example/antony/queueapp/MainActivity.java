@@ -47,13 +47,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void scheduleButtonHandler(View v) {
-        final Integer hostId = ((HostData) hostSpinner.getSelectedItem()).id;
-        ApiHttpClient.getScheduleDates(String.valueOf(hostId), new ResponseHandler<ScheduleData>() {
+        final HostData host = (HostData) hostSpinner.getSelectedItem();
+        ApiHttpClient.getScheduleDates(String.valueOf(host.id), new ResponseHandler<ScheduleData>() {
             @Override
             public void handle(ScheduleData result) {
                 Intent intent = new Intent(getBaseContext(), CalendarActivity.class);
                 intent.putExtra(CalendarActivity.SCHEDULE_DATA_EXTRA, result);
-                intent.putExtra(CalendarActivity.HOST_ID_EXTRA, hostId);
+                intent.putExtra(CalendarActivity.HOST_EXTRA, host);
                 startActivity(intent);
             }
         });

@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 public class Schedule implements Serializable {
 
-    public Integer hostId;
+    public int hostId;
     public LocalDate date;
     public LocalTime start;
     public LocalTime end;
