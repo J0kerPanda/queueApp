@@ -3,18 +3,18 @@ package com.example.antony.queueapp.http;
 import android.util.Log;
 
 import com.example.antony.queueapp.http.data.HostData;
-import com.example.antony.queueapp.http.data.ScheduleDatesData;
+import com.example.antony.queueapp.http.data.JsonExtractor;
+import com.example.antony.queueapp.http.data.Schedule;
+import com.example.antony.queueapp.http.data.ScheduleData;
 import com.example.antony.queueapp.util.UnexpectedErrorHandler;
+import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import org.jetbrains.annotations.NotNull;
-import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -26,6 +26,7 @@ public class ApiHttpClient {
     private static final String BASE_URL = "http://192.168.1.5:9000/api";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
+    private static final Gson gson = new JsonExtractor().gson;
 
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.get(getAbsoluteUrl(url), params, responseHandler);
@@ -40,28 +41,31 @@ public class ApiHttpClient {
         return BASE_URL + relativeUrl;
     }
 
-    private static ArrayList<LocalDate> extractDates(@NotNull JSONArray array) throws JSONException {
-        ArrayList<LocalDate> dates = new ArrayList<>();
-        for (int i = 0; i < array.length(); ++i) {
-            dates.add(LocalDate.parse(array.get(i).toString()));
-        }
-        return dates;
+    private static Schedule extractSchedule(JSONObject object) {
+        return gson.fromJson(object.toString(), Schedule.class);
     }
 
-    public static void getScheduleDates(String hostId, final ResponseHandler<ScheduleDatesData> handler) {
-        HashMap<String, String> params = new HashMap<>();
-        params.put("hostId", hostId);
+    public static void getScheduleDates(String hostId, final ResponseHandler<ScheduleData> handler) {
+        String url = String.format("/schedule/host/%s", hostId);
 
-        ApiHttpClient.get("/schedule/dates/period", new RequestParams(params), new JsonHttpResponseHandler() {
+        ApiHttpClient.get(url, new RequestParams(), new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
                 try {
-                    Period period = new Period(response.getLong("period"));
-                    ArrayList<LocalDate> defaultDates = extractDates(response.getJSONArray("default"));
-                    ArrayList<LocalDate> customDates = extractDates(response.getJSONArray("custom"));
-                    handler.handle(new ScheduleDatesData(period, defaultDates, customDates));
+                    Period period = Period.parse(response.getString("period"));
+                    ArrayList<Schedule> schedules = new ArrayList<>();
+                    JSONArray schedulesJson = response.getJSONArray("schedules");
+
+                    for (int i = 0; i < schedulesJson.length(); ++i) {
+                        Log.d("MY_CUSTOM_LOG", schedulesJson.getJSONObject(i).toString());
+                        schedules.add(extractSchedule(schedulesJson.getJSONObject(i)));
+                    }
+
+
+
+                    handler.handle(gson.fromJson(response.toString(), ScheduleData.class));
 
                 } catch (Exception e) {
                     UnexpectedErrorHandler.handle(e);
@@ -80,13 +84,8 @@ public class ApiHttpClient {
         });
     }
 
-    private static HostData extractHostData(JSONObject object) throws JSONException {
-        return new HostData(
-                object.getInt("id"),
-                object.getString("firstName"),
-                object.getString("surname"),
-                object.getString("patronymic")
-        );
+    private static HostData extractHostData(JSONObject object) {
+        return gson.fromJson(object.toString(), HostData.class);
     }
 
     public static void getHosts(final ResponseHandler<ArrayList<HostData>> handler) {

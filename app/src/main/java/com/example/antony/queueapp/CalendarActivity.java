@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.example.antony.queueapp.http.data.ScheduleDatesData;
+import com.example.antony.queueapp.http.data.ScheduleData;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
@@ -18,11 +18,11 @@ import java.util.ArrayList;
 
 public class CalendarActivity extends AppCompatActivity {
 
-    public static final String SCHEDULE_DATES_EXTRA = "SCHEDULE_DATES";
+    public static final String SCHEDULE_DATA_EXTRA = "SCHEDULE_DATES";
     public static final String HOST_ID_EXTRA = "HOST_ID";
 
     private MaterialCalendarView calendarView;
-    private ScheduleDatesData datesData;
+    private ScheduleData scheduleData;
     private Integer hostId;
 
     @Override
@@ -32,6 +32,8 @@ public class CalendarActivity extends AppCompatActivity {
         calendarView = findViewById(R.id.calendarView);
         calendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_MULTIPLE);
 
+        //todo fetch schedules for dates
+
         calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
@@ -40,6 +42,7 @@ public class CalendarActivity extends AppCompatActivity {
                 if (!selected) {
                    Log.d("MY_CUSTOM_LOG", date.toString());
                    Intent intent = new Intent(getBaseContext(), DateAppointmentsActivity.class);
+
                    intent.putExtra(DateAppointmentsActivity.DATE_EXTRA, localDate);
                    intent.putExtra(DateAppointmentsActivity.HOST_ID_EXTRA, hostId);
                    startActivity(intent);
@@ -48,24 +51,24 @@ public class CalendarActivity extends AppCompatActivity {
         });
 
         hostId = getIntent().getIntExtra(HOST_ID_EXTRA, -1);
-        updateCalendar((ScheduleDatesData) getIntent().getSerializableExtra(SCHEDULE_DATES_EXTRA));
+        updateCalendar((ScheduleData) getIntent().getSerializableExtra(SCHEDULE_DATA_EXTRA));
     }
 
-    private void updateCalendar(ScheduleDatesData data) {
-        datesData = data;
-        Log.d("MY_CUSTOM_LOG", datesData.defaultDates.toString());
-        Log.d("MY_CUSTOM_LOG", datesData.customDates.toString());
+    private void updateCalendar(ScheduleData data) {
+        scheduleData = data;
+        Log.d("MY_CUSTOM_LOG", scheduleData.schedules.toString());
         LocalDate today = new LocalDate();
 
         calendarView.clearSelection();
         calendarView.state()
                 .edit()
                 .setMinimumDate(today.toDate())
-                .setMaximumDate(today.plus(datesData.period.toStandardDays()).toDate())
+                .setMaximumDate(today.plus(scheduleData.period.toStandardDays()).toDate())
                 .commit();
 
-        selectDates(datesData.defaultDates);
-        selectDates(datesData.customDates);
+        for (int i =0; i < scheduleData.schedules.size(); ++i ) {
+            calendarView.setDateSelected(scheduleData.schedules.get(i).date.toDate(), true);
+        }
     }
 
     private void selectDates(@NotNull ArrayList<LocalDate> dates) {
