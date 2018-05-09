@@ -6,6 +6,7 @@ import com.example.antony.queueapp.http.data.HostData;
 import com.example.antony.queueapp.http.data.ScheduleData;
 import com.example.antony.queueapp.util.UnexpectedErrorHandler;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -64,22 +65,14 @@ public class ApiHttpClient {
         });
     }
 
-    private static HostData extractHostData(JSONObject object) {
-        return gson.fromJson(object.toString(), HostData.class);
-    }
-
     public static void getHosts(final ResponseHandler<ArrayList<HostData>> handler) {
         ApiHttpClient.get("/user/hosts", new RequestParams(), new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
 
-                ArrayList<HostData> result = new ArrayList<>(response.length());
-
                 try {
-                    for (int i = 0; i < response.length(); ++i) {
-                        result.add(extractHostData((JSONObject) response.get(i)));
-                    }
+                    ArrayList<HostData> result = gson.fromJson(response.toString(), new TypeToken<ArrayList<HostData>>(){}.getType());
                     handler.handle(result);
 
                 } catch (Exception e) {

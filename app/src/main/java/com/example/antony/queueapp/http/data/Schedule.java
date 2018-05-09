@@ -1,7 +1,5 @@
 package com.example.antony.queueapp.http.data;
 
-import com.google.gson.annotations.JsonAdapter;
-
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.Period;
