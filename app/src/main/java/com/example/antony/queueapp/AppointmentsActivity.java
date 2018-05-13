@@ -5,8 +5,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.example.antony.queueapp.http.ApiHttpClient;
+import com.example.antony.queueapp.http.ResponseHandler;
+import com.example.antony.queueapp.http.data.AppointmentData;
 import com.example.antony.queueapp.http.data.HostData;
 import com.example.antony.queueapp.http.data.Schedule;
+import com.example.antony.queueapp.http.request.AppointmentsRequest;
 
 import org.joda.time.LocalDate;
 
@@ -33,5 +37,22 @@ public class AppointmentsActivity extends AppCompatActivity {
         Log.d("MY_CUSTOM_LOG", schedules.toString());
         ((TextView) findViewById(R.id.appointmentDateText)).setText(date.toString());
         ((TextView) findViewById(R.id.appointmentHostText)).setText(host.fullName());
+
+    }
+
+    private void requestAppointments() {
+        boolean custom = schedules.get(0).isCustom;
+        ArrayList<Integer> ids = new ArrayList<>();
+        for (int i = 0; i < ids.size(); ++i) {
+            ids.add(schedules.get(0).rootId);
+        }
+        AppointmentsRequest req = new AppointmentsRequest(host.id, date, ids, custom);
+        Log.d("MY_CUSTOM_LOG", req.toString());
+        ApiHttpClient.getAppointments(getApplicationContext(), req, new ResponseHandler<ArrayList<AppointmentData>>() {
+            @Override
+            public void handle(ArrayList<AppointmentData> result) {
+                Log.d("MY_CUSTOM_LOG", result.toString());
+            }
+        });
     }
 }

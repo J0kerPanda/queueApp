@@ -9,4 +9,15 @@ public class AppointmentData {
     public LocalTime start;
     public LocalTime end;
     public String status;
+
+    @Override
+    public String toString() {
+        return "AppointmentData{" +
+                "visitorId=" + visitorId +
+                ", visitorFullName=" + visitorFullName +
+                ", start=" + start +
+                ", end=" + end +
+                ", status='" + status + '\'' +
+                '}';
+    }
 }
