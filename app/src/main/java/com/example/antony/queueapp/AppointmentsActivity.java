@@ -3,6 +3,7 @@ package com.example.antony.queueapp;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.example.antony.queueapp.http.data.HostData;
 import com.example.antony.queueapp.http.data.Schedule;
@@ -30,5 +31,7 @@ public class AppointmentsActivity extends AppCompatActivity {
         host = (HostData) getIntent().getSerializableExtra(HOST_EXTRA);
         schedules = (ArrayList<Schedule>) getIntent().getSerializableExtra(SCHEDULES_EXTRA);
         Log.d("MY_CUSTOM_LOG", schedules.toString());
+        ((TextView) findViewById(R.id.appointmentDateText)).setText(date.toString());
+        ((TextView) findViewById(R.id.appointmentHostText)).setText(host.fullName());
     }
 }
