@@ -9,7 +9,6 @@ import com.example.antony.queueapp.http.data.SchedulesData;
 import com.example.antony.queueapp.http.request.AppointmentsRequest;
 import com.example.antony.queueapp.util.UnexpectedErrorHandler;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -38,7 +37,6 @@ public class ApiHttpClient {
 
     public static <T> void post(Context context, String url, T entity, AsyncHttpResponseHandler responseHandler) throws UnsupportedEncodingException {
         String entityStr = gson.toJson(entity);
-        Log.i("MY_CUSTOM_LOG", entityStr);
         client.post(context, getAbsoluteUrl(url), new StringEntity(entityStr), ContentType.APPLICATION_JSON.getMimeType(), responseHandler);
     }
 
@@ -109,10 +107,9 @@ public class ApiHttpClient {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                     try {
-                        Log.d("MY_CUSTOM_LOG", response.toString());
                         ArrayList<AppointmentData> result = gson.fromJson(
-                                response.toString(),
-                                new TypeToken<ArrayList<AppointmentData>>(){}.getType()
+                            response.toString(),
+                            new TypeToken<ArrayList<AppointmentData>>(){}.getType()
                         );
                         handler.handle(result);
 

@@ -18,6 +18,9 @@ import com.example.antony.queueapp.http.request.AppointmentsRequest;
 import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class AppointmentsActivity extends AppCompatActivity {
 
@@ -61,6 +64,12 @@ public class AppointmentsActivity extends AppCompatActivity {
         ApiHttpClient.getAppointments(getApplicationContext(), req, new ResponseHandler<ArrayList<AppointmentData>>() {
             @Override
             public void handle(ArrayList<AppointmentData> result) {
+                Collections.sort(result, new Comparator<AppointmentData>() {
+                    @Override
+                    public int compare(AppointmentData o1, AppointmentData o2) {
+                        return o1.start.compareTo(o2.start);
+                    }
+                });
                 ArrayList<String> strings = new ArrayList<>(result.size());
                 for (int i = 0; i < result.size(); ++i) {
                     AppointmentData data = result.get(i);
