@@ -38,6 +38,7 @@ public class ApiHttpClient {
 
     public static <T> void post(Context context, String url, T entity, AsyncHttpResponseHandler responseHandler) throws UnsupportedEncodingException {
         String entityStr = gson.toJson(entity);
+        Log.i("MY_CUSTOM_LOG", entityStr);
         client.post(context, getAbsoluteUrl(url), new StringEntity(entityStr), ContentType.APPLICATION_JSON.getMimeType(), responseHandler);
     }
 
@@ -108,6 +109,7 @@ public class ApiHttpClient {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                     try {
+                        Log.d("MY_CUSTOM_LOG", response.toString());
                         ArrayList<AppointmentData> result = gson.fromJson(
                                 response.toString(),
                                 new TypeToken<ArrayList<AppointmentData>>(){}.getType()

@@ -10,8 +10,10 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.reflect.TypeToken;
 
 import org.joda.time.LocalDate;
@@ -36,6 +38,13 @@ public class JsonExtractor {
             }
         };
 
+        JsonSerializer<Period> ps = new JsonSerializer<Period>() {
+            @Override
+            public JsonElement serialize(Period src, Type typeOfSrc, JsonSerializationContext context) {
+                return new JsonPrimitive(src.toString());
+            }
+        };
+
         JsonDeserializer<LocalDate> ldd = new JsonDeserializer<LocalDate>() {
             @Override
             public LocalDate deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
@@ -43,10 +52,24 @@ public class JsonExtractor {
             }
         };
 
+        JsonSerializer<LocalDate> lds = new JsonSerializer<LocalDate>() {
+            @Override
+            public JsonElement serialize(LocalDate src, Type typeOfSrc, JsonSerializationContext context) {
+                return new JsonPrimitive(src.toString());
+            }
+        };
+
         JsonDeserializer<LocalTime> ltd = new JsonDeserializer<LocalTime>() {
             @Override
             public LocalTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
                 return LocalTime.parse(json.getAsString());
+            }
+        };
+
+        JsonSerializer<LocalTime> lts = new JsonSerializer<LocalTime>() {
+            @Override
+            public JsonElement serialize(LocalTime src, Type typeOfSrc, JsonSerializationContext context) {
+                return new JsonPrimitive(src.toString());
             }
         };
 
@@ -61,8 +84,11 @@ public class JsonExtractor {
         };
 
         builder.registerTypeAdapter(Period.class, pd);
+        builder.registerTypeAdapter(Period.class, ps);
         builder.registerTypeAdapter(LocalDate.class, ldd);
+        builder.registerTypeAdapter(LocalDate.class, lds);
         builder.registerTypeAdapter(LocalTime.class, ltd);
+        builder.registerTypeAdapter(LocalTime.class, lts);
         builder.registerTypeAdapter(SchedulesData.class, sdd);
         gson = builder.create();
     }

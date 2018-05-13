@@ -5,7 +5,7 @@ import org.joda.time.LocalTime;
 public class AppointmentData {
 
     public int visitorId;
-    public int visitorFullName;
+    public String visitorFullName;
     public LocalTime start;
     public LocalTime end;
     public String status;

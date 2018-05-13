@@ -24,6 +24,7 @@ public class CalendarActivity extends AppCompatActivity {
     public static final String HOST_EXTRA = "HOST";
 
     private MaterialCalendarView calendarView;
+
     private SchedulesData schedulesData;
     private HostData host;
 
