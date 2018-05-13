@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void scheduleButtonHandler(View v) {
         final HostData host = (HostData) hostSpinner.getSelectedItem();
-        ApiHttpClient.getScheduleDates(String.valueOf(host.id), new ResponseHandler<ScheduleData>() {
+        ApiHttpClient.getScheduleData(String.valueOf(host.id), new ResponseHandler<ScheduleData>() {
             @Override
             public void handle(ScheduleData result) {
                 Intent intent = new Intent(getBaseContext(), CalendarActivity.class);

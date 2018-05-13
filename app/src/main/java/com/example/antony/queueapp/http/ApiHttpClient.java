@@ -2,6 +2,7 @@ package com.example.antony.queueapp.http;
 
 import android.util.Log;
 
+import com.example.antony.queueapp.http.data.AppointmentData;
 import com.example.antony.queueapp.http.data.HostData;
 import com.example.antony.queueapp.http.data.ScheduleData;
 import com.example.antony.queueapp.util.UnexpectedErrorHandler;
@@ -38,7 +39,7 @@ public class ApiHttpClient {
         return BASE_URL + relativeUrl;
     }
 
-    public static void getScheduleDates(String hostId, final ResponseHandler<ScheduleData> handler) {
+    public static void getScheduleData(String hostId, final ResponseHandler<ScheduleData> handler) {
         String url = String.format("/schedule/host/%s", hostId);
 
         ApiHttpClient.get(url, new RequestParams(), new JsonHttpResponseHandler() {
@@ -90,5 +91,9 @@ public class ApiHttpClient {
                 UnexpectedErrorHandler.handle(e);
             }
         });
+    }
+
+    public static void getAppointments(final ResponseHandler<ArrayList<AppointmentData>> handler) {
+
     }
 }
