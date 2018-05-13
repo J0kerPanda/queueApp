@@ -13,7 +13,7 @@ import android.widget.Spinner;
 import com.example.antony.queueapp.http.ApiHttpClient;
 import com.example.antony.queueapp.http.ResponseHandler;
 import com.example.antony.queueapp.http.data.HostData;
-import com.example.antony.queueapp.http.data.ScheduleData;
+import com.example.antony.queueapp.http.data.SchedulesData;
 
 import java.util.ArrayList;
 
@@ -48,9 +48,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void scheduleButtonHandler(View v) {
         final HostData host = (HostData) hostSpinner.getSelectedItem();
-        ApiHttpClient.getScheduleData(String.valueOf(host.id), new ResponseHandler<ScheduleData>() {
+        ApiHttpClient.getScheduleData(String.valueOf(host.id), new ResponseHandler<SchedulesData>() {
             @Override
-            public void handle(ScheduleData result) {
+            public void handle(SchedulesData result) {
                 Intent intent = new Intent(getBaseContext(), CalendarActivity.class);
                 intent.putExtra(CalendarActivity.SCHEDULE_DATA_EXTRA, result);
                 intent.putExtra(CalendarActivity.HOST_EXTRA, host);

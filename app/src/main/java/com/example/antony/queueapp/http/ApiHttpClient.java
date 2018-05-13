@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.example.antony.queueapp.http.data.AppointmentData;
 import com.example.antony.queueapp.http.data.HostData;
-import com.example.antony.queueapp.http.data.ScheduleData;
+import com.example.antony.queueapp.http.data.SchedulesData;
 import com.example.antony.queueapp.util.UnexpectedErrorHandler;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -39,7 +39,7 @@ public class ApiHttpClient {
         return BASE_URL + relativeUrl;
     }
 
-    public static void getScheduleData(String hostId, final ResponseHandler<ScheduleData> handler) {
+    public static void getScheduleData(String hostId, final ResponseHandler<SchedulesData> handler) {
         String url = String.format("/schedule/host/%s", hostId);
 
         ApiHttpClient.get(url, new RequestParams(), new JsonHttpResponseHandler() {
@@ -48,7 +48,7 @@ public class ApiHttpClient {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
                 try {
-                    handler.handle(gson.fromJson(response.toString(), ScheduleData.class));
+                    handler.handle(gson.fromJson(response.toString(), SchedulesData.class));
                 } catch (Exception e) {
                     UnexpectedErrorHandler.handle(e);
                 }

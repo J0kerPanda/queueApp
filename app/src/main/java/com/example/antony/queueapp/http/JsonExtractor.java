@@ -1,7 +1,7 @@
 package com.example.antony.queueapp.http;
 
 import com.example.antony.queueapp.http.data.Schedule;
-import com.example.antony.queueapp.http.data.ScheduleData;
+import com.example.antony.queueapp.http.data.SchedulesData;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -47,20 +47,20 @@ public class JsonExtractor {
             }
         };
 
-        JsonDeserializer<ScheduleData> sdd = new JsonDeserializer<ScheduleData>() {
+        JsonDeserializer<SchedulesData> sdd = new JsonDeserializer<SchedulesData>() {
             @Override
-            public ScheduleData deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            public SchedulesData deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
                 JsonObject jo = json.getAsJsonObject();
                 Period period = context.deserialize(jo.get("period"), Period.class);
                 ArrayList<Schedule> schedules = context.deserialize(jo.get("schedules"), new TypeToken<ArrayList<Schedule>>(){}.getType());
-                return new ScheduleData(period, schedules);
+                return new SchedulesData(period, schedules);
             }
         };
 
         builder.registerTypeAdapter(Period.class, pd);
         builder.registerTypeAdapter(LocalDate.class, ldd);
         builder.registerTypeAdapter(LocalTime.class, ltd);
-        builder.registerTypeAdapter(ScheduleData.class, sdd);
+        builder.registerTypeAdapter(SchedulesData.class, sdd);
         gson = builder.create();
     }
 }
