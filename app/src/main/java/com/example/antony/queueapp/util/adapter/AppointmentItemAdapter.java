@@ -35,7 +35,6 @@ public class AppointmentItemAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        // TODO Auto-generated method stub
         return position;
     }
 
@@ -45,7 +44,6 @@ public class AppointmentItemAdapter extends BaseAdapter {
         if (vi == null) {
             vi = inflater.inflate(R.layout.appointment_item_display, parent, false);
         }
-        Log.d("MY_CUSTOM_LOG", String.valueOf(position));
         ((TextView) vi.findViewById(R.id.appointmentItemInfo)).setText(data.get(position).timeInterval());
         ((TextView) vi.findViewById(R.id.appointmentItemUser)).setText(data.get(position).visitorFullName);
         return vi;
