@@ -3,8 +3,6 @@ package com.example.antony.queueapp;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -14,6 +12,7 @@ import com.example.antony.queueapp.http.data.Appointment;
 import com.example.antony.queueapp.http.data.HostData;
 import com.example.antony.queueapp.http.data.Schedule;
 import com.example.antony.queueapp.http.request.AppointmentsRequest;
+import com.example.antony.queueapp.util.adapter.AppointmentItemAdapter;
 
 import org.joda.time.LocalDate;
 
@@ -69,15 +68,9 @@ public class AppointmentsActivity extends AppCompatActivity {
                         return o1.start.compareTo(o2.start);
                     }
                 });
-                ArrayList<String> strings = new ArrayList<>(result.size());
-                for (int i = 0; i < result.size(); ++i) {
-                    Appointment data = result.get(i);
-                    strings.add(String.format("%s - %s", data.start.toString(), data.end.toString()));
-                }
 
-                ListAdapter adapter = new ArrayAdapter<>(getApplicationContext(), R.layout.appointment_item_display, strings);
+                AppointmentItemAdapter adapter = new AppointmentItemAdapter(getApplicationContext(), result);
                 appointmentsView.setAdapter(adapter);
-
                 Log.d("MY_CUSTOM_LOG", result.toString());
             }
         });

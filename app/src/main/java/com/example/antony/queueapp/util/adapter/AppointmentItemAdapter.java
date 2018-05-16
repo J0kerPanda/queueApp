@@ -14,15 +14,12 @@ import java.util.ArrayList;
 
 public class AppointmentItemAdapter extends BaseAdapter {
 
-    Context context;
-    ArrayList<Appointment> data;
-    private static LayoutInflater inflater = null;
+    private ArrayList<Appointment> data;
+    private LayoutInflater inflater;
 
     public AppointmentItemAdapter(Context context, ArrayList<Appointment> data) {
-        this.context = context;
+        this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.data = data;
-        inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -43,12 +40,12 @@ public class AppointmentItemAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
         View vi = convertView;
-        if (vi == null)
-            vi = inflater.inflate(R.layout.appointment_item_display, null);
-        TextView text = (TextView) vi.findViewById(R.id.text);
-        text.setText(data.get(position).end.toString());
+        if (vi == null) {
+            vi = inflater.inflate(R.layout.appointment_item_display, parent);
+        }
+        ((TextView) vi.findViewById(R.id.appointmentDateText)).setText(data.get(position).visitorFullName);
+        ((TextView) vi.findViewById(R.id.appointmentHostText)).setText(data.get(position).visitorFullName);
         return vi;
     }
 }
