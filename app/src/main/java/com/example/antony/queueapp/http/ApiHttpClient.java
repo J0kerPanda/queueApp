@@ -3,7 +3,7 @@ package com.example.antony.queueapp.http;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.antony.queueapp.http.data.AppointmentData;
+import com.example.antony.queueapp.http.data.Appointment;
 import com.example.antony.queueapp.http.data.HostData;
 import com.example.antony.queueapp.http.data.SchedulesData;
 import com.example.antony.queueapp.http.request.AppointmentsRequest;
@@ -100,16 +100,16 @@ public class ApiHttpClient {
 
     public static void getAppointments(final Context context,
                                        final AppointmentsRequest req,
-                                       final ResponseHandler<ArrayList<AppointmentData>> handler) {
+                                       final ResponseHandler<ArrayList<Appointment>> handler) {
 
         try {
             ApiHttpClient.post(context, "/appointment/list", req, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                     try {
-                        ArrayList<AppointmentData> result = gson.fromJson(
+                        ArrayList<Appointment> result = gson.fromJson(
                             response.toString(),
-                            new TypeToken<ArrayList<AppointmentData>>(){}.getType()
+                            new TypeToken<ArrayList<Appointment>>(){}.getType()
                         );
                         handler.handle(result);
 

@@ -2,7 +2,7 @@ package com.example.antony.queueapp.http.data;
 
 import org.joda.time.LocalTime;
 
-public class AppointmentData {
+public class Appointment {
 
     public int visitorId;
     public String visitorFullName;

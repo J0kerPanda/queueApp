@@ -1,7 +1,7 @@
 package com.example.antony.queueapp;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.example.antony.queueapp.http.ApiHttpClient;
 import com.example.antony.queueapp.http.ResponseHandler;
-import com.example.antony.queueapp.http.data.AppointmentData;
+import com.example.antony.queueapp.http.data.Appointment;
 import com.example.antony.queueapp.http.data.HostData;
 import com.example.antony.queueapp.http.data.Schedule;
 import com.example.antony.queueapp.http.request.AppointmentsRequest;
@@ -18,7 +18,6 @@ import com.example.antony.queueapp.http.request.AppointmentsRequest;
 import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -61,18 +60,18 @@ public class AppointmentsActivity extends AppCompatActivity {
         }
         AppointmentsRequest req = new AppointmentsRequest(host.id, date, ids, custom);
         Log.i("MY_CUSTOM_LOG", req.toString());
-        ApiHttpClient.getAppointments(getApplicationContext(), req, new ResponseHandler<ArrayList<AppointmentData>>() {
+        ApiHttpClient.getAppointments(getApplicationContext(), req, new ResponseHandler<ArrayList<Appointment>>() {
             @Override
-            public void handle(ArrayList<AppointmentData> result) {
-                Collections.sort(result, new Comparator<AppointmentData>() {
+            public void handle(ArrayList<Appointment> result) {
+                Collections.sort(result, new Comparator<Appointment>() {
                     @Override
-                    public int compare(AppointmentData o1, AppointmentData o2) {
+                    public int compare(Appointment o1, Appointment o2) {
                         return o1.start.compareTo(o2.start);
                     }
                 });
                 ArrayList<String> strings = new ArrayList<>(result.size());
                 for (int i = 0; i < result.size(); ++i) {
-                    AppointmentData data = result.get(i);
+                    Appointment data = result.get(i);
                     strings.add(String.format("%s - %s", data.start.toString(), data.end.toString()));
                 }
 
