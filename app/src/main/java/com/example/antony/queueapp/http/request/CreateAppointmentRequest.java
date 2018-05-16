@@ -7,20 +7,26 @@ public class CreateAppointmentRequest {
 
     public int hostId;
     public int visitorId;
-    public int scheduleId;
-    public boolean isCustom;
     public LocalDate date;
     public LocalTime start;
+    public LocalTime end;
+
+    public CreateAppointmentRequest(int hostId, int visitorId, LocalDate date, LocalTime start, LocalTime end) {
+        this.hostId = hostId;
+        this.visitorId = visitorId;
+        this.date = date;
+        this.start = start;
+        this.end = end;
+    }
 
     @Override
     public String toString() {
         return "CreateAppointmentRequest{" +
                 "hostId=" + hostId +
                 ", visitorId=" + visitorId +
-                ", scheduleId=" + scheduleId +
-                ", isCustom=" + isCustom +
                 ", date=" + date +
                 ", start=" + start +
+                ", end=" + end +
                 '}';
     }
 }

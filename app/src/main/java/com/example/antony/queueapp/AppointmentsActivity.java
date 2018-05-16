@@ -3,6 +3,8 @@ package com.example.antony.queueapp;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -12,6 +14,7 @@ import com.example.antony.queueapp.http.data.Appointment;
 import com.example.antony.queueapp.http.data.HostData;
 import com.example.antony.queueapp.http.data.Schedule;
 import com.example.antony.queueapp.http.request.AppointmentsRequest;
+import com.example.antony.queueapp.http.request.CreateAppointmentRequest;
 import com.example.antony.queueapp.util.adapter.AppointmentItemAdapter;
 
 import org.joda.time.LocalDate;
@@ -26,7 +29,7 @@ public class AppointmentsActivity extends AppCompatActivity {
     public static final String HOST_EXTRA = "HOST";
     public static final String SCHEDULES_EXTRA = "SCHEDULES";
 
-    private ListView appointmentsView;
+    private ListView appointmentsListView;
 
     private LocalDate date;
     private HostData host;
@@ -43,7 +46,34 @@ public class AppointmentsActivity extends AppCompatActivity {
 
         ((TextView) findViewById(R.id.appointmentDateText)).setText(date.toString());
         ((TextView) findViewById(R.id.appointmentHostText)).setText(host.fullName());
-        appointmentsView = findViewById(R.id.appointmentsView);
+        appointmentsListView = findViewById(R.id.appointmentsView);
+        appointmentsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Appointment appointment = (Appointment) parent.getItemAtPosition(position);
+                //todo check if not taken
+                //todo self.id as visitorid
+                CreateAppointmentRequest req = new CreateAppointmentRequest(
+                    host.id,
+                    1,
+                    date,
+                    appointment.start,
+                    appointment.end
+                );
+
+                ApiHttpClient.createAppointment(getApplicationContext(), req, new ResponseHandler<Boolean>() {
+                    @Override
+                    public void handle(Boolean result) {
+                        //todo false case
+                        Log.i("MY_CUSTOM_LOG", String.valueOf(result));
+                        if (result) {
+                            finish();
+                            startActivity(getIntent()); //todo put sorted stuff in intent?
+                        }
+                    }
+                });
+            }
+        });
 
         requestAppointments();
 
@@ -73,7 +103,7 @@ public class AppointmentsActivity extends AppCompatActivity {
                 Log.d("MY_CUSTOM_LOG", result.toString());
 
                 AppointmentItemAdapter adapter = new AppointmentItemAdapter(getApplicationContext(), result);
-                appointmentsView.setAdapter(adapter);
+                appointmentsListView.setAdapter(adapter);
             }
         });
     }

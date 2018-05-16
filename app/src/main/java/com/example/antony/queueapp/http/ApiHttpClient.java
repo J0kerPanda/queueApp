@@ -7,6 +7,7 @@ import com.example.antony.queueapp.http.data.Appointment;
 import com.example.antony.queueapp.http.data.HostData;
 import com.example.antony.queueapp.http.data.SchedulesData;
 import com.example.antony.queueapp.http.request.AppointmentsRequest;
+import com.example.antony.queueapp.http.request.CreateAppointmentRequest;
 import com.example.antony.queueapp.util.UnexpectedErrorHandler;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -126,6 +127,27 @@ public class ApiHttpClient {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseBody, Throwable e) {
                     UnexpectedErrorHandler.handle(e);
+                }
+            });
+        } catch (UnsupportedEncodingException e) {
+            UnexpectedErrorHandler.handle(e);
+        }
+    }
+
+    public static void createAppointment(final Context context,
+                                         final CreateAppointmentRequest req,
+                                         final ResponseHandler<Boolean> handler) {
+
+        try {
+            ApiHttpClient.post(context, "/appointment/create", req, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    handler.handle(true);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    handler.handle(false);
                 }
             });
         } catch (UnsupportedEncodingException e) {
