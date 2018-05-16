@@ -10,6 +10,10 @@ public class Appointment {
     public LocalTime end;
     public String status;
 
+    public String timeInterval() {
+        return String.format("%s - %s", start.toString("HH:mm"), end.toString("HH:mm"));
+    }
+
     @Override
     public String toString() {
         return "AppointmentData{" +

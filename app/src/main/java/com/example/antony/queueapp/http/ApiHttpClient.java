@@ -26,7 +26,7 @@ import cz.msebera.android.httpclient.entity.ContentType;
 import cz.msebera.android.httpclient.entity.StringEntity;
 
 public class ApiHttpClient {
-    private static final String BASE_URL = "http://192.168.1.5:9000/api";
+    private static final String BASE_URL = "http://192.168.1.37:9000/api";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
     private static final Gson gson = new JsonExtractor().gson;

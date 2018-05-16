@@ -7,17 +7,23 @@
 
 
     <TextView
-        android:id="@+id/appointmentInfo"
+        android:id="@+id/appointmentItemInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:textSize="20sp"
         android:layout_weight="1"
+        android:textColor="@color/colorPrimaryDark"
         android:text="AppointmentInfo" />
 
     <TextView
-        android:id="@+id/appointmentUser"
+        android:id="@+id/appointmentItemUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:textSize="20sp"
         android:layout_weight="1"
+        android:textColor="@color/colorPrimaryDark"
         android:text="UserInfo" />
 
 </LinearLayout>

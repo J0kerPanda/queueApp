@@ -69,9 +69,11 @@ public class AppointmentsActivity extends AppCompatActivity {
                     }
                 });
 
+                Log.d("MY_CUSTOM_LOG", String.valueOf(result.size()));
+                Log.d("MY_CUSTOM_LOG", result.toString());
+
                 AppointmentItemAdapter adapter = new AppointmentItemAdapter(getApplicationContext(), result);
                 appointmentsView.setAdapter(adapter);
-                Log.d("MY_CUSTOM_LOG", result.toString());
             }
         });
     }

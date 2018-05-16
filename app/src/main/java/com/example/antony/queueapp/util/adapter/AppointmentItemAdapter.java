@@ -1,6 +1,7 @@
 package com.example.antony.queueapp.util.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,10 +43,11 @@ public class AppointmentItemAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi = convertView;
         if (vi == null) {
-            vi = inflater.inflate(R.layout.appointment_item_display, parent);
+            vi = inflater.inflate(R.layout.appointment_item_display, parent, false);
         }
-        ((TextView) vi.findViewById(R.id.appointmentDateText)).setText(data.get(position).visitorFullName);
-        ((TextView) vi.findViewById(R.id.appointmentHostText)).setText(data.get(position).visitorFullName);
+        Log.d("MY_CUSTOM_LOG", String.valueOf(position));
+        ((TextView) vi.findViewById(R.id.appointmentItemInfo)).setText(data.get(position).timeInterval());
+        ((TextView) vi.findViewById(R.id.appointmentItemUser)).setText(data.get(position).visitorFullName);
         return vi;
     }
 }
