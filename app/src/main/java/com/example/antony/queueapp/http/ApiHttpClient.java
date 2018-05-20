@@ -6,7 +6,6 @@ import android.util.Log;
 import com.example.antony.queueapp.http.data.Appointment;
 import com.example.antony.queueapp.http.data.HostData;
 import com.example.antony.queueapp.http.data.SchedulesData;
-import com.example.antony.queueapp.http.request.AppointmentsRequest;
 import com.example.antony.queueapp.http.request.CreateAppointmentRequest;
 import com.example.antony.queueapp.util.UnexpectedErrorHandler;
 import com.google.gson.Gson;
@@ -16,18 +15,20 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.joda.time.LocalDate;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.ContentType;
 import cz.msebera.android.httpclient.entity.StringEntity;
 
 public class ApiHttpClient {
-    private static final String BASE_URL = "http://192.168.1.37:9000/api";
+    private static final String BASE_URL = "http://192.168.1.5:9000/api";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
     private static final Gson gson = new JsonExtractor().gson;
@@ -99,39 +100,38 @@ public class ApiHttpClient {
         });
     }
 
-    public static void getAppointments(final Context context,
-                                       final AppointmentsRequest req,
+    public static void getAppointments(int hostId, LocalDate date,
                                        final ResponseHandler<ArrayList<Appointment>> handler) {
 
-        try {
-            ApiHttpClient.post(context, "/appointment/list", req, new JsonHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                    try {
-                        ArrayList<Appointment> result = gson.fromJson(
-                            response.toString(),
-                            new TypeToken<ArrayList<Appointment>>(){}.getType()
-                        );
-                        handler.handle(result);
+        HashMap<String, String> params = new HashMap<>();
+        params.put("hostId", String.valueOf(hostId));
+        params.put("date", date.toString());
 
-                    } catch (Exception e) {
-                        UnexpectedErrorHandler.handle(e);
-                    }
-                }
+        ApiHttpClient.get("/appointment/list", new RequestParams(params), new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                try {
+                    ArrayList<Appointment> result = gson.fromJson(
+                        response.toString(),
+                        new TypeToken<ArrayList<Appointment>>(){}.getType()
+                    );
+                    handler.handle(result);
 
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse) {
+                } catch (Exception e) {
                     UnexpectedErrorHandler.handle(e);
                 }
+            }
 
-                @Override
-                public void onFailure(int statusCode, Header[] headers, String responseBody, Throwable e) {
-                    UnexpectedErrorHandler.handle(e);
-                }
-            });
-        } catch (UnsupportedEncodingException e) {
-            UnexpectedErrorHandler.handle(e);
-        }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse) {
+                UnexpectedErrorHandler.handle(e);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseBody, Throwable e) {
+                UnexpectedErrorHandler.handle(e);
+            }
+        });
     }
 
     public static void createAppointment(final Context context,
