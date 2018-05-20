@@ -73,16 +73,6 @@ public class AppointmentsActivity extends AppCompatActivity {
         return appointments;
     }
 
-    private HashMap<LocalTime, Appointment> refreshAppointments() {
-        HashMap<LocalTime, Appointment> appointments = new HashMap<>();
-        for (Schedule s: schedules) {
-            for (LocalTime curr = s.start; curr.isBefore(s.end); curr = curr.plus(s.appointmentDuration)) {
-                appointments.put(curr, Appointment.Empty(curr, curr.plus(s.appointmentDuration)));
-            }
-        }
-        return appointments;
-    }
-
     private void requestAppointments() {
         ApiHttpClient.getAppointments(host.id, date, new ResponseHandler<ArrayList<Appointment>>() {
             @Override
@@ -102,7 +92,7 @@ public class AppointmentsActivity extends AppCompatActivity {
     public void createAppointment(Appointment selected) {
         CreateAppointmentRequest req = new CreateAppointmentRequest(
                 host.id,
-                1,
+                3,
                 date,
                 selected.start,
                 selected.end

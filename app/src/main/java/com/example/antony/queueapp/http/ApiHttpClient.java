@@ -138,6 +138,8 @@ public class ApiHttpClient {
                                          final CreateAppointmentRequest req,
                                          final ResponseHandler<Boolean> handler) {
 
+        Log.i("MY_CUSTOM_LOG", req.toString());
+
         try {
             ApiHttpClient.post(context, "/appointment/create", req, new AsyncHttpResponseHandler() {
                 @Override
