@@ -1,4 +1,4 @@
-package com.example.antony.queueapp.http;
+package ru.bmstu.queueapp.http;
 
 public interface ResponseHandler<T> {
     void handle(T result);

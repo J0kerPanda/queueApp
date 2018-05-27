@@ -1,4 +1,4 @@
-package com.example.antony.queueapp;
+package ru.bmstu.queueapp;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,9 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.example.antony.queueapp.http.data.Schedule;
-import com.example.antony.queueapp.http.data.SchedulesData;
-import com.example.antony.queueapp.http.data.UserData;
+import ru.bmstu.queueapp.http.data.Schedule;
+import ru.bmstu.queueapp.http.data.SchedulesData;
+import ru.bmstu.queueapp.http.data.UserData;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;

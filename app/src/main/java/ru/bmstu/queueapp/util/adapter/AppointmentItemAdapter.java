@@ -1,4 +1,4 @@
-package com.example.antony.queueapp.util.adapter;
+package ru.bmstu.queueapp.util.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.antony.queueapp.R;
-import com.example.antony.queueapp.http.data.Appointment;
+import ru.bmstu.queueapp.R;
+import ru.bmstu.queueapp.http.data.Appointment;
 
 import java.util.ArrayList;
 

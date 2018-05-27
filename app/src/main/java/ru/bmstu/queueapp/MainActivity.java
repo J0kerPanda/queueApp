@@ -1,4 +1,4 @@
-package com.example.antony.queueapp;
+package ru.bmstu.queueapp;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,10 +10,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
-import com.example.antony.queueapp.http.ApiHttpClient;
-import com.example.antony.queueapp.http.ResponseHandler;
-import com.example.antony.queueapp.http.data.UserData;
-import com.example.antony.queueapp.http.data.SchedulesData;
+import ru.bmstu.queueapp.http.ApiHttpClient;
+import ru.bmstu.queueapp.http.ResponseHandler;
+import ru.bmstu.queueapp.http.data.LoginData;
+import ru.bmstu.queueapp.http.data.UserData;
+import ru.bmstu.queueapp.http.data.SchedulesData;
 
 import java.util.ArrayList;
 
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        ApiHttpClient.instance().login(new LoginData("test1@email.com", "test"));
         updateHosts();
     }
 

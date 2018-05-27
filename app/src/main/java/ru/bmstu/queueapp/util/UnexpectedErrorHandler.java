@@ -1,4 +1,4 @@
-package com.example.antony.queueapp.util;
+package ru.bmstu.queueapp.util;
 
 import android.util.Log;
 

@@ -1,4 +1,4 @@
-package com.example.antony.queueapp.http.request;
+package ru.bmstu.queueapp.http.request;
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;

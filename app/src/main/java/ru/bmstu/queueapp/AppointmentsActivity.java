@@ -1,4 +1,4 @@
-package com.example.antony.queueapp;
+package ru.bmstu.queueapp;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,13 +8,13 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.antony.queueapp.http.ApiHttpClient;
-import com.example.antony.queueapp.http.ResponseHandler;
-import com.example.antony.queueapp.http.data.Appointment;
-import com.example.antony.queueapp.http.data.UserData;
-import com.example.antony.queueapp.http.data.Schedule;
-import com.example.antony.queueapp.http.request.CreateAppointmentRequest;
-import com.example.antony.queueapp.util.adapter.AppointmentItemAdapter;
+import ru.bmstu.queueapp.http.ApiHttpClient;
+import ru.bmstu.queueapp.http.ResponseHandler;
+import ru.bmstu.queueapp.http.data.Appointment;
+import ru.bmstu.queueapp.http.data.UserData;
+import ru.bmstu.queueapp.http.data.Schedule;
+import ru.bmstu.queueapp.http.request.CreateAppointmentRequest;
+import ru.bmstu.queueapp.util.adapter.AppointmentItemAdapter;
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;

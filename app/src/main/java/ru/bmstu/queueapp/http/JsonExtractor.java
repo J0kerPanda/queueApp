@@ -1,7 +1,7 @@
-package com.example.antony.queueapp.http;
+package ru.bmstu.queueapp.http;
 
-import com.example.antony.queueapp.http.data.Schedule;
-import com.example.antony.queueapp.http.data.SchedulesData;
+import ru.bmstu.queueapp.http.data.Schedule;
+import ru.bmstu.queueapp.http.data.SchedulesData;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;

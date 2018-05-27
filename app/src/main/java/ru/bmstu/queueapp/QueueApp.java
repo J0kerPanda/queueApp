@@ -1,9 +1,9 @@
-package com.example.antony.queueapp;
+package ru.bmstu.queueapp;
 
 import android.app.Application;
 import android.content.Context;
 
-import com.example.antony.queueapp.http.data.UserData;
+import ru.bmstu.queueapp.http.data.UserData;
 
 public class QueueApp extends Application {
 

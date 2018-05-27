@@ -1,15 +1,15 @@
-package com.example.antony.queueapp.http;
+package ru.bmstu.queueapp.http;
 
 import android.content.Context;
 import android.util.Log;
 
-import com.example.antony.queueapp.QueueApp;
-import com.example.antony.queueapp.http.data.Appointment;
-import com.example.antony.queueapp.http.data.LoginData;
-import com.example.antony.queueapp.http.data.SchedulesData;
-import com.example.antony.queueapp.http.data.UserData;
-import com.example.antony.queueapp.http.request.CreateAppointmentRequest;
-import com.example.antony.queueapp.util.UnexpectedErrorHandler;
+import ru.bmstu.queueapp.QueueApp;
+import ru.bmstu.queueapp.http.data.Appointment;
+import ru.bmstu.queueapp.http.data.LoginData;
+import ru.bmstu.queueapp.http.data.SchedulesData;
+import ru.bmstu.queueapp.http.data.UserData;
+import ru.bmstu.queueapp.http.request.CreateAppointmentRequest;
+import ru.bmstu.queueapp.util.UnexpectedErrorHandler;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpClient;

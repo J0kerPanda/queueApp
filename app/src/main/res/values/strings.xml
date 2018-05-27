@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">queueApp</string>
+    <string name="shared_preferences">ru.bmstu.queueapp.shared_pref_file</string>
 </resources>
