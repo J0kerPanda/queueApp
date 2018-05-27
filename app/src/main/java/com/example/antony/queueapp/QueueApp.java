@@ -19,7 +19,7 @@ public class QueueApp extends Application {
         return QueueApp.app.getApplicationContext();
     }
 
-    public static void setUser(UserData user) {
+    public static synchronized void setUser(UserData user) {
         QueueApp.user = user;
     }
 

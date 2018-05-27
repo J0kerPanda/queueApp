@@ -6,14 +6,13 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.example.antony.queueapp.http.data.UserData;
 import com.example.antony.queueapp.http.data.Schedule;
 import com.example.antony.queueapp.http.data.SchedulesData;
+import com.example.antony.queueapp.http.data.UserData;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
-import org.jetbrains.annotations.NotNull;
 import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
@@ -77,12 +76,6 @@ public class CalendarActivity extends AppCompatActivity {
 
         for (Schedule schedule: schedulesData.schedules) {
             calendarView.setDateSelected(schedule.date.toDate(), true);
-        }
-    }
-
-    private void selectDates(@NotNull ArrayList<LocalDate> dates) {
-        for (int i = 0; i < dates.size(); ++i) {
-            calendarView.setDateSelected(dates.get(i).toDate(), true);
         }
     }
 }

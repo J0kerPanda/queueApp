@@ -74,7 +74,7 @@ public class AppointmentsActivity extends AppCompatActivity {
     }
 
     private void requestAppointments() {
-        ApiHttpClient.getAppointments(host.id, date, new ResponseHandler<ArrayList<Appointment>>() {
+        ApiHttpClient.instance().getAppointments(host.id, date, new ResponseHandler<ArrayList<Appointment>>() {
             @Override
             public void handle(ArrayList<Appointment> result) {
                 Log.d("MY_CUSTOM_LOG", String.valueOf(result.size()));
@@ -98,7 +98,7 @@ public class AppointmentsActivity extends AppCompatActivity {
                 selected.end
         );
 
-        ApiHttpClient.createAppointment(req, new ResponseHandler<Boolean>() {
+        ApiHttpClient.instance().createAppointment(req, new ResponseHandler<Boolean>() {
             @Override
             public void handle(Boolean result) {
                 //todo false case

@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void scheduleButtonHandler(View v) {
         final UserData host = (UserData) hostSpinner.getSelectedItem();
-        ApiHttpClient.getScheduleData(String.valueOf(host.id), new ResponseHandler<SchedulesData>() {
+        ApiHttpClient.instance().getScheduleData(String.valueOf(host.id), new ResponseHandler<SchedulesData>() {
             @Override
             public void handle(SchedulesData result) {
                 Intent intent = new Intent(getBaseContext(), CalendarActivity.class);
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateHosts() {
         refreshButton.setEnabled(false);
-        ApiHttpClient.getHosts(new ResponseHandler<ArrayList<UserData>>() {
+        ApiHttpClient.instance().getHosts(new ResponseHandler<ArrayList<UserData>>() {
             @Override
             public void handle(ArrayList<UserData> result) {
                 Log.d("MY_CUSTOM_LOG", result.toString());
