@@ -12,13 +12,12 @@ import android.widget.Spinner;
 
 import ru.bmstu.queueapp.http.ApiHttpClient;
 import ru.bmstu.queueapp.http.ResponseHandler;
-import ru.bmstu.queueapp.http.data.LoginData;
 import ru.bmstu.queueapp.http.data.UserData;
 import ru.bmstu.queueapp.http.data.SchedulesData;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class SelectHostActivity extends AppCompatActivity {
 
     private Spinner hostSpinner;
     private Button scheduleButton;
@@ -44,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ApiHttpClient.instance().login(new LoginData("test1@email.com", "test"));
         updateHosts();
     }
 

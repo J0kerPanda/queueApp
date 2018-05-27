@@ -1,20 +1,20 @@
-package ru.bmstu.queueapp.http.data;
+package ru.bmstu.queueapp.http.request;
 
-public class LoginData {
+public class LoginRequest {
 
     public String email;
     public String password;
 
-    public LoginData() {}
+    public LoginRequest() {}
 
-    public LoginData(String email, String password) {
+    public LoginRequest(String email, String password) {
         this.email = email;
         this.password = password;
     }
 
     @Override
     public String toString() {
-        return "LoginData{" +
+        return "LoginRequest{" +
                 "email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';

@@ -5,7 +5,7 @@ import android.util.Log;
 
 import ru.bmstu.queueapp.QueueApp;
 import ru.bmstu.queueapp.http.data.Appointment;
-import ru.bmstu.queueapp.http.data.LoginData;
+import ru.bmstu.queueapp.http.request.LoginRequest;
 import ru.bmstu.queueapp.http.data.SchedulesData;
 import ru.bmstu.queueapp.http.data.UserData;
 import ru.bmstu.queueapp.http.request.CreateAppointmentRequest;
@@ -173,17 +173,17 @@ public class ApiHttpClient {
         }
     }
 
-    public void login(final LoginData loginData) {
+    public void login(final LoginRequest loginRequest, final ResponseHandler<UserData> handler) {
 
-        Log.i("MY_CUSTOM_LOG", loginData.toString());
+        Log.i("MY_CUSTOM_LOG", loginRequest.toString());
 
         try {
-            post(QueueApp.getAppContext(), "/user/login", loginData, new JsonHttpResponseHandler() {
+            post(QueueApp.getAppContext(), "/user/login", loginRequest, new JsonHttpResponseHandler() {
 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     try {
-                        QueueApp.setUser(gson.fromJson(response.toString(), UserData.class));
+                        handler.handle(gson.fromJson(response.toString(), UserData.class));
                     } catch (Exception e) {
                         UnexpectedErrorHandler.handle(e);
                     }

@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">queueApp</string>
     <string name="shared_preferences">ru.bmstu.queueapp.shared_pref_file</string>
+    <string name="login_hint">логин</string>
+    <string name="password_hint">пароль</string>
+    <string name="login_button">вход</string>
 </resources>
