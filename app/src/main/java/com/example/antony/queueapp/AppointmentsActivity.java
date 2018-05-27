@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.example.antony.queueapp.http.ApiHttpClient;
 import com.example.antony.queueapp.http.ResponseHandler;
 import com.example.antony.queueapp.http.data.Appointment;
-import com.example.antony.queueapp.http.data.HostData;
+import com.example.antony.queueapp.http.data.UserData;
 import com.example.antony.queueapp.http.data.Schedule;
 import com.example.antony.queueapp.http.request.CreateAppointmentRequest;
 import com.example.antony.queueapp.util.adapter.AppointmentItemAdapter;
@@ -31,7 +31,7 @@ public class AppointmentsActivity extends AppCompatActivity {
     private ListView appointmentsListView;
 
     private LocalDate date;
-    private HostData host;
+    private UserData host;
     private ArrayList<Schedule> schedules;
     private HashMap<LocalTime, Appointment> appointmentMap;
 
@@ -41,7 +41,7 @@ public class AppointmentsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_appointments);
 
         date = (LocalDate) getIntent().getSerializableExtra(DATE_EXTRA);
-        host = (HostData) getIntent().getSerializableExtra(HOST_EXTRA);
+        host = (UserData) getIntent().getSerializableExtra(HOST_EXTRA);
         schedules = (ArrayList<Schedule>) getIntent().getSerializableExtra(SCHEDULES_EXTRA);
         appointmentMap = generateAppointments(schedules);
 
@@ -98,7 +98,7 @@ public class AppointmentsActivity extends AppCompatActivity {
                 selected.end
         );
 
-        ApiHttpClient.createAppointment(getApplicationContext(), req, new ResponseHandler<Boolean>() {
+        ApiHttpClient.createAppointment(req, new ResponseHandler<Boolean>() {
             @Override
             public void handle(Boolean result) {
                 //todo false case

@@ -12,7 +12,7 @@ import android.widget.Spinner;
 
 import com.example.antony.queueapp.http.ApiHttpClient;
 import com.example.antony.queueapp.http.ResponseHandler;
-import com.example.antony.queueapp.http.data.HostData;
+import com.example.antony.queueapp.http.data.UserData;
 import com.example.antony.queueapp.http.data.SchedulesData;
 
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void scheduleButtonHandler(View v) {
-        final HostData host = (HostData) hostSpinner.getSelectedItem();
+        final UserData host = (UserData) hostSpinner.getSelectedItem();
         ApiHttpClient.getScheduleData(String.valueOf(host.id), new ResponseHandler<SchedulesData>() {
             @Override
             public void handle(SchedulesData result) {
@@ -65,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateHosts() {
         refreshButton.setEnabled(false);
-        ApiHttpClient.getHosts(new ResponseHandler<ArrayList<HostData>>() {
+        ApiHttpClient.getHosts(new ResponseHandler<ArrayList<UserData>>() {
             @Override
-            public void handle(ArrayList<HostData> result) {
+            public void handle(ArrayList<UserData> result) {
                 Log.d("MY_CUSTOM_LOG", result.toString());
                 hostSpinner.setAdapter(new ArrayAdapter<>(
                     getApplicationContext(),

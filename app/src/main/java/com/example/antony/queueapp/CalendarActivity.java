@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.example.antony.queueapp.http.data.HostData;
+import com.example.antony.queueapp.http.data.UserData;
 import com.example.antony.queueapp.http.data.Schedule;
 import com.example.antony.queueapp.http.data.SchedulesData;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -26,7 +26,7 @@ public class CalendarActivity extends AppCompatActivity {
     private MaterialCalendarView calendarView;
 
     private SchedulesData schedulesData;
-    private HostData host;
+    private UserData host;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class CalendarActivity extends AppCompatActivity {
         calendarView = findViewById(R.id.calendarView);
         calendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_MULTIPLE);
 
-        host = (HostData) getIntent().getSerializableExtra(HOST_EXTRA);
+        host = (UserData) getIntent().getSerializableExtra(HOST_EXTRA);
         updateCalendar((SchedulesData) getIntent().getSerializableExtra(SCHEDULE_DATA_EXTRA));
 
         calendarView.setOnDateChangedListener(new OnDateSelectedListener() {

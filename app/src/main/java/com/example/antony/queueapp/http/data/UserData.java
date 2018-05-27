@@ -2,9 +2,10 @@ package com.example.antony.queueapp.http.data;
 
 import java.io.Serializable;
 
-public class HostData implements Serializable {
+public class UserData implements Serializable {
 
     public int id;
+    public String email;
     public String firstName;
     public String surname;
     public String patronymic;
