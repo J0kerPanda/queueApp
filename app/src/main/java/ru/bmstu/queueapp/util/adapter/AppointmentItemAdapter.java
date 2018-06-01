@@ -37,18 +37,6 @@ public class AppointmentItemAdapter extends BaseAdapter {
         return position;
     }
 
-    private static String transformName(String name) {
-        if (name == null) {
-            return null;
-        }
-        String[] parts = name.split(" ");
-        if (parts.length >= 3) {
-            return String.format("%s %s. %s.", parts[0], parts[1].charAt(0), parts[2].charAt(0));
-        } else {
-            return name;
-        }
-    }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi = convertView;
@@ -56,7 +44,7 @@ public class AppointmentItemAdapter extends BaseAdapter {
             vi = inflater.inflate(R.layout.appointment_item_display, parent, false);
         }
         ((TextView) vi.findViewById(R.id.appointmentItemInterval)).setText(data.get(position).timeInterval());
-        ((TextView) vi.findViewById(R.id.appointmentItemUser)).setText(transformName(data.get(position).visitorFullName()));
+        ((TextView) vi.findViewById(R.id.appointmentItemUser)).setText(data.get(position).visitorFullName());
         return vi;
     }
 }

@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
     };
 
     private void moveToMainActivity() {
-        Intent intent = new Intent(getBaseContext(), SelectHostActivity.class);
+        Intent intent = new Intent(getBaseContext(), CalendarActivity.class);
         startActivity(intent);
     }
 }

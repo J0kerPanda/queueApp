@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import ru.bmstu.queueapp.http.ApiHttpClient;
 import ru.bmstu.queueapp.http.data.UserData;
 
 public class QueueApp extends Application {
@@ -69,6 +70,7 @@ public class QueueApp extends Application {
     }
 
     public static void removeUser() {
+        ApiHttpClient.instance().clearCookies();
         SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.remove(userIdKey);
         edit.remove(userEmailKey);

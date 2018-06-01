@@ -3,13 +3,6 @@ package ru.bmstu.queueapp.http;
 import android.content.Context;
 import android.util.Log;
 
-import ru.bmstu.queueapp.QueueApp;
-import ru.bmstu.queueapp.http.data.Appointment;
-import ru.bmstu.queueapp.http.request.LoginRequest;
-import ru.bmstu.queueapp.http.data.SchedulesData;
-import ru.bmstu.queueapp.http.data.UserData;
-import ru.bmstu.queueapp.http.request.CreateAppointmentRequest;
-import ru.bmstu.queueapp.util.UnexpectedErrorHandler;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpClient;
@@ -18,17 +11,22 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 
-import org.joda.time.LocalDate;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.ContentType;
 import cz.msebera.android.httpclient.entity.StringEntity;
+import ru.bmstu.queueapp.QueueApp;
+import ru.bmstu.queueapp.http.data.Appointment;
+import ru.bmstu.queueapp.http.data.SchedulesData;
+import ru.bmstu.queueapp.http.data.UserData;
+import ru.bmstu.queueapp.http.request.CreateAppointmentRequest;
+import ru.bmstu.queueapp.http.request.LoginRequest;
+import ru.bmstu.queueapp.util.UnexpectedErrorHandler;
 
 public class ApiHttpClient {
     private static final String BASE_URL = "http://192.168.1.5:9000/api";
@@ -49,6 +47,10 @@ public class ApiHttpClient {
             instance = new ApiHttpClient();
         }
         return instance;
+    }
+    
+    public void clearCookies() {
+        cookieStore.clear();
     }
 
     private void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
