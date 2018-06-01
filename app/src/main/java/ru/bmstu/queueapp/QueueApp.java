@@ -67,4 +67,16 @@ public class QueueApp extends Application {
         edit.putBoolean(userIsHostKey, user.isHost);
         edit.apply();
     }
+
+    public static void removeUser() {
+        SharedPreferences.Editor edit = sharedPreferences.edit();
+        edit.remove(userIdKey);
+        edit.remove(userEmailKey);
+        edit.remove(userFirstNameKey);
+        edit.remove(userSurnameKey);
+        edit.remove(userPatronymicKey);
+        edit.remove(userIsHostKey);
+        user = null;
+        edit.apply();
+    }
 }

@@ -26,7 +26,7 @@ public class SelectHostActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_select_host);
         hostSpinner = findViewById(R.id.hostSpinner);
         scheduleButton = findViewById(R.id.scheduleButton);
         refreshButton = findViewById(R.id.refreshButton);
@@ -51,16 +51,23 @@ public class SelectHostActivity extends AppCompatActivity {
         ApiHttpClient.instance().getScheduleData(String.valueOf(host.id), new ResponseHandler<SchedulesData>() {
             @Override
             public void handle(SchedulesData result) {
-                Intent intent = new Intent(getBaseContext(), CalendarActivity.class);
-                intent.putExtra(CalendarActivity.SCHEDULE_DATA_EXTRA, result);
-                intent.putExtra(CalendarActivity.HOST_EXTRA, host);
-                startActivity(intent);
+            Intent intent = new Intent(getBaseContext(), CalendarActivity.class);
+            intent.putExtra(CalendarActivity.SCHEDULE_DATA_EXTRA, result);
+            intent.putExtra(CalendarActivity.HOST_EXTRA, host);
+            startActivity(intent);
             }
         });
     }
 
     public void refreshButtonHandler(View v) {
         updateHosts();
+    }
+
+    public void logoutButtonHandler(View v) {
+        QueueApp.removeUser();
+        Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+        intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
     }
 
     private void updateHosts() {

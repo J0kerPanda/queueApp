@@ -4,4 +4,5 @@
     <string name="login_hint">логин</string>
     <string name="password_hint">пароль</string>
     <string name="login_button">вход</string>
+    <string name="logout_button">выход</string>
 </resources>

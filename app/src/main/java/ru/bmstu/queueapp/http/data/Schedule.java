@@ -8,24 +8,22 @@ import java.io.Serializable;
 
 public class Schedule implements Serializable {
 
-    public int rootId;
+    public int id;
     public LocalDate date;
     public LocalTime start;
     public LocalTime end;
     public Period appointmentDuration;
     public String place;
-    public Boolean isCustom;
 
     @Override
     public String toString() {
         return "Schedule{" +
-                "rootId=" + rootId +
+                "rootId=" + id +
                 ", date=" + date +
                 ", start=" + start +
                 ", end=" + end +
                 ", appointmentDuration=" + appointmentDuration +
                 ", place='" + place + '\'' +
-                ", isCustom=" + isCustom +
                 '}';
     }
 }

@@ -20,6 +20,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class AppointmentsActivity extends AppCompatActivity {
@@ -67,14 +68,18 @@ public class AppointmentsActivity extends AppCompatActivity {
         HashMap<LocalTime, Appointment> appointments = new HashMap<>();
         for (Schedule s: schedules) {
             for (LocalTime curr = s.start; curr.isBefore(s.end); curr = curr.plus(s.appointmentDuration)) {
-                appointments.put(curr, Appointment.Empty(curr, curr.plus(s.appointmentDuration)));
+                appointments.put(curr, Appointment.Empty(s.id, curr, curr.plus(s.appointmentDuration)));
             }
         }
         return appointments;
     }
 
     private void requestAppointments() {
-        ApiHttpClient.instance().getAppointments(host.id, date, new ResponseHandler<ArrayList<Appointment>>() {
+        ArrayList<Integer> ids = new ArrayList<>();
+        for (Schedule s: schedules) {
+            ids.add(s.id);
+        }
+        ApiHttpClient.instance().getAppointments(ids, new ResponseHandler<ArrayList<Appointment>>() {
             @Override
             public void handle(ArrayList<Appointment> result) {
                 Log.d("MY_CUSTOM_LOG", String.valueOf(result.size()));
@@ -91,22 +96,22 @@ public class AppointmentsActivity extends AppCompatActivity {
 
     public void createAppointment(Appointment selected) {
         CreateAppointmentRequest req = new CreateAppointmentRequest(
-                host.id,
-                3,
-                date,
-                selected.start,
-                selected.end
+            selected.scheduleId,
+            QueueApp.getUser().id,
+            date,
+            selected.start,
+            selected.end
         );
 
         ApiHttpClient.instance().createAppointment(req, new ResponseHandler<Boolean>() {
             @Override
             public void handle(Boolean result) {
-                //todo false case
-                Log.i("MY_CUSTOM_LOG", String.valueOf(result));
-                if (result) {
-                    finish();
-                    startActivity(getIntent()); //todo put sorted stuff in intent?
-                }
+            //todo false case
+            Log.i("MY_CUSTOM_LOG", String.valueOf(result));
+            if (result) {
+                finish();
+                startActivity(getIntent()); //todo put sorted stuff in intent?
+            }
             }
         });
     }

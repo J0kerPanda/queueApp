@@ -25,12 +25,12 @@
             android:text="Host" />
 
         <Spinner
-            android:textColor="@color/colorPrimaryDark"
             android:id="@+id/hostSpinner"
             android:layout_width="300dp"
             android:layout_height="60dp"
             android:ems="10"
-            android:inputType="number" />
+            android:inputType="number"
+            android:textColor="@color/colorPrimaryDark" />
 
     </LinearLayout>
 
@@ -50,11 +50,22 @@
         android:id="@+id/refreshButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
+        android:layout_marginTop="10dp"
         android:onClick="refreshButtonHandler"
         android:text="Обновить"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scheduleButton" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
+        android:onClick="logoutButtonHandler"
+        android:text="@string/logout_button"
+        app:layout_constraintStart_toStartOf="@+id/refreshButton"
+        app:layout_constraintTop_toBottomOf="@+id/refreshButton" />
 
 </android.support.constraint.ConstraintLayout>

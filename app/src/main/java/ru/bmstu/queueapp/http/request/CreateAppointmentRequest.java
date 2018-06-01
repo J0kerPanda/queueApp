@@ -5,14 +5,14 @@ import org.joda.time.LocalTime;
 
 public class CreateAppointmentRequest {
 
-    public int hostId;
+    public int scheduleId;
     public int visitorId;
     public LocalDate date;
     public LocalTime start;
     public LocalTime end;
 
-    public CreateAppointmentRequest(int hostId, int visitorId, LocalDate date, LocalTime start, LocalTime end) {
-        this.hostId = hostId;
+    public CreateAppointmentRequest(int scheduleId, int visitorId, LocalDate date, LocalTime start, LocalTime end) {
+        this.scheduleId = scheduleId;
         this.visitorId = visitorId;
         this.date = date;
         this.start = start;
@@ -22,7 +22,7 @@ public class CreateAppointmentRequest {
     @Override
     public String toString() {
         return "CreateAppointmentRequest{" +
-                "hostId=" + hostId +
+                "hostId=" + scheduleId +
                 ", visitorId=" + visitorId +
                 ", date=" + date +
                 ", start=" + start +

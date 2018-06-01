@@ -118,38 +118,41 @@ public class ApiHttpClient {
         });
     }
 
-    public void getAppointments(int hostId, LocalDate date,
-                                       final ResponseHandler<ArrayList<Appointment>> handler) {
+    public void getAppointments(ArrayList<Integer> scheduleIds,
+                                final ResponseHandler<ArrayList<Appointment>> handler) {
 
-        HashMap<String, String> params = new HashMap<>();
-        params.put("hostId", String.valueOf(hostId));
-        params.put("date", date.toString());
+        Log.i("MY_CUSTOM_LOG", scheduleIds.toString());
 
-        get("/appointment/list", new RequestParams(params), new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                try {
-                    ArrayList<Appointment> result = gson.fromJson(
-                        response.toString(),
-                        new TypeToken<ArrayList<Appointment>>(){}.getType()
-                    );
-                    handler.handle(result);
+        try {
+            post(QueueApp.getAppContext(),"/appointment/list", scheduleIds, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                    try {
+                        ArrayList<Appointment> result = gson.fromJson(
+                                response.toString(),
+                                new TypeToken<ArrayList<Appointment>>(){}.getType()
+                        );
+                        handler.handle(result);
 
-                } catch (Exception e) {
+                    } catch (Exception e) {
+                        UnexpectedErrorHandler.handle(e);
+                    }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse) {
                     UnexpectedErrorHandler.handle(e);
                 }
-            }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse) {
-                UnexpectedErrorHandler.handle(e);
-            }
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseBody, Throwable e) {
+                    UnexpectedErrorHandler.handle(e);
+                }
+            });
+        } catch (UnsupportedEncodingException e) {
+            UnexpectedErrorHandler.handle(e);
+        }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseBody, Throwable e) {
-                UnexpectedErrorHandler.handle(e);
-            }
-        });
     }
 
     public void createAppointment(final CreateAppointmentRequest req, final ResponseHandler<Boolean> handler) {
