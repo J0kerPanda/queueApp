@@ -11,6 +11,7 @@ import android.widget.TextView;
 import ru.bmstu.queueapp.http.ApiHttpClient;
 import ru.bmstu.queueapp.http.ResponseHandler;
 import ru.bmstu.queueapp.http.data.Appointment;
+import ru.bmstu.queueapp.http.data.AppointmentInterval;
 import ru.bmstu.queueapp.http.data.UserData;
 import ru.bmstu.queueapp.http.data.Schedule;
 import ru.bmstu.queueapp.http.request.CreateAppointmentRequest;
@@ -18,22 +19,22 @@ import ru.bmstu.queueapp.util.adapter.AppointmentItemAdapter;
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
+import org.joda.time.Period;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 
 public class AppointmentsActivity extends AppCompatActivity {
 
     public static final String DATE_EXTRA = "DATE";
     public static final String HOST_EXTRA = "HOST";
-    public static final String SCHEDULES_EXTRA = "SCHEDULES";
+    public static final String SCHEDULE_EXTRA = "SCHEDULE";
 
     private ListView appointmentsListView;
 
     private LocalDate date;
     private UserData host;
-    private ArrayList<Schedule> schedules;
+    private Schedule schedule;
     private HashMap<LocalTime, Appointment> appointmentMap;
 
     @Override
@@ -43,8 +44,8 @@ public class AppointmentsActivity extends AppCompatActivity {
 
         date = (LocalDate) getIntent().getSerializableExtra(DATE_EXTRA);
         host = (UserData) getIntent().getSerializableExtra(HOST_EXTRA);
-        schedules = (ArrayList<Schedule>) getIntent().getSerializableExtra(SCHEDULES_EXTRA);
-        appointmentMap = generateAppointments(schedules);
+        schedule = (Schedule) getIntent().getSerializableExtra(SCHEDULE_EXTRA);
+        appointmentMap = generateAppointments(schedule);
 
         ((TextView) findViewById(R.id.appointmentDateText)).setText(date.toString());
         ((TextView) findViewById(R.id.appointmentHostText)).setText(host.fullName());
@@ -54,42 +55,37 @@ public class AppointmentsActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Appointment appointment = (Appointment) parent.getItemAtPosition(position);
                 //todo check if not taken
-                //todo self.id as visitorid
                 createAppointment(appointment);
             }
         });
 
         requestAppointments();
-
-        Log.d("MY_CUSTOM_LOG", schedules.toString());
+        Log.d("MY_CUSTOM_LOG", schedule.toString());
     }
 
-    private HashMap<LocalTime, Appointment> generateAppointments(ArrayList<Schedule> schedules) {
+    private HashMap<LocalTime, Appointment> generateAppointments(Schedule schedule) {
         HashMap<LocalTime, Appointment> appointments = new HashMap<>();
-        for (Schedule s: schedules) {
-            for (LocalTime curr = s.start; curr.isBefore(s.end); curr = curr.plus(s.appointmentDuration)) {
-                appointments.put(curr, Appointment.Empty(s.id, curr, curr.plus(s.appointmentDuration)));
+        Period duration = schedule.appointmentDuration;
+        for (AppointmentInterval i: schedule.appointmentIntervals) {
+            for (LocalTime curr = i.start; curr.isBefore(i.end); curr = curr.plus(duration)) {
+                appointments.put(curr, Appointment.Empty(schedule.id, curr, curr.plus(duration)));
             }
         }
         return appointments;
     }
 
     private void requestAppointments() {
-        ArrayList<Integer> ids = new ArrayList<>();
-        for (Schedule s: schedules) {
-            ids.add(s.id);
-        }
-        ApiHttpClient.instance().getAppointments(ids, new ResponseHandler<ArrayList<Appointment>>() {
+        ApiHttpClient.instance().getAppointments(schedule.id, new ResponseHandler<ArrayList<Appointment>>() {
             @Override
             public void handle(ArrayList<Appointment> result) {
-                Log.d("MY_CUSTOM_LOG", String.valueOf(result.size()));
-                Log.d("MY_CUSTOM_LOG", result.toString());
-                HashMap<LocalTime, Appointment> clone = (HashMap<LocalTime, Appointment>) appointmentMap.clone();
-                for (Appointment a: result) {
-                    clone.put(a.start, a);
-                }
-                AppointmentItemAdapter adapter = new AppointmentItemAdapter(getApplicationContext(), new ArrayList<>(clone.values()));
-                appointmentsListView.setAdapter(adapter);
+            Log.d("MY_CUSTOM_LOG", String.valueOf(result.size()));
+            Log.d("MY_CUSTOM_LOG", result.toString());
+            HashMap<LocalTime, Appointment> clone = (HashMap<LocalTime, Appointment>) appointmentMap.clone();
+            for (Appointment a: result) {
+                clone.put(a.start, a);
+            }
+            AppointmentItemAdapter adapter = new AppointmentItemAdapter(getApplicationContext(), new ArrayList<>(clone.values()));
+            appointmentsListView.setAdapter(adapter);
             }
         });
     }

@@ -1,7 +1,5 @@
 package ru.bmstu.queueapp.http;
 
-import ru.bmstu.queueapp.http.data.Schedule;
-import ru.bmstu.queueapp.http.data.SchedulesData;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -19,7 +17,10 @@ import org.joda.time.LocalTime;
 import org.joda.time.Period;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
+import java.util.HashMap;
+
+import ru.bmstu.queueapp.http.data.Schedule;
+import ru.bmstu.queueapp.http.data.SchedulesData;
 
 public class JsonExtractor {
 
@@ -76,7 +77,7 @@ public class JsonExtractor {
             public SchedulesData deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
                 JsonObject jo = json.getAsJsonObject();
                 Period period = context.deserialize(jo.get("period"), Period.class);
-                ArrayList<Schedule> schedules = context.deserialize(jo.get("schedules"), new TypeToken<ArrayList<Schedule>>(){}.getType());
+                HashMap<LocalDate, Schedule> schedules = context.deserialize(jo.get("schedules"), new TypeToken<HashMap<LocalDate, Schedule>>(){}.getType());
                 return new SchedulesData(period, schedules);
             }
         };

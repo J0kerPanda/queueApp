@@ -1,16 +1,17 @@
 package ru.bmstu.queueapp.http.data;
 
+import org.joda.time.LocalDate;
 import org.joda.time.Period;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class SchedulesData implements Serializable {
 
     public Period period;
-    public ArrayList<Schedule> schedules;
+    public HashMap<LocalDate, Schedule> schedules;
 
-    public SchedulesData(Period period, ArrayList<Schedule> schedules) {
+    public SchedulesData(Period period, HashMap<LocalDate, Schedule> schedules) {
         this.period = period;
         this.schedules = schedules;
     }

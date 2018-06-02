@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.ContentType;
@@ -48,7 +49,7 @@ public class ApiHttpClient {
         }
         return instance;
     }
-    
+
     public void clearCookies() {
         cookieStore.clear();
     }
@@ -67,8 +68,8 @@ public class ApiHttpClient {
         return BASE_URL + relativeUrl;
     }
 
-    public void getScheduleData(String hostId, final ResponseHandler<SchedulesData> handler) {
-        String url = String.format("/schedule/host/%s", hostId);
+    public void getScheduleData(int hostId, final ResponseHandler<SchedulesData> handler) {
+        String url = String.format("/schedule/host/%d", hostId);
 
         get(url, new RequestParams(), new JsonHttpResponseHandler() {
 
@@ -76,6 +77,7 @@ public class ApiHttpClient {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
                 try {
+                    Log.d("my_custom_log", response.toString());
                     handler.handle(gson.fromJson(response.toString(), SchedulesData.class));
                 } catch (Exception e) {
                     UnexpectedErrorHandler.handle(e);
@@ -120,41 +122,39 @@ public class ApiHttpClient {
         });
     }
 
-    public void getAppointments(ArrayList<Integer> scheduleIds,
+    public void getAppointments(int scheduleId,
                                 final ResponseHandler<ArrayList<Appointment>> handler) {
 
-        Log.i("MY_CUSTOM_LOG", scheduleIds.toString());
+        Log.i("MY_CUSTOM_LOG", String.valueOf(scheduleId));
+        HashMap<String, String> queryParams = new HashMap<>();
+        queryParams.put("scheduleId", String.valueOf(scheduleId));
 
-        try {
-            post(QueueApp.getAppContext(),"/appointment/list", scheduleIds, new JsonHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                    try {
-                        ArrayList<Appointment> result = gson.fromJson(
-                                response.toString(),
-                                new TypeToken<ArrayList<Appointment>>(){}.getType()
-                        );
-                        handler.handle(result);
+        get("/appointment/list", new RequestParams("scheduleId", String.valueOf(scheduleId)), new JsonHttpResponseHandler() {
 
-                    } catch (Exception e) {
-                        UnexpectedErrorHandler.handle(e);
-                    }
-                }
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                try {
+                    ArrayList<Appointment> result = gson.fromJson(
+                            response.toString(),
+                            new TypeToken<ArrayList<Appointment>>(){}.getType()
+                    );
+                    handler.handle(result);
 
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse) {
+                } catch (Exception e) {
                     UnexpectedErrorHandler.handle(e);
                 }
+            }
 
-                @Override
-                public void onFailure(int statusCode, Header[] headers, String responseBody, Throwable e) {
-                    UnexpectedErrorHandler.handle(e);
-                }
-            });
-        } catch (UnsupportedEncodingException e) {
-            UnexpectedErrorHandler.handle(e);
-        }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse) {
+                UnexpectedErrorHandler.handle(e);
+            }
 
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseBody, Throwable e) {
+                UnexpectedErrorHandler.handle(e);
+            }
+        });
     }
 
     public void createAppointment(final CreateAppointmentRequest req, final ResponseHandler<Boolean> handler) {

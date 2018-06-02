@@ -28,9 +28,6 @@ import java.util.Comparator;
 
 public class CalendarActivity extends AppCompatActivity {
 
-    public static final String SCHEDULE_DATA_EXTRA = "SCHEDULE_DATES";
-    public static final String HOST_EXTRA = "HOST";
-
     private Spinner hostSpinner;
     private MaterialCalendarView calendarView;
     private Button refreshButton;
@@ -49,7 +46,7 @@ public class CalendarActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 host = (UserData) parent.getItemAtPosition(position);
                 //todo cache?
-                ApiHttpClient.instance().getScheduleData(String.valueOf(host.id), new ResponseHandler<SchedulesData>() {
+                ApiHttpClient.instance().getScheduleData(host.id, new ResponseHandler<SchedulesData>() {
                     @Override
                     public void handle(SchedulesData result) {
                         updateCalendar(result);
@@ -76,16 +73,9 @@ public class CalendarActivity extends AppCompatActivity {
                     Log.d("MY_CUSTOM_LOG", date.toString());
                     Intent intent = new Intent(getBaseContext(), AppointmentsActivity.class);
 
-                    ArrayList<Schedule> dateSchedules = new ArrayList<>();
-                    for (Schedule schedule: schedulesData.schedules) {
-                        if (schedule.date.isEqual(localDate)) {
-                            dateSchedules.add(schedule);
-                        }
-                    }
-
                     intent.putExtra(AppointmentsActivity.DATE_EXTRA, localDate);
                     intent.putExtra(AppointmentsActivity.HOST_EXTRA, host);
-                    intent.putExtra(AppointmentsActivity.SCHEDULES_EXTRA, dateSchedules);
+                    intent.putExtra(AppointmentsActivity.SCHEDULE_EXTRA, schedulesData.schedules.get(localDate));
                     startActivity(intent);
                 }
             }
@@ -106,8 +96,8 @@ public class CalendarActivity extends AppCompatActivity {
                 .setMaximumDate(today.plus(schedulesData.period.toStandardDays()).toDate())
                 .commit();
 
-        for (Schedule schedule: schedulesData.schedules) {
-            calendarView.setDateSelected(schedule.date.toDate(), true);
+        for (LocalDate present: schedulesData.schedules.keySet()) {
+            calendarView.setDateSelected(present.toDate(), true);
         }
     }
 
@@ -128,19 +118,19 @@ public class CalendarActivity extends AppCompatActivity {
         ApiHttpClient.instance().getHosts(new ResponseHandler<ArrayList<UserData>>() {
             @Override
             public void handle(ArrayList<UserData> result) {
-                Collections.sort(result, new Comparator<UserData>() {
-                    @Override
-                    public int compare(UserData o1, UserData o2) {
-                        return o1.surname.compareTo(o2.surname);
-                    }
-                });
-                Log.d("MY_CUSTOM_LOG", result.toString());
-                hostSpinner.setAdapter(new ArrayAdapter<>(
-                    getApplicationContext(),
-                    R.layout.spinner_item,
-                    result
-                ));
-                refreshButton.setEnabled(true);
+            Collections.sort(result, new Comparator<UserData>() {
+                @Override
+                public int compare(UserData o1, UserData o2) {
+                    return o1.surname.compareTo(o2.surname);
+                }
+            });
+            Log.d("MY_CUSTOM_LOG", result.toString());
+            hostSpinner.setAdapter(new ArrayAdapter<>(
+                getApplicationContext(),
+                R.layout.spinner_item,
+                result
+            ));
+            refreshButton.setEnabled(true);
             }
         });
     }
