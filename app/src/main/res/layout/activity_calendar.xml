@@ -34,9 +34,10 @@
         android:text="@string/refresh_button" />
 
     <Button
-        android:id="@+id/accountButton"
+        android:id="@+id/calendarAccountButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="accountButtonHandler"
         android:text="@string/account_button" />
 
 </LinearLayout>

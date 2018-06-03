@@ -105,10 +105,8 @@ public class CalendarActivity extends AppCompatActivity {
         updateHosts();
     }
 
-    public void logoutButtonHandler(View v) {
-        QueueApp.removeUser();
-        Intent intent = new Intent(getBaseContext(), LoginActivity.class);
-        intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+    public void accountButtonHandler(View v) {
+        Intent intent = new Intent(getBaseContext(), AccountActivity.class);
         startActivity(intent);
     }
 
