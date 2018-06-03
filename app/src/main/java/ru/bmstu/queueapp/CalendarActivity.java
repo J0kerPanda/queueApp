@@ -125,7 +125,7 @@ public class CalendarActivity extends AppCompatActivity {
             Log.d("MY_CUSTOM_LOG", result.toString());
             hostSpinner.setAdapter(new ArrayAdapter<>(
                 getApplicationContext(),
-                R.layout.spinner_item,
+                R.layout.host_item_display,
                 result
             ));
             refreshButton.setEnabled(true);

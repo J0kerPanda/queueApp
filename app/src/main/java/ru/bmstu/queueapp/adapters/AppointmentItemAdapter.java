@@ -1,4 +1,4 @@
-package ru.bmstu.queueapp.util.adapter;
+package ru.bmstu.queueapp.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

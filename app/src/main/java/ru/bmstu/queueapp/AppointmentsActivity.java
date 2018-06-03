@@ -15,7 +15,7 @@ import ru.bmstu.queueapp.http.data.AppointmentInterval;
 import ru.bmstu.queueapp.http.data.UserData;
 import ru.bmstu.queueapp.http.data.Schedule;
 import ru.bmstu.queueapp.http.request.CreateAppointmentRequest;
-import ru.bmstu.queueapp.util.adapter.AppointmentItemAdapter;
+import ru.bmstu.queueapp.adapters.AppointmentItemAdapter;
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;

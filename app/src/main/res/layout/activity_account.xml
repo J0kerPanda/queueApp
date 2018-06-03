@@ -4,13 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".AccountActivity">
+
+    <TextView
+        android:id="@+id/profileNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:textSize="24sp"
+        android:textColor="@color/mainTextColor"
+        android:text="TextView" />
 
     <Button
         android:id="@+id/accountLogoutButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="logoutButtonHandler"
-        android:text="@string/account_button" />
+        android:text="@string/logout_button" />
 
 </LinearLayout>
