@@ -2,19 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".CalendarActivity">
 
     <Spinner
         android:id="@+id/calendarHostSpinner"
         android:layout_width="match_parent"
         android:layout_height="35dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         android:ems="10"
         android:inputType="number"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
         android:textColor="@color/colorPrimaryDark" />
 
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
@@ -28,6 +30,13 @@
         android:id="@+id/calendarRefreshButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Обновить" />
+        android:onClick="refreshButtonHandler"
+        android:text="@string/refresh_button" />
+
+    <Button
+        android:id="@+id/accountButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/account_button" />
 
 </LinearLayout>

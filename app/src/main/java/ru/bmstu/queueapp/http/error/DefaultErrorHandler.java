@@ -1,10 +1,10 @@
-package ru.bmstu.queueapp.util;
+package ru.bmstu.queueapp.http.error;
 
 import android.util.Log;
 
-public final class UnexpectedErrorHandler {
+public final class DefaultErrorHandler {
 
-    private UnexpectedErrorHandler() {}
+    private DefaultErrorHandler() {}
 
     public static void handle(Throwable e) {
         Log.e("UNEXPECTED_ERROR", "", e);

@@ -3,6 +3,8 @@
     <string name="shared_preferences">ru.bmstu.queueapp.shared_pref_file</string>
     <string name="login_hint">логин</string>
     <string name="password_hint">пароль</string>
+    <string name="refresh_button">обновить</string>
+    <string name="account_button">профиль</string>
     <string name="login_button">вход</string>
     <string name="logout_button">выход</string>
 </resources>

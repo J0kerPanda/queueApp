@@ -25,9 +25,9 @@ import ru.bmstu.queueapp.QueueApp;
 import ru.bmstu.queueapp.http.data.Appointment;
 import ru.bmstu.queueapp.http.data.SchedulesData;
 import ru.bmstu.queueapp.http.data.UserData;
+import ru.bmstu.queueapp.http.error.DefaultErrorHandler;
 import ru.bmstu.queueapp.http.request.CreateAppointmentRequest;
 import ru.bmstu.queueapp.http.request.LoginRequest;
-import ru.bmstu.queueapp.util.UnexpectedErrorHandler;
 
 public class ApiHttpClient {
     private static final String BASE_URL = "http://192.168.1.5:9000/api";
@@ -80,18 +80,18 @@ public class ApiHttpClient {
                     Log.d("my_custom_log", response.toString());
                     handler.handle(gson.fromJson(response.toString(), SchedulesData.class));
                 } catch (Exception e) {
-                    UnexpectedErrorHandler.handle(e);
+                    DefaultErrorHandler.handle(e);
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse) {
-                UnexpectedErrorHandler.handle(e);
+                DefaultErrorHandler.handle(e);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable e) {
-                UnexpectedErrorHandler.handle(e);
+                DefaultErrorHandler.handle(e);
             }
         });
     }
@@ -106,18 +106,18 @@ public class ApiHttpClient {
                     handler.handle(result);
 
                 } catch (Exception e) {
-                    UnexpectedErrorHandler.handle(e);
+                    DefaultErrorHandler.handle(e);
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse) {
-                UnexpectedErrorHandler.handle(e);
+                DefaultErrorHandler.handle(e);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable e) {
-                UnexpectedErrorHandler.handle(e);
+                DefaultErrorHandler.handle(e);
             }
         });
     }
@@ -141,18 +141,18 @@ public class ApiHttpClient {
                     handler.handle(result);
 
                 } catch (Exception e) {
-                    UnexpectedErrorHandler.handle(e);
+                    DefaultErrorHandler.handle(e);
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse) {
-                UnexpectedErrorHandler.handle(e);
+                DefaultErrorHandler.handle(e);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseBody, Throwable e) {
-                UnexpectedErrorHandler.handle(e);
+                DefaultErrorHandler.handle(e);
             }
         });
     }
@@ -174,7 +174,7 @@ public class ApiHttpClient {
                 }
             });
         } catch (UnsupportedEncodingException e) {
-            UnexpectedErrorHandler.handle(e);
+            DefaultErrorHandler.handle(e);
         }
     }
 
@@ -190,22 +190,22 @@ public class ApiHttpClient {
                     try {
                         handler.handle(gson.fromJson(response.toString(), UserData.class));
                     } catch (Exception e) {
-                        UnexpectedErrorHandler.handle(e);
+                        DefaultErrorHandler.handle(e);
                     }
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse) {
-                    UnexpectedErrorHandler.handle(e);
+                    DefaultErrorHandler.handle(e);
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseBody, Throwable e) {
-                    UnexpectedErrorHandler.handle(e);
+                    DefaultErrorHandler.handle(e);
                 }
             });
         } catch (UnsupportedEncodingException e) {
-            UnexpectedErrorHandler.handle(e);
+            DefaultErrorHandler.handle(e);
         }
     }
 }

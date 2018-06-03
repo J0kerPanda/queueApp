@@ -15,13 +15,16 @@
         android:theme="@style/AppTheme">
         <activity android:name=".CalendarActivity" />
         <activity android:name=".AppointmentsActivity" />
-        <activity android:name=".LoginActivity" android:noHistory="true">
+        <activity
+            android:name=".LoginActivity"
+            android:noHistory="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".AccountActivity"></activity>
     </application>
 
 </manifest>
