@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class Schedule implements Serializable {
 
-    public int id;
+    public Integer id;
     public LocalDate date;
     public ArrayList<AppointmentInterval> appointmentIntervals;
     public Period appointmentDuration;

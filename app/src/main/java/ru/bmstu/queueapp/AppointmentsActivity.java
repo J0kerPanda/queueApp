@@ -1,6 +1,5 @@
 package ru.bmstu.queueapp;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -62,35 +61,7 @@ public class AppointmentsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Appointment appointment = (Appointment) parent.getItemAtPosition(position);
-                //todo check if not taken
-        //            createAppointment(appointment);
-                appointmentsListView.setEnabled(false);
-
-                LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-                View popupView = inflater.inflate(R.layout.appointment_item_popup,null);
-
-                popupWindow = new PopupWindow(popupView, 600, LayoutParams.WRAP_CONTENT);
-                popupView.setElevation(5.0f);
-
-                ((TextView) popupView.findViewById(R.id.appointmentPopupCaption)).setText(appointment.timeInterval());
-                Button appointmentButton = popupView.findViewById(R.id.appointmentPopupButton);
-
-                popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                    @Override
-                    public void onDismiss() {
-                        appointmentsListView.setEnabled(true);
-                        popupWindow = null;
-                    }
-                });
-
-                appointmentButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        popupWindow.dismiss();
-                    }
-                });
-
-                popupWindow.showAtLocation(appointmentsListView, Gravity.CENTER,0,0);
+                appointmentClickHandler(appointment);
             }
         });
 
@@ -141,10 +112,59 @@ public class AppointmentsActivity extends AppCompatActivity {
             Log.i("MY_CUSTOM_LOG", String.valueOf(result));
             if (result) {
                 finish();
-                startActivity(getIntent()); //todo put sorted stuff in intent?
+                startActivity(getIntent());
+                //todo put sorted stuff in intent?
+                //todo plain add without refresh -> confirmation?
+                overridePendingTransition(0, 0);
             }
             }
         });
+    }
+
+    private void appointmentClickHandler(Appointment appointment) {
+        appointmentsListView.setEnabled(false);
+
+        LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.appointment_item_popup,null);
+
+        popupWindow = new PopupWindow(popupView, 600, LayoutParams.WRAP_CONTENT);
+        popupWindow.setFocusable(true);
+        popupView.setElevation(5.0f);
+
+        ((TextView) popupView.findViewById(R.id.appointmentPopupCaption)).setText(appointment.timeInterval());
+        Button appointmentButton = popupView.findViewById(R.id.appointmentPopupButton);
+        setVisitorButton(appointmentButton, appointment);
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                appointmentsListView.setEnabled(true);
+                popupWindow = null;
+            }
+        });
+
+        popupWindow.showAtLocation(appointmentsListView, Gravity.CENTER,0,0);
+    }
+
+    private void setVisitorButton(Button button, final Appointment appointment) {
+        if (QueueApp.getUser().isHost) {
+            //todo cancel appointment
+        } else if (appointment.visitorId == null) {
+            button.setText(R.string.create_appointment);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //todo check if not taken
+                    createAppointment(appointment);
+                }
+            });
+        } else if (appointment.visitorId.equals(QueueApp.getUser().id)) {
+            //todo cancel appointment
+            button.setText(R.string.cancel_appointment);
+        } else {
+            button.setText(R.string.create_appointment);
+            button.setEnabled(false);
+        }
     }
 
     @Override

@@ -4,8 +4,8 @@ import org.joda.time.LocalTime;
 
 public class Appointment {
 
-    public int scheduleId;
-    public int visitorId;
+    public Integer scheduleId;
+    public Integer visitorId;
     public String visitorFirstName;
     public String visitorSurname;
     public String visitorPatronymic;
@@ -13,10 +13,10 @@ public class Appointment {
     public LocalTime end;
 
     public static Appointment Empty(int scheduleId, LocalTime start, LocalTime end) {
-        return new Appointment(scheduleId,-1, null, null, null, start, end);
+        return new Appointment(scheduleId,null, null, null, null, start, end);
     }
 
-    public Appointment(int scheduleId, int visitorId, String visitorFirstName, String visitorSurname, String visitorPatronymic, LocalTime start, LocalTime end) {
+    public Appointment(Integer scheduleId, Integer visitorId, String visitorFirstName, String visitorSurname, String visitorPatronymic, LocalTime start, LocalTime end) {
         this.scheduleId = scheduleId;
         this.visitorId = visitorId;
         this.visitorFirstName = visitorFirstName;
@@ -31,7 +31,7 @@ public class Appointment {
     }
 
     public String visitorFullName() {
-        return (visitorId > 0) ?
+        return (visitorId != null) ?
             String.format("%s %s. %s.", visitorSurname, visitorFirstName.charAt(0), visitorPatronymic.charAt(0)) :
             null;
     }

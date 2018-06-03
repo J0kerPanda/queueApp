@@ -7,5 +7,7 @@
     <string name="account_button">профиль</string>
     <string name="login_button">вход</string>
     <string name="close_button">закрыть</string>
+    <string name="cancel_appointment">отменить</string>
+    <string name="create_appointment">записаться</string>
     <string name="logout_button">выход</string>
 </resources>

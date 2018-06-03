@@ -18,7 +18,7 @@ public class AccountActivity extends AppCompatActivity {
     public void logoutButtonHandler(View v) {
         QueueApp.removeUser();
         Intent intent = new Intent(getBaseContext(), LoginActivity.class);
-        intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 }
