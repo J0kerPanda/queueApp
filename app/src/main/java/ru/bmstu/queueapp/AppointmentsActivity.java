@@ -1,21 +1,18 @@
 package ru.bmstu.queueapp;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
-
-import ru.bmstu.queueapp.http.ApiHttpClient;
-import ru.bmstu.queueapp.http.ResponseHandler;
-import ru.bmstu.queueapp.http.data.Appointment;
-import ru.bmstu.queueapp.http.data.AppointmentInterval;
-import ru.bmstu.queueapp.http.data.UserData;
-import ru.bmstu.queueapp.http.data.Schedule;
-import ru.bmstu.queueapp.http.request.CreateAppointmentRequest;
-import ru.bmstu.queueapp.adapters.AppointmentItemAdapter;
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
@@ -23,6 +20,15 @@ import org.joda.time.Period;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import ru.bmstu.queueapp.adapters.AppointmentItemAdapter;
+import ru.bmstu.queueapp.http.ApiHttpClient;
+import ru.bmstu.queueapp.http.ResponseHandler;
+import ru.bmstu.queueapp.http.data.Appointment;
+import ru.bmstu.queueapp.http.data.AppointmentInterval;
+import ru.bmstu.queueapp.http.data.Schedule;
+import ru.bmstu.queueapp.http.data.UserData;
+import ru.bmstu.queueapp.http.request.CreateAppointmentRequest;
 
 public class AppointmentsActivity extends AppCompatActivity {
 
@@ -36,6 +42,7 @@ public class AppointmentsActivity extends AppCompatActivity {
     private UserData host;
     private Schedule schedule;
     private HashMap<LocalTime, Appointment> appointmentMap;
+    private PopupWindow popupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +56,41 @@ public class AppointmentsActivity extends AppCompatActivity {
 
         ((TextView) findViewById(R.id.appointmentDateText)).setText(date.toString());
         ((TextView) findViewById(R.id.appointmentHostText)).setText(host.fullName());
+
         appointmentsListView = findViewById(R.id.appointmentsView);
         appointmentsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Appointment appointment = (Appointment) parent.getItemAtPosition(position);
                 //todo check if not taken
-                createAppointment(appointment);
+        //            createAppointment(appointment);
+                appointmentsListView.setEnabled(false);
+
+                LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+                View popupView = inflater.inflate(R.layout.appointment_item_popup,null);
+
+                popupWindow = new PopupWindow(popupView, 600, LayoutParams.WRAP_CONTENT);
+                popupView.setElevation(5.0f);
+
+                ((TextView) popupView.findViewById(R.id.appointmentPopupCaption)).setText(appointment.timeInterval());
+                Button appointmentButton = popupView.findViewById(R.id.appointmentPopupButton);
+
+                popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                    @Override
+                    public void onDismiss() {
+                        appointmentsListView.setEnabled(true);
+                        popupWindow = null;
+                    }
+                });
+
+                appointmentButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        popupWindow.dismiss();
+                    }
+                });
+
+                popupWindow.showAtLocation(appointmentsListView, Gravity.CENTER,0,0);
             }
         });
 
@@ -110,5 +145,14 @@ public class AppointmentsActivity extends AppCompatActivity {
             }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (popupWindow != null) {
+            popupWindow.dismiss();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

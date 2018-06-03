@@ -6,5 +6,6 @@
     <string name="refresh_button">обновить</string>
     <string name="account_button">профиль</string>
     <string name="login_button">вход</string>
+    <string name="close_button">закрыть</string>
     <string name="logout_button">выход</string>
 </resources>
