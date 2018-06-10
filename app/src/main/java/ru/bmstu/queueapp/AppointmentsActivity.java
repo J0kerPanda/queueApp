@@ -156,21 +156,21 @@ public class AppointmentsActivity extends AppCompatActivity {
     }
 
     private void setVisitorButton(Button button, final Appointment appointment) {
-        if (host.id.equals(QueueApp.getUser().id) || appointment.visitorId.equals(QueueApp.getUser().id)) {
-            button.setText(R.string.cancel_appointment);
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    cancelAppointment(appointment);
-                }
-            });
-        } else if (appointment.visitorId == null) {
+         if (appointment.visitorId == null) {
             button.setText(R.string.create_appointment);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //todo check if not taken
                     createAppointment(appointment);
+                }
+            });
+        } else if (host.id.equals(QueueApp.getUser().id) || appointment.visitorId.equals(QueueApp.getUser().id)) {
+            button.setText(R.string.cancel_appointment);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cancelAppointment(appointment);
                 }
             });
         } else {

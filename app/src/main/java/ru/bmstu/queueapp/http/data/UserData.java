@@ -11,8 +11,6 @@ public class UserData implements Serializable {
     public String patronymic;
     public boolean isHost;
 
-    public UserData() {}
-
     public UserData(int id, String email, String firstName, String surname, String patronymic, boolean isHost) {
         this.id = id;
         this.email = email;

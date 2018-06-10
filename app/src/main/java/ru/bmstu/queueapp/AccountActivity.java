@@ -16,7 +16,7 @@ public class AccountActivity extends AppCompatActivity {
     }
 
     public void accountAppointmentsButtonHandler(View v) {
-        Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+        Intent intent = new Intent(getBaseContext(), AccountAppointmentsActivity.class);
         startActivity(intent);
     }
 
