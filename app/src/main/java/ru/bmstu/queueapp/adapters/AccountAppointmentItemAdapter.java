@@ -8,18 +8,16 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import ru.bmstu.queueapp.R;
-import ru.bmstu.queueapp.http.data.Appointment;
-import ru.bmstu.queueapp.http.data.UserData;
+import ru.bmstu.queueapp.http.data.HostAppointment;
 
 public class AccountAppointmentItemAdapter extends BaseAdapter {
 
-    private ArrayList<Appointment> data;
+    private ArrayList<HostAppointment> data;
     private LayoutInflater inflater;
 
-    public AccountAppointmentItemAdapter(Context context, ArrayList<Appointment> data, HashMap<Integer, UserData> hosts) {
+    public AccountAppointmentItemAdapter(Context context, ArrayList<HostAppointment> data) {
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.data = data;
     }
@@ -43,10 +41,11 @@ public class AccountAppointmentItemAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi = convertView;
         if (vi == null) {
-            vi = inflater.inflate(R.layout.appointment_item_display, parent, false);
+            vi = inflater.inflate(R.layout.host_appointment_item_display, parent, false);
         }
-        ((TextView) vi.findViewById(R.id.appointmentItemInterval)).setText(data.get(position).timeInterval());
-        ((TextView) vi.findViewById(R.id.appointmentItemUser)).setText(data.get(position).visitorFullName());
+        ((TextView) vi.findViewById(R.id.appointmentItemDate)).setText(data.get(position).date.toString());
+        ((TextView) vi.findViewById(R.id.appointmentItemInterval)).setText(data.get(position).start.toString("HH:mm"));
+        ((TextView) vi.findViewById(R.id.appointmentItemUser)).setText(data.get(position).hostFullName());
         return vi;
     }
 }

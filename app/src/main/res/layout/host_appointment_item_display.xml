@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/appointmentItemDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textSize="20sp"
+        android:textColor="@color/mainTextColor"
+        android:text="AppointmentDate" />
 
     <TextView
         android:id="@+id/appointmentItemInterval"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textSize="22sp"
+        android:textSize="20sp"
         android:textColor="@color/mainTextColor"
         android:text="AppointmentInfo" />
 
@@ -22,21 +31,12 @@
         android:id="@+id/appointmentItemUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="10dp"
+        android:paddingStart="5dp"
         android:paddingEnd="0dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textSize="22sp"
+        android:textSize="20sp"
         android:textColor="@color/mainTextColor"
         android:text="UserInfo" />
-
-    <!--<ImageButton-->
-        <!--android:id="@+id/imageButton"-->
-        <!--android:layout_width="20dp"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_weight="1"-->
-        <!--android:background="#00000000"-->
-        <!--app:srcCompat="@android:drawable/ic_input_add" />-->
-
 
 </LinearLayout>

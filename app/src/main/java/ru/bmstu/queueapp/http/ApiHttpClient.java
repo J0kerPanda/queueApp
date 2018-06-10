@@ -23,6 +23,7 @@ import cz.msebera.android.httpclient.entity.ContentType;
 import cz.msebera.android.httpclient.entity.StringEntity;
 import ru.bmstu.queueapp.QueueApp;
 import ru.bmstu.queueapp.http.data.Appointment;
+import ru.bmstu.queueapp.http.data.HostAppointment;
 import ru.bmstu.queueapp.http.data.SchedulesData;
 import ru.bmstu.queueapp.http.data.UserData;
 import ru.bmstu.queueapp.http.error.DefaultErrorHandler;
@@ -125,8 +126,6 @@ public class ApiHttpClient {
     public void getAppointments(int scheduleId, final ResponseHandler<ArrayList<Appointment>> handler) {
 
         Log.i("MY_CUSTOM_LOG", String.valueOf(scheduleId));
-        HashMap<String, String> queryParams = new HashMap<>();
-        queryParams.put("scheduleId", String.valueOf(scheduleId));
 
         get("/appointment/list", new RequestParams("scheduleId", String.valueOf(scheduleId)), new JsonHttpResponseHandler() {
 
@@ -134,8 +133,40 @@ public class ApiHttpClient {
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 try {
                     ArrayList<Appointment> result = gson.fromJson(
-                            response.toString(),
-                            new TypeToken<ArrayList<Appointment>>(){}.getType()
+                        response.toString(),
+                        new TypeToken<ArrayList<Appointment>>(){}.getType()
+                    );
+                    handler.handle(result);
+
+                } catch (Exception e) {
+                    DefaultErrorHandler.handle(e);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse) {
+                DefaultErrorHandler.handle(e);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseBody, Throwable e) {
+                DefaultErrorHandler.handle(e);
+            }
+        });
+    }
+
+    public void getUserAppointments(int userId, final ResponseHandler<ArrayList<HostAppointment>> handler) {
+
+        Log.i("MY_CUSTOM_LOG", String.valueOf(userId));
+
+        get("/appointment/visitor", new RequestParams("id", String.valueOf(userId)), new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                try {
+                    ArrayList<HostAppointment> result = gson.fromJson(
+                        response.toString(),
+                        new TypeToken<ArrayList<HostAppointment>>(){}.getType()
                     );
                     handler.handle(result);
 

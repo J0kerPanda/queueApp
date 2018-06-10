@@ -1,5 +1,6 @@
 package ru.bmstu.queueapp.http.data;
 
+import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
 public class HostAppointment {
@@ -10,12 +11,9 @@ public class HostAppointment {
     public String hostFirstName;
     public String hostSurname;
     public String hostPatronymic;
+    public LocalDate date;
     public LocalTime start;
     public LocalTime end;
-
-    public String timeInterval() {
-        return String.format("%s - %s", start.toString("HH:mm"), end.toString("HH:mm"));
-    }
 
     public String hostFullName() {
         return (hostId != null) ?
