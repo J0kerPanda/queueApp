@@ -4,6 +4,7 @@ import org.joda.time.LocalTime;
 
 public class Appointment {
 
+    public Integer id;
     public Integer scheduleId;
     public Integer visitorId;
     public String visitorFirstName;
@@ -39,6 +40,7 @@ public class Appointment {
     @Override
     public String toString() {
         return "Appointment{" +
+                "id=" + id +
                 "scheduleId=" + scheduleId +
                 "visitorId=" + visitorId +
                 ", visitorFirstName='" + visitorFirstName + '\'' +

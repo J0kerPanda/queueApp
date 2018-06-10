@@ -108,15 +108,24 @@ public class AppointmentsActivity extends AppCompatActivity {
         ApiHttpClient.instance().createAppointment(req, new ResponseHandler<Boolean>() {
             @Override
             public void handle(Boolean result) {
-            //todo false case
-            Log.i("MY_CUSTOM_LOG", String.valueOf(result));
-            if (result) {
-                finish();
-                startActivity(getIntent());
-                //todo put sorted stuff in intent?
-                //todo plain add without refresh -> confirmation?
-                overridePendingTransition(0, 0);
+                //todo false case
+                Log.i("MY_CUSTOM_LOG", String.valueOf(result));
+                if (result) {
+                    reloadActivity();
+                }
             }
+        });
+    }
+
+    public void cancelAppointment(Appointment selected) {
+
+        ApiHttpClient.instance().cancelAppointment(selected.id, new ResponseHandler<Boolean>() {
+            @Override
+            public void handle(Boolean result) {
+                //todo false case
+                if (result) {
+                    reloadActivity();
+                }
             }
         });
     }
@@ -148,7 +157,13 @@ public class AppointmentsActivity extends AppCompatActivity {
 
     private void setVisitorButton(Button button, final Appointment appointment) {
         if (QueueApp.getUser().isHost) {
-            //todo cancel appointment
+            button.setText(R.string.cancel_appointment);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cancelAppointment(appointment);
+                }
+            });
         } else if (appointment.visitorId == null) {
             button.setText(R.string.create_appointment);
             button.setOnClickListener(new View.OnClickListener() {
@@ -159,8 +174,13 @@ public class AppointmentsActivity extends AppCompatActivity {
                 }
             });
         } else if (appointment.visitorId.equals(QueueApp.getUser().id)) {
-            //todo cancel appointment
             button.setText(R.string.cancel_appointment);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cancelAppointment(appointment);
+                }
+            });
         } else {
             button.setText(R.string.create_appointment);
             button.setEnabled(false);
@@ -174,5 +194,16 @@ public class AppointmentsActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    private void reloadActivity() {
+        if (popupWindow != null) {
+            popupWindow.dismiss();
+        }
+        finish();
+        startActivity(getIntent());
+        //todo put sorted stuff in intent?
+        //todo plain add without refresh -> confirmation?
+        overridePendingTransition(0, 0);
     }
 }

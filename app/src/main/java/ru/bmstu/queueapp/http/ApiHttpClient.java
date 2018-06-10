@@ -122,8 +122,7 @@ public class ApiHttpClient {
         });
     }
 
-    public void getAppointments(int scheduleId,
-                                final ResponseHandler<ArrayList<Appointment>> handler) {
+    public void getAppointments(int scheduleId, final ResponseHandler<ArrayList<Appointment>> handler) {
 
         Log.i("MY_CUSTOM_LOG", String.valueOf(scheduleId));
         HashMap<String, String> queryParams = new HashMap<>();
@@ -163,6 +162,27 @@ public class ApiHttpClient {
 
         try {
             post(QueueApp.getAppContext(), "/appointment/create", req, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    handler.handle(true);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    handler.handle(false);
+                }
+            });
+        } catch (UnsupportedEncodingException e) {
+            DefaultErrorHandler.handle(e);
+        }
+    }
+
+    public void cancelAppointment(long appointmentId, final ResponseHandler<Boolean> handler) {
+
+        String url = String.format("/appointment/cancel/%d", appointmentId);
+
+        try {
+            post(QueueApp.getAppContext(), url, null, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     handler.handle(true);
