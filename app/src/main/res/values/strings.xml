@@ -9,5 +9,7 @@
     <string name="close_button">закрыть</string>
     <string name="cancel_appointment">отменить</string>
     <string name="create_appointment">записаться</string>
+    <string name="account_appointments_button">мои записи</string>
+    <string name="account_appointments_list">Мои записи</string>
     <string name="logout_button">выход</string>
 </resources>

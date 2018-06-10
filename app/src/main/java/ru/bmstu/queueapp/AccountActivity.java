@@ -15,6 +15,11 @@ public class AccountActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.profileNameText)).setText(QueueApp.getUser().fullName());
     }
 
+    public void accountAppointmentsButtonHandler(View v) {
+        Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+        startActivity(intent);
+    }
+
     public void logoutButtonHandler(View v) {
         QueueApp.removeUser();
         Intent intent = new Intent(getBaseContext(), LoginActivity.class);

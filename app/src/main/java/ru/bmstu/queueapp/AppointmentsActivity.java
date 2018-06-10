@@ -84,14 +84,14 @@ public class AppointmentsActivity extends AppCompatActivity {
         ApiHttpClient.instance().getAppointments(schedule.id, new ResponseHandler<ArrayList<Appointment>>() {
             @Override
             public void handle(ArrayList<Appointment> result) {
-            Log.d("MY_CUSTOM_LOG", String.valueOf(result.size()));
-            Log.d("MY_CUSTOM_LOG", result.toString());
-            HashMap<LocalTime, Appointment> clone = (HashMap<LocalTime, Appointment>) appointmentMap.clone();
-            for (Appointment a: result) {
-                clone.put(a.start, a);
-            }
-            AppointmentItemAdapter adapter = new AppointmentItemAdapter(getApplicationContext(), new ArrayList<>(clone.values()));
-            appointmentsListView.setAdapter(adapter);
+                Log.d("MY_CUSTOM_LOG", String.valueOf(result.size()));
+                Log.d("MY_CUSTOM_LOG", result.toString());
+                HashMap<LocalTime, Appointment> clone = (HashMap<LocalTime, Appointment>) appointmentMap.clone();
+                for (Appointment a: result) {
+                    clone.put(a.start, a);
+                }
+                AppointmentItemAdapter adapter = new AppointmentItemAdapter(getApplicationContext(), new ArrayList<>(clone.values()));
+                appointmentsListView.setAdapter(adapter);
             }
         });
     }
@@ -156,7 +156,7 @@ public class AppointmentsActivity extends AppCompatActivity {
     }
 
     private void setVisitorButton(Button button, final Appointment appointment) {
-        if (QueueApp.getUser().isHost) {
+        if (host.id.equals(QueueApp.getUser().id) || appointment.visitorId.equals(QueueApp.getUser().id)) {
             button.setText(R.string.cancel_appointment);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -171,14 +171,6 @@ public class AppointmentsActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     //todo check if not taken
                     createAppointment(appointment);
-                }
-            });
-        } else if (appointment.visitorId.equals(QueueApp.getUser().id)) {
-            button.setText(R.string.cancel_appointment);
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    cancelAppointment(appointment);
                 }
             });
         } else {
