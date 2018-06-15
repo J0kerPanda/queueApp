@@ -11,5 +11,7 @@
     <string name="create_appointment">записаться</string>
     <string name="account_appointments_button">мои записи</string>
     <string name="account_appointments_list">Мои записи</string>
+    <string name="account_schedules_button">мои расписания</string>
+    <string name="account_schedules_list">Мои расписания</string>
     <string name="logout_button">выход</string>
 </resources>
