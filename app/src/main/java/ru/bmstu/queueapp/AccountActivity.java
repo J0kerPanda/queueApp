@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class AccountActivity extends AppCompatActivity {
@@ -13,10 +14,19 @@ public class AccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
         ((TextView) findViewById(R.id.profileNameText)).setText(QueueApp.getUser().fullName());
+        Button schedulesButton = findViewById(R.id.accountSchedulesButton);
+//        if (!QueueApp.getUser().isHost) {
+//            schedulesButton.setVisibility(View.GONE);
+//        }
     }
 
     public void accountAppointmentsButtonHandler(View v) {
         Intent intent = new Intent(getBaseContext(), AccountAppointmentsActivity.class);
+        startActivity(intent);
+    }
+
+    public void accountSchedulesButtonHandler(View v) {
+        Intent intent = new Intent(getBaseContext(), AccountSchedulesActivity.class);
         startActivity(intent);
     }
 

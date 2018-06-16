@@ -16,14 +16,13 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.ContentType;
 import cz.msebera.android.httpclient.entity.StringEntity;
 import ru.bmstu.queueapp.QueueApp;
 import ru.bmstu.queueapp.http.data.Appointment;
-import ru.bmstu.queueapp.http.data.HostAppointment;
+import ru.bmstu.queueapp.http.data.AccountAppointment;
 import ru.bmstu.queueapp.http.data.SchedulesData;
 import ru.bmstu.queueapp.http.data.UserData;
 import ru.bmstu.queueapp.http.error.DefaultErrorHandler;
@@ -155,7 +154,7 @@ public class ApiHttpClient {
         });
     }
 
-    public void getUserAppointments(int userId, final ResponseHandler<ArrayList<HostAppointment>> handler) {
+    public void getUserAppointments(int userId, final ResponseHandler<ArrayList<AccountAppointment>> handler) {
 
         Log.i("MY_CUSTOM_LOG", String.valueOf(userId));
 
@@ -164,9 +163,9 @@ public class ApiHttpClient {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 try {
-                    ArrayList<HostAppointment> result = gson.fromJson(
+                    ArrayList<AccountAppointment> result = gson.fromJson(
                         response.toString(),
-                        new TypeToken<ArrayList<HostAppointment>>(){}.getType()
+                        new TypeToken<ArrayList<AccountAppointment>>(){}.getType()
                     );
                     handler.handle(result);
 

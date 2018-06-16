@@ -25,7 +25,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".AccountActivity" />
-        <activity android:name=".AccountAppointmentsActivity"></activity>
+        <activity android:name=".AccountAppointmentsActivity" />
+        <activity android:name=".AccountSchedulesActivity" />
     </application>
 
 </manifest>

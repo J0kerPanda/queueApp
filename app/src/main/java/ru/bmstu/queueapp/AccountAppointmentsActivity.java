@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import ru.bmstu.queueapp.adapters.AccountAppointmentItemAdapter;
 import ru.bmstu.queueapp.http.ApiHttpClient;
 import ru.bmstu.queueapp.http.ResponseHandler;
-import ru.bmstu.queueapp.http.data.HostAppointment;
+import ru.bmstu.queueapp.http.data.AccountAppointment;
 
 public class AccountAppointmentsActivity extends AppCompatActivity {
 
@@ -22,9 +22,9 @@ public class AccountAppointmentsActivity extends AppCompatActivity {
 
         accountAppointmentsListView = findViewById(R.id.accountAppointmentsView);
 
-        ApiHttpClient.instance().getUserAppointments(QueueApp.getUser().id, new ResponseHandler<ArrayList<HostAppointment>>() {
+        ApiHttpClient.instance().getUserAppointments(QueueApp.getUser().id, new ResponseHandler<ArrayList<AccountAppointment>>() {
             @Override
-            public void handle(ArrayList<HostAppointment> result) {
+            public void handle(ArrayList<AccountAppointment> result) {
                 AccountAppointmentItemAdapter adapter = new AccountAppointmentItemAdapter(getBaseContext(), result);
                 accountAppointmentsListView.setAdapter(adapter);
             }

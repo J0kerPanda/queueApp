@@ -25,6 +25,13 @@
         android:text="@string/account_appointments_button" />
 
     <Button
+        android:id="@+id/accountSchedulesButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="accountSchedulesButtonHandler"
+        android:text="@string/account_schedules_button" />
+
+    <Button
         android:id="@+id/accountLogoutButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

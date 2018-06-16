@@ -3,7 +3,7 @@ package ru.bmstu.queueapp.http.data;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
-public class HostAppointment {
+public class AccountAppointment {
 
     public Integer id;
     public Integer scheduleId;

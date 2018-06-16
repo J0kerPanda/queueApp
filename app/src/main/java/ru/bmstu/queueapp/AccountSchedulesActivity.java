@@ -4,12 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-
-import ru.bmstu.queueapp.adapters.AccountAppointmentItemAdapter;
+import ru.bmstu.queueapp.adapters.AccountScheduleItemAdapter;
 import ru.bmstu.queueapp.http.ApiHttpClient;
 import ru.bmstu.queueapp.http.ResponseHandler;
-import ru.bmstu.queueapp.http.data.HostAppointment;
 import ru.bmstu.queueapp.http.data.SchedulesData;
 
 public class AccountSchedulesActivity extends AppCompatActivity {
@@ -26,7 +23,8 @@ public class AccountSchedulesActivity extends AppCompatActivity {
         ApiHttpClient.instance().getScheduleData(QueueApp.getUser().id, new ResponseHandler<SchedulesData>() {
             @Override
             public void handle(SchedulesData result) {
-
+                AccountScheduleItemAdapter adapter = new AccountScheduleItemAdapter(getBaseContext(), result.schedules);
+                accountSchedulesListView.setAdapter(adapter);
             }
         });
     }
