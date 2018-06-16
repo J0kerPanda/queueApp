@@ -43,8 +43,9 @@ public class AppointmentItemAdapter extends BaseAdapter {
         if (vi == null) {
             vi = inflater.inflate(R.layout.appointment_item_display, parent, false);
         }
-        ((TextView) vi.findViewById(R.id.appointmentItemInterval)).setText(data.get(position).timeInterval());
-        ((TextView) vi.findViewById(R.id.appointmentItemUser)).setText(data.get(position).visitorFullName());
+        Appointment el = data.get(position);
+        ((TextView) vi.findViewById(R.id.appointmentItemInterval)).setText(el.timeInterval());
+        ((TextView) vi.findViewById(R.id.appointmentItemUser)).setText(el.visitorFullName());
         return vi;
     }
 }

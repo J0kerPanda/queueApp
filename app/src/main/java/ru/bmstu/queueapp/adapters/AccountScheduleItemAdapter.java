@@ -47,8 +47,10 @@ public class AccountScheduleItemAdapter extends BaseAdapter {
         if (vi == null) {
             vi = inflater.inflate(R.layout.account_schedule_item_display, parent, false);
         }
-        ((TextView) vi.findViewById(R.id.scheduleItemDate)).setText(data.get(position).getKey().toString());
-        ((TextView) vi.findViewById(R.id.scheduleItemPlace)).setText(data.get(position).getValue().place);
+        Map.Entry<LocalDate, Schedule> el = data.get(position);
+        ((TextView) vi.findViewById(R.id.scheduleItemDate)).setText(el.getKey().toString());
+        ((TextView) vi.findViewById(R.id.scheduleItemIntervals)).setText(el.getValue().timeIntervals());
+        ((TextView) vi.findViewById(R.id.scheduleItemPlace)).setText(el.getValue().place);
         return vi;
     }
 }

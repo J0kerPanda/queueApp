@@ -43,9 +43,10 @@ public class AccountAppointmentItemAdapter extends BaseAdapter {
         if (vi == null) {
             vi = inflater.inflate(R.layout.account_appointment_item_display, parent, false);
         }
-        ((TextView) vi.findViewById(R.id.appointmentItemDate)).setText(data.get(position).date.toString());
-        ((TextView) vi.findViewById(R.id.appointmentItemInterval)).setText(data.get(position).start.toString("HH:mm"));
-        ((TextView) vi.findViewById(R.id.appointmentItemUser)).setText(data.get(position).hostFullName());
+        AccountAppointment el = data.get(position);
+        ((TextView) vi.findViewById(R.id.appointmentItemDate)).setText(el.date.toString());
+        ((TextView) vi.findViewById(R.id.appointmentItemInterval)).setText(el.start.toString("HH:mm"));
+        ((TextView) vi.findViewById(R.id.appointmentItemUser)).setText(el.hostFullName());
         return vi;
     }
 }

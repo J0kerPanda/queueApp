@@ -14,6 +14,18 @@ public class Schedule implements Serializable {
     public Period appointmentDuration;
     public String place;
 
+    public String timeIntervals() {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < appointmentIntervals.size(); ++i) {
+            AppointmentInterval interval = appointmentIntervals.get(i);
+            builder.append(String.format("%s - %s", interval.start.toString("HH:mm"), interval.end.toString("HH:mm")));
+            if (i != appointmentIntervals.size() - 1) {
+                builder.append(", ");
+            }
+        }
+        return builder.toString();
+    }
+
     @Override
     public String toString() {
         return "Schedule{" +
