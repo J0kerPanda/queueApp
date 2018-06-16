@@ -11,18 +11,19 @@ import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import ru.bmstu.queueapp.R;
 import ru.bmstu.queueapp.http.data.Schedule;
 
 public class AccountScheduleItemAdapter extends BaseAdapter {
 
-    private ArrayList<Schedule> data;
+    private ArrayList<Map.Entry<LocalDate, Schedule>> data;
     private LayoutInflater inflater;
 
     public AccountScheduleItemAdapter(Context context, HashMap<LocalDate, Schedule> data) {
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.data = new ArrayList<>(data.values());
+        this.data = new ArrayList<>(data.entrySet());
     }
 
     @Override
@@ -46,8 +47,8 @@ public class AccountScheduleItemAdapter extends BaseAdapter {
         if (vi == null) {
             vi = inflater.inflate(R.layout.account_schedule_item_display, parent, false);
         }
-        ((TextView) vi.findViewById(R.id.scheduleItemDate)).setText(data.get(position).date.toString());
-        ((TextView) vi.findViewById(R.id.scheduleItemPlace)).setText(data.get(position).place);
+        ((TextView) vi.findViewById(R.id.scheduleItemDate)).setText(data.get(position).getKey().toString());
+        ((TextView) vi.findViewById(R.id.scheduleItemPlace)).setText(data.get(position).getValue().place);
         return vi;
     }
 }
