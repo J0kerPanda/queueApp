@@ -17,19 +17,34 @@
         android:textColor="@color/mainTextColor"
         android:text="TextView" />
 
-    <Button
-        android:id="@+id/accountAppointmentsButton"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="accountAppointmentsButtonHandler"
-        android:text="@string/account_appointments_button" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
 
-    <Button
-        android:id="@+id/accountSchedulesButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="accountSchedulesButtonHandler"
-        android:text="@string/account_schedules_button" />
+        <Button
+            android:id="@+id/accountAppointmentsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="accountAppointmentsButtonHandler"
+            android:text="@string/account_appointments_button" />
+
+        <Button
+            android:id="@+id/accountSchedulesButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="accountSchedulesButtonHandler"
+            android:text="@string/account_schedules_button" />
+
+        <Button
+            android:id="@+id/accountRepeatedSchedulesButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="accountSchedulesButtonHandler"
+            android:text="@string/account_repeated_schedules_button" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/accountLogoutButton"

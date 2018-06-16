@@ -13,5 +13,7 @@
     <string name="account_appointments_list">Мои записи</string>
     <string name="account_schedules_button">мои расписания</string>
     <string name="account_schedules_list">Мои расписания</string>
+    <string name="account_repeated_schedules_button">мои повторяемые расписания</string>
+    <string name="create_schedule_button">создать</string>
     <string name="logout_button">выход</string>
 </resources>

@@ -1,7 +1,9 @@
 package ru.bmstu.queueapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ListView;
 
 import ru.bmstu.queueapp.adapters.AccountScheduleItemAdapter;
@@ -27,5 +29,10 @@ public class AccountSchedulesActivity extends AppCompatActivity {
                 accountSchedulesListView.setAdapter(adapter);
             }
         });
+    }
+
+    public void createScheduleButtonHandler(View v) {
+        Intent intent = new Intent(getBaseContext(), ScheduleViewActivity.class);
+        startActivity(intent);
     }
 }
