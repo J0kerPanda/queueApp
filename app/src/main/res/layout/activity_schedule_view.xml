@@ -4,6 +4,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ScheduleViewActivity">
+
+    <!--appointmentIntervals: List[AppointmentInterval],-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
+
+        <EditText
+            android:id="@+id/scheduleViewDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:onClick="dateFieldClickHandler"
+            android:nextFocusUp="@id/scheduleViewDate"
+            android:hint="Date"/>
+
+        <EditText
+            android:id="@+id/scheduleViewDuration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:onClick="durationFieldClickHandler"
+            android:hint="Time"/>
+        <!--todo on click create timepicker-->
+
+        <EditText
+            android:id="@+id/scheduleViewPlace"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:nextFocusDown="@id/scheduleViewDate"
+            android:hint="Place" />
+
+    </LinearLayout>
+
+
 
 </LinearLayout>
