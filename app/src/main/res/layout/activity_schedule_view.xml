@@ -2,13 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scheduleViewMainContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ScheduleViewActivity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/ActivityTitle"
+        android:text="@string/schedule_view_caption" />
+
     <LinearLayout
-        android:id="@+id/scheduleViewMainContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -16,13 +22,15 @@
 
         <EditText
             android:layout_width="0dp"
-            android:layout_height="0dp" />
+            android:layout_height="0dp"
+            android:visibility="gone"
+            android:inputType="none"/>
 
         <EditText
             android:id="@+id/scheduleViewDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
+            android:inputType="text"
             android:onClick="dateFieldClickHandler"
             android:nextFocusUp="@id/scheduleViewDate"
             android:hint="Date"/>
@@ -31,17 +39,15 @@
             android:id="@+id/scheduleViewDuration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
+            android:inputType="text"
             android:onClick="durationFieldClickHandler"
             android:hint="Time"/>
-        <!--todo on click create timepicker-->
 
         <EditText
             android:id="@+id/scheduleViewPlace"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="text"
             android:nextFocusDown="@id/scheduleViewDate"
             android:hint="Place" />
 

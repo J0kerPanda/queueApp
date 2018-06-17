@@ -14,9 +14,13 @@
     <string name="account_schedules_button">мои расписания</string>
     <string name="account_schedules_list">Мои расписания</string>
     <string name="account_repeated_schedules_button">мои повторяемые расписания</string>
+    <string name="schedule_view_caption">Расписание</string>
     <string name="create_schedule_button">создать</string>
     <string name="add_appointment_interval_button">добавить время приёма</string>
-    <string name="appointment_popup_create_button">добавить</string>
-    <string name="appointment_popup_update_button">обновить</string>
+    <string name="appointment_interval_popup_caption">Время приёма</string>
+    <string name="appointment_interval_popup_create_button">добавить</string>
+    <string name="appointment_interval_popup_update_button">обновить</string>
+    <string name="appointment_interval_popup_start">Начало</string>
+    <string name="appointment_interval_popup_end">Конец</string>
     <string name="logout_button">выход</string>
 </resources>

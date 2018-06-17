@@ -19,7 +19,7 @@
         <TextView
             android:id="@+id/appointmentDateText"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:textSize="24sp"
             android:textColor="@color/mainTextColor"
             android:text="TextView" />
@@ -27,7 +27,7 @@
         <TextView
             android:id="@+id/appointmentHostText"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:textSize="24sp"
             android:textColor="@color/mainTextColor"
             android:layout_marginStart="15dp"

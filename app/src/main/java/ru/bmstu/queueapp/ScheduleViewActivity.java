@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -188,8 +187,8 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
         final AppointmentInterval result = interval == null ? new AppointmentInterval() : interval;
 
-        if (interval == null) {
-            button.setText(R.string.appointment_popup_update_button);
+        if (interval != null) {
+            button.setText(R.string.appointment_interval_popup_update_button);
         }
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -253,16 +252,5 @@ public class ScheduleViewActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
-    }
-
-    private void reloadActivity() {
-        if (popupWindow != null) {
-            popupWindow.dismiss();
-        }
-        finish();
-        startActivity(getIntent());
-        //todo put sorted stuff in intent?
-        //todo plain add without refresh -> confirmation?
-        overridePendingTransition(0, 0);
     }
 }
