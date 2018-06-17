@@ -7,36 +7,21 @@
         android:id="@+id/scheduleItemDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textSize="20sp"
-        android:textColor="@color/mainTextColor"
+        style="@style/ListItemText"
         android:text="ScheduleDate" />
 
     <TextView
         android:id="@+id/scheduleItemIntervals"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textSize="20sp"
-        android:textColor="@color/mainTextColor"
+        style="@style/ListItemText"
         android:text="SchedulePeriods" />
 
     <TextView
         android:id="@+id/scheduleItemPlace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textSize="20sp"
-        android:textColor="@color/mainTextColor"
+        style="@style/ListItemText"
         android:text="SchedulePlace" />
 
 </LinearLayout>

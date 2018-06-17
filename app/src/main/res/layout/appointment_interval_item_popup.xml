@@ -3,27 +3,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingTop="5dp"
     android:paddingStart="5dp"
     android:paddingEnd="5dp"
     android:background="@drawable/popup_background">
 
     <TextView
-        android:id="@+id/appointmentPopupCaption"
+        android:id="@+id/appointmentIntervalPopupCaption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:textColor="@color/mainTextColor"
-        android:textSize="24sp" />
+        style="@style/PopupItem" />
+
+    <TextView
+        android:id="@+id/appointmentIntervalPopupStart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        style="@style/PopupItem" />
+
+    <TextView
+        android:id="@+id/appointmentIntervalPopupEnd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        style="@style/PopupItem" />
 
     <Button
-        android:id="@+id/appointmentPopupButton"
+        android:id="@+id/appointmentIntervalPopupButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
         android:text="@string/close_button"
-        android:textColor="@color/mainTextColor"
-        android:textSize="20sp" />
+        style="@style/PopupItem" />
 
 </LinearLayout>

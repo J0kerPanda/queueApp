@@ -10,24 +10,14 @@
         android:id="@+id/appointmentItemInterval"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textSize="22sp"
-        android:textColor="@color/mainTextColor"
+        style="@style/ListItemText"
         android:text="AppointmentInfo" />
 
     <TextView
         android:id="@+id/appointmentItemUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="10dp"
-        android:paddingEnd="0dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textSize="22sp"
-        android:textColor="@color/mainTextColor"
+        style="@style/ListItemText"
         android:text="UserInfo" />
 
     <!--<ImageButton-->
