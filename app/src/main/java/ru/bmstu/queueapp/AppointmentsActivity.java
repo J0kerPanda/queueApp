@@ -142,7 +142,7 @@ public class AppointmentsActivity extends AppCompatActivity {
 
         ((TextView) popupView.findViewById(R.id.appointmentPopupCaption)).setText(appointment.timeInterval());
         Button appointmentButton = popupView.findViewById(R.id.appointmentPopupButton);
-        setVisitorButton(appointmentButton, appointment);
+        setPopupButton(appointmentButton, appointment);
 
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
@@ -155,7 +155,7 @@ public class AppointmentsActivity extends AppCompatActivity {
         popupWindow.showAtLocation(appointmentsListView, Gravity.CENTER,0,0);
     }
 
-    private void setVisitorButton(Button button, final Appointment appointment) {
+    private void setPopupButton(Button button, final Appointment appointment) {
          if ((appointment.visitorId == null) && !host.id.equals(QueueApp.getUser().id)) {
             button.setText(R.string.create_appointment);
             button.setOnClickListener(new View.OnClickListener() {

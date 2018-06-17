@@ -16,5 +16,7 @@
     <string name="account_repeated_schedules_button">мои повторяемые расписания</string>
     <string name="create_schedule_button">создать</string>
     <string name="add_appointment_interval_button">добавить время приёма</string>
+    <string name="appointment_popup_create_button">добавить</string>
+    <string name="appointment_popup_update_button">обновить</string>
     <string name="logout_button">выход</string>
 </resources>
