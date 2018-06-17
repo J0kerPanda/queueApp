@@ -7,7 +7,7 @@ import org.joda.time.Period;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Schedule implements Serializable {
+public class GenericSchedule implements Serializable {
 
     public Integer id;
     public ArrayList<AppointmentInterval> appointmentIntervals;
@@ -28,7 +28,7 @@ public class Schedule implements Serializable {
 
     @Override
     public String toString() {
-        return "Schedule{" +
+        return "GenericSchedule{" +
                 "id=" + id +
                 ", appointmentIntervals=" + appointmentIntervals +
                 ", appointmentDuration=" + appointmentDuration +

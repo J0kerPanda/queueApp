@@ -13,7 +13,6 @@ import android.widget.Spinner;
 
 import ru.bmstu.queueapp.http.ApiHttpClient;
 import ru.bmstu.queueapp.http.ResponseHandler;
-import ru.bmstu.queueapp.http.data.Schedule;
 import ru.bmstu.queueapp.http.data.SchedulesData;
 import ru.bmstu.queueapp.http.data.UserData;
 import com.prolificinteractive.materialcalendarview.CalendarDay;

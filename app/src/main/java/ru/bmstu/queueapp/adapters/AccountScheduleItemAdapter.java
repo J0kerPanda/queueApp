@@ -14,14 +14,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ru.bmstu.queueapp.R;
-import ru.bmstu.queueapp.http.data.Schedule;
+import ru.bmstu.queueapp.http.data.GenericSchedule;
 
 public class AccountScheduleItemAdapter extends BaseAdapter {
 
-    private ArrayList<Map.Entry<LocalDate, Schedule>> data;
+    private ArrayList<Map.Entry<LocalDate, GenericSchedule>> data;
     private LayoutInflater inflater;
 
-    public AccountScheduleItemAdapter(Context context, HashMap<LocalDate, Schedule> data) {
+    public AccountScheduleItemAdapter(Context context, HashMap<LocalDate, GenericSchedule> data) {
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.data = new ArrayList<>(data.entrySet());
     }
@@ -47,7 +47,7 @@ public class AccountScheduleItemAdapter extends BaseAdapter {
         if (vi == null) {
             vi = inflater.inflate(R.layout.account_schedule_item_display, parent, false);
         }
-        Map.Entry<LocalDate, Schedule> el = data.get(position);
+        Map.Entry<LocalDate, GenericSchedule> el = data.get(position);
         ((TextView) vi.findViewById(R.id.scheduleItemDate)).setText(el.getKey().toString());
         ((TextView) vi.findViewById(R.id.scheduleItemIntervals)).setText(el.getValue().timeIntervals());
         ((TextView) vi.findViewById(R.id.scheduleItemPlace)).setText(el.getValue().place);
