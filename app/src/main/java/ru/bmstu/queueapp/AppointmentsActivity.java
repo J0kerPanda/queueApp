@@ -137,8 +137,6 @@ public class AppointmentsActivity extends AppCompatActivity {
         View popupView = inflater.inflate(R.layout.appointment_item_popup,null);
 
         popupWindow = new PopupWindow(popupView, 600, LayoutParams.WRAP_CONTENT);
-        popupWindow.setFocusable(true);
-        popupView.setElevation(5.0f);
 
         ((TextView) popupView.findViewById(R.id.appointmentPopupCaption)).setText(appointment.timeInterval());
         Button appointmentButton = popupView.findViewById(R.id.appointmentPopupButton);

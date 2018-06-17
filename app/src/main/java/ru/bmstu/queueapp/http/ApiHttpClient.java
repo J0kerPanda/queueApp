@@ -14,15 +14,15 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.ContentType;
 import cz.msebera.android.httpclient.entity.StringEntity;
 import ru.bmstu.queueapp.QueueApp;
-import ru.bmstu.queueapp.http.data.Appointment;
 import ru.bmstu.queueapp.http.data.AccountAppointment;
+import ru.bmstu.queueapp.http.data.Appointment;
 import ru.bmstu.queueapp.http.data.Schedule;
 import ru.bmstu.queueapp.http.data.SchedulesData;
 import ru.bmstu.queueapp.http.data.UserData;
@@ -59,9 +59,9 @@ public class ApiHttpClient {
         client.get(getAbsoluteUrl(url), params, responseHandler);
     }
 
-    private <T> void post(Context context, String url, T entity, AsyncHttpResponseHandler responseHandler) throws UnsupportedEncodingException {
+    private <T> void post(Context context, String url, T entity, AsyncHttpResponseHandler responseHandler) {
         String entityStr = gson.toJson(entity);
-        client.post(context, getAbsoluteUrl(url), new StringEntity(entityStr), ContentType.APPLICATION_JSON.getMimeType(), responseHandler);
+        client.post(context, getAbsoluteUrl(url), new StringEntity(entityStr, StandardCharsets.UTF_8), ContentType.APPLICATION_JSON.getMimeType(), responseHandler);
     }
 
     private String getAbsoluteUrl(String relativeUrl) {
@@ -191,93 +191,77 @@ public class ApiHttpClient {
 
         Log.i("MY_CUSTOM_LOG", req.toString());
 
-        try {
-            post(QueueApp.getAppContext(), "/appointment/create", req, new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    handler.handle(true);
-                }
+        post(QueueApp.getAppContext(), "/appointment/create", req, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                handler.handle(true);
+            }
 
-                @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    handler.handle(false);
-                }
-            });
-        } catch (UnsupportedEncodingException e) {
-            DefaultErrorHandler.handle(e);
-        }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                handler.handle(false);
+            }
+        });
     }
 
     public void cancelAppointment(long appointmentId, final ResponseHandler<Boolean> handler) {
 
         String url = String.format("/appointment/cancel/%d", appointmentId);
 
-        try {
-            post(QueueApp.getAppContext(), url, null, new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    handler.handle(true);
-                }
+        post(QueueApp.getAppContext(), url, null, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                handler.handle(true);
+            }
 
-                @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    handler.handle(false);
-                }
-            });
-        } catch (UnsupportedEncodingException e) {
-            DefaultErrorHandler.handle(e);
-        }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                handler.handle(false);
+            }
+        });
     }
 
     public void login(final LoginRequest loginRequest, final ResponseHandler<UserData> handler) {
 
         Log.i("MY_CUSTOM_LOG", loginRequest.toString());
 
-        try {
-            post(QueueApp.getAppContext(), "/user/login", loginRequest, new JsonHttpResponseHandler() {
+        post(QueueApp.getAppContext(), "/user/login", loginRequest, new JsonHttpResponseHandler() {
 
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    try {
-                        handler.handle(gson.fromJson(response.toString(), UserData.class));
-                    } catch (Exception e) {
-                        DefaultErrorHandler.handle(e);
-                    }
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse) {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    handler.handle(gson.fromJson(response.toString(), UserData.class));
+                } catch (Exception e) {
                     DefaultErrorHandler.handle(e);
                 }
+            }
 
-                @Override
-                public void onFailure(int statusCode, Header[] headers, String responseBody, Throwable e) {
-                    DefaultErrorHandler.handle(e);
-                }
-            });
-        } catch (UnsupportedEncodingException e) {
-            DefaultErrorHandler.handle(e);
-        }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse) {
+                DefaultErrorHandler.handle(e);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseBody, Throwable e) {
+                DefaultErrorHandler.handle(e);
+            }
+        });
     }
 
     public void createSchedule(final Schedule schedule, final ResponseHandler<Boolean> handler) {
 
         Log.d("MY_CUSTOM_LOG", schedule.toString());
 
-        try {
-            post(QueueApp.getAppContext(), "/schedule/create", schedule, new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    handler.handle(true);
-                }
+        post(QueueApp.getAppContext(), "/schedule/create", schedule, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                handler.handle(true);
+            }
 
-                @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    handler.handle(false);
-                }
-            });
-        } catch (UnsupportedEncodingException e) {
-            DefaultErrorHandler.handle(e);
-        }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                handler.handle(false);
+            }
+        });
     }
 }
