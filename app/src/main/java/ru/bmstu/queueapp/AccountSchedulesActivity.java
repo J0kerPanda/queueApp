@@ -25,13 +25,14 @@ public class AccountSchedulesActivity extends AppCompatActivity {
         ApiHttpClient.instance().getScheduleData(QueueApp.getUser().id, new ResponseHandler<SchedulesData>() {
             @Override
             public void handle(SchedulesData result) {
+                //todo sort
                 AccountScheduleItemAdapter adapter = new AccountScheduleItemAdapter(getBaseContext(), result.schedules);
                 accountSchedulesListView.setAdapter(adapter);
             }
         });
     }
 
-    public void createScheduleButtonHandler(View v) {
+    public void createScheduleTransitionButtonHandler(View v) {
         Intent intent = new Intent(getBaseContext(), ScheduleViewActivity.class);
         startActivity(intent);
     }

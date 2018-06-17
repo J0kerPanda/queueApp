@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class Schedule {
 
+    public int hostId;
     public LocalDate date;
     public ArrayList<AppointmentInterval> appointmentIntervals;
     public Period appointmentDuration;
@@ -15,7 +16,8 @@ public class Schedule {
     @Override
     public String toString() {
         return "Schedule{" +
-                "date=" + date +
+                "hostId=" + hostId +
+                ", date=" + date +
                 ", appointmentIntervals=" + appointmentIntervals +
                 ", appointmentDuration=" + appointmentDuration +
                 ", place='" + place + '\'' +

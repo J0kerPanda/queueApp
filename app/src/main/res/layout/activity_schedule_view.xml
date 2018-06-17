@@ -49,7 +49,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:nextFocusDown="@id/scheduleViewDate"
             android:hint="@string/schedule_view_place_hint" />
 
         <Button
@@ -70,7 +69,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:text="@string/create_schedule_button"/>
+            android:text="@string/create_schedule_button"
+            android:onClick="createScheduleButtonHandler" />
 
     </LinearLayout>
 

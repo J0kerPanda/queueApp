@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,12 +25,15 @@ import org.jetbrains.annotations.Nullable;
 import org.joda.time.Duration;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
+import org.joda.time.Period;
 
 import java.util.ArrayList;
 
 import mobi.upod.timedurationpicker.TimeDurationPicker;
 import mobi.upod.timedurationpicker.TimeDurationPickerDialog;
 import ru.bmstu.queueapp.adapters.AppointmentIntervalItemAdapter;
+import ru.bmstu.queueapp.http.ApiHttpClient;
+import ru.bmstu.queueapp.http.ResponseHandler;
 import ru.bmstu.queueapp.http.data.AppointmentInterval;
 import ru.bmstu.queueapp.http.data.Schedule;
 
@@ -54,6 +58,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
         schedule = (Schedule) getIntent().getSerializableExtra(SCHEDULE_EXTRA);
         if (schedule == null) {
             schedule = new Schedule();
+            schedule.hostId = QueueApp.getUser().id;
             schedule.appointmentIntervals = new ArrayList<>();
         }
 
@@ -87,6 +92,20 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
         placeField = findViewById(R.id.scheduleViewPlace);
         addCreateButtonTextMonitor(placeField);
+        placeField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 0) {
+                    schedule.place = s.toString();
+                }
+            }
+        });
 
         appointmentIntervalsListView = findViewById(R.id.scheduleViewAppointmentIntervals);
         AppointmentIntervalItemAdapter adapter = new AppointmentIntervalItemAdapter(getApplicationContext(), schedule.appointmentIntervals);
@@ -116,7 +135,9 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
                 @Override
                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                    dateField.setText(new LocalDate(year, monthOfYear, dayOfMonth).toString());
+                    LocalDate date = new LocalDate(year, monthOfYear + 1, dayOfMonth);
+                    dateField.setText(date.toString());
+                    schedule.date = date;
                 }
             },
             selectedDate.getYear(),
@@ -134,7 +155,9 @@ public class ScheduleViewActivity extends AppCompatActivity {
             new TimeDurationPickerDialog.OnDurationSetListener() {
                 @Override
                 public void onDurationSet(TimeDurationPicker view, long duration) {
-                    durationField.setText(Duration.millis(duration).toPeriod().normalizedStandard().toString());
+                    Period appointmentDuration = Duration.millis(duration).toPeriod();
+                    durationField.setText(appointmentDuration.normalizedStandard().toString());
+                    schedule.appointmentDuration = appointmentDuration;
                 }
             },
             (schedule.appointmentDuration != null) ? schedule.appointmentDuration.getMillis() : 0
@@ -254,7 +277,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
                 AppointmentIntervalItemAdapter adapter = new AppointmentIntervalItemAdapter(getApplicationContext(), schedule.appointmentIntervals);
                 appointmentIntervalsListView.setAdapter(adapter);
-
+                checkFields();
                 popupWindow.dismiss();
             }
         });
@@ -312,6 +335,11 @@ public class ScheduleViewActivity extends AppCompatActivity {
     }
 
     private void checkFields() {
+        Log.d("MY_CUSTOM_LOG", String.valueOf(dateField.length() > 0));
+        Log.d("MY_CUSTOM_LOG", String.valueOf(durationField.length() > 0));
+        Log.d("MY_CUSTOM_LOG", String.valueOf(placeField.length() > 0));
+        Log.d("MY_CUSTOM_LOG", String.valueOf((appointmentIntervalsListView.getAdapter().getCount() > 0)));
+
         createButton.setEnabled(
             (dateField.length() > 0) &&
             (durationField.length() > 0) &&
@@ -339,5 +367,17 @@ public class ScheduleViewActivity extends AppCompatActivity {
         dateField.setEnabled(enabled);
         durationField.setEnabled(enabled);
         placeField.setEnabled(enabled);
+    }
+
+    public void createScheduleButtonHandler(View v) {
+        ApiHttpClient.instance().createSchedule(schedule, new ResponseHandler<Boolean>() {
+            @Override
+            public void handle(Boolean result) {
+                Log.d("MY_CUSTOM_LOG", result.toString());
+                if (result) {
+                    finish();
+                }
+            }
+        });
     }
 }

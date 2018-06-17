@@ -23,6 +23,7 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 import ru.bmstu.queueapp.QueueApp;
 import ru.bmstu.queueapp.http.data.Appointment;
 import ru.bmstu.queueapp.http.data.AccountAppointment;
+import ru.bmstu.queueapp.http.data.Schedule;
 import ru.bmstu.queueapp.http.data.SchedulesData;
 import ru.bmstu.queueapp.http.data.UserData;
 import ru.bmstu.queueapp.http.error.DefaultErrorHandler;
@@ -252,6 +253,27 @@ public class ApiHttpClient {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseBody, Throwable e) {
                     DefaultErrorHandler.handle(e);
+                }
+            });
+        } catch (UnsupportedEncodingException e) {
+            DefaultErrorHandler.handle(e);
+        }
+    }
+
+    public void createSchedule(final Schedule schedule, final ResponseHandler<Boolean> handler) {
+
+        Log.d("MY_CUSTOM_LOG", schedule.toString());
+
+        try {
+            post(QueueApp.getAppContext(), "/schedule/create", schedule, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    handler.handle(true);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    handler.handle(false);
                 }
             });
         } catch (UnsupportedEncodingException e) {

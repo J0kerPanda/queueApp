@@ -24,7 +24,7 @@
         android:id="@+id/accountSchedulesCreateButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="createScheduleButtonHandler"
+        android:onClick="createScheduleTransitionButtonHandler"
         android:text="@string/create_schedule_button" />
 
 </LinearLayout>
