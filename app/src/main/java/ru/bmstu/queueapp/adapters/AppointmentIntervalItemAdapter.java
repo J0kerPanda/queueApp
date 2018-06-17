@@ -41,7 +41,7 @@ public class AppointmentIntervalItemAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi = convertView;
         if (vi == null) {
-            vi = inflater.inflate(R.layout.account_appointment_item_display, parent, false);
+            vi = inflater.inflate(R.layout.appointment_interval_item_display, parent, false);
         }
         AppointmentInterval el = data.get(position);
         ((TextView) vi.findViewById(R.id.appointmentIntervalItemText)).setText(el.toString());

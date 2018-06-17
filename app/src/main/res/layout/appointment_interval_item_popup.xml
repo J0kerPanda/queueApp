@@ -15,10 +15,16 @@
         style="@style/PopupItem" />
 
     <EditText
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:textAlignment="center" />
+
+    <EditText
         android:id="@+id/appointmentIntervalPopupStart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
+        android:nextFocusUp="@id/appointmentIntervalPopupStart"
         style="@style/PopupItem" />
 
     <EditText
@@ -26,6 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
+        android:nextFocusDown="@id/appointmentIntervalPopupEnd"
         style="@style/PopupItem" />
 
     <Button

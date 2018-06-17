@@ -4,6 +4,9 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,15 +14,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import org.jetbrains.annotations.Nullable;
 import org.joda.time.Duration;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
+
+import java.util.ArrayList;
 
 import mobi.upod.timedurationpicker.TimeDurationPicker;
 import mobi.upod.timedurationpicker.TimeDurationPickerDialog;
@@ -34,6 +39,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
     private EditText dateField;
     private EditText durationField;
     private ListView appointmentIntervalsListView;
+    private LinearLayout scheduleViewMainContainer;
     private PopupWindow popupWindow;
 
     private Schedule schedule;
@@ -43,9 +49,12 @@ public class ScheduleViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_view);
 
+        scheduleViewMainContainer = findViewById(R.id.scheduleViewMainContainer);
+
         schedule = (Schedule) getIntent().getSerializableExtra(SCHEDULE_EXTRA);
         if (schedule == null) {
             schedule = new Schedule();
+            schedule.appointmentIntervals = new ArrayList<>();
         }
 
         dateField = findViewById(R.id.scheduleViewDate);
@@ -68,10 +77,8 @@ public class ScheduleViewActivity extends AppCompatActivity {
         });
 
         appointmentIntervalsListView = findViewById(R.id.scheduleViewAppointmentIntervals);
-        if (schedule.appointmentIntervals != null) {
-            AppointmentIntervalItemAdapter adapter = new AppointmentIntervalItemAdapter(getApplicationContext(), schedule.appointmentIntervals);
-            appointmentIntervalsListView.setAdapter(adapter);
-        }
+        AppointmentIntervalItemAdapter adapter = new AppointmentIntervalItemAdapter(getApplicationContext(), schedule.appointmentIntervals);
+        appointmentIntervalsListView.setAdapter(adapter);
     }
 
     public void dateFieldClickHandler(View v) {
@@ -124,13 +131,12 @@ public class ScheduleViewActivity extends AppCompatActivity {
     }
 
     private void createAppointmentIntervalPopup(@Nullable AppointmentInterval interval) {
-        appointmentIntervalsListView.setEnabled(false);
+        scheduleViewMainContainer.setEnabled(false);
 
         LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.appointment_interval_item_popup,null);
 
         popupWindow = new PopupWindow(popupView, 600, ViewGroup.LayoutParams.WRAP_CONTENT);
-        popupWindow.setFocusable(true);
         popupView.setElevation(5.0f);
 
         //todo preset by interval -> button text
@@ -140,7 +146,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                appointmentIntervalsListView.setEnabled(true);
+                scheduleViewMainContainer.setEnabled(true);
                 popupWindow = null;
             }
         });
@@ -148,30 +154,92 @@ public class ScheduleViewActivity extends AppCompatActivity {
         popupWindow.showAtLocation(appointmentIntervalsListView, Gravity.CENTER,0,0);
     }
 
-    public void setIntervalButton(View popupView, Button button, @Nullable AppointmentInterval interval) {
-        EditText startText = popupView.findViewById(R.id.appointmentIntervalPopupStart);
+    public void setIntervalButton(View popupView, final Button button, @Nullable final AppointmentInterval interval) {
+        final EditText startText = popupView.findViewById(R.id.appointmentIntervalPopupStart);
         setTimeEditText(startText);
-        EditText endText = popupView.findViewById(R.id.appointmentIntervalPopupEnd);
+        final EditText endText = popupView.findViewById(R.id.appointmentIntervalPopupEnd);
         setTimeEditText(endText);
+
+        startText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                button.setEnabled((count > 0) && (endText.length() > 0));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        endText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                button.setEnabled((count > 0) && (startText.length() > 0));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        final AppointmentInterval result = interval == null ? new AppointmentInterval() : interval;
 
         if (interval == null) {
             button.setText(R.string.appointment_popup_update_button);
-
         }
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                result.start = LocalTime.parse(startText.getText().toString());
+                result.end = LocalTime.parse(endText.getText().toString());
+
+                if (interval == null) {
+                    schedule.appointmentIntervals.add(result);
+                }
+
+                AppointmentIntervalItemAdapter adapter = new AppointmentIntervalItemAdapter(getApplicationContext(), schedule.appointmentIntervals);
+                appointmentIntervalsListView.setAdapter(adapter);
+
+                popupWindow.dismiss();
+            }
+        });
     }
 
-    private void setTimeEditText(final EditText text) {
+    private void timeEditTextClickHandler(final EditText text) {
         TimePickerDialog tpd = new TimePickerDialog(this,
-            new TimePickerDialog.OnTimeSetListener() {
-                @Override
-                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                    text.setText(new LocalTime(hourOfDay, minute).toString());
-                }
-            },
-            0, 0,false
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        text.setText(new LocalTime(hourOfDay, minute).toString("HH:mm"));
+                    }
+                },
+                0, 0,true
         );
 
         tpd.show();
+    }
+
+    private void setTimeEditText(final EditText text) {
+        text.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    timeEditTextClickHandler(text);
+                }
+            }
+        });
+
+        text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timeEditTextClickHandler(text);
+            }
+        });
     }
 
     public void addAppointmentIntervalButtonHandler(View v) {
