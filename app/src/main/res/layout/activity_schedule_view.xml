@@ -23,8 +23,7 @@
         <EditText
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:visibility="gone"
-            android:inputType="none"/>
+            android:inputType="text"/>
 
         <EditText
             android:id="@+id/scheduleViewDate"
@@ -33,7 +32,7 @@
             android:inputType="text"
             android:onClick="dateFieldClickHandler"
             android:nextFocusUp="@id/scheduleViewDate"
-            android:hint="Date"/>
+            android:hint="@string/schedule_view_date_hint"/>
 
         <EditText
             android:id="@+id/scheduleViewDuration"
@@ -41,7 +40,7 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:onClick="durationFieldClickHandler"
-            android:hint="Time"/>
+            android:hint="@string/schedule_view_duration_hint"/>
 
         <EditText
             android:id="@+id/scheduleViewPlace"
@@ -49,7 +48,7 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:nextFocusDown="@id/scheduleViewDate"
-            android:hint="Place" />
+            android:hint="@string/schedule_view_place_hint" />
 
         <Button
             android:layout_width="match_parent"

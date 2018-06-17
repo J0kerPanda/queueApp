@@ -12,20 +12,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
+        android:text="@string/appointment_interval_popup_caption"
         style="@style/PopupItem" />
 
     <EditText
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="gone"
-        android:inputType="none"
+        android:inputType="text"
         android:textAlignment="center" />
 
     <EditText
         android:id="@+id/appointmentIntervalPopupStart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
         android:hint="@string/appointment_interval_popup_start"
         android:nextFocusUp="@id/appointmentIntervalPopupStart"
         android:inputType="text"
@@ -35,19 +34,38 @@
         android:id="@+id/appointmentIntervalPopupEnd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
         android:hint="@string/appointment_interval_popup_end"
         android:nextFocusDown="@id/appointmentIntervalPopupEnd"
         android:inputType="text"
         style="@style/PopupItem" />
 
-    <Button
-        android:id="@+id/appointmentIntervalPopupButton"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
         android:layout_gravity="center"
-        android:text="@string/appointment_interval_popup_create_button"
-        style="@style/PopupItem" />
+        android:orientation="vertical"
+        android:layout_marginBottom="5dp">
+
+        <Button
+            android:id="@+id/appointmentIntervalPopupAddButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            style="@style/PopupItem"
+            android:text="@string/appointment_interval_popup_create_button" />
+
+        <Button
+            android:id="@+id/appointmentIntervalPopupRemoveButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            style="@style/PopupItem"
+            android:text="@string/appointment_interval_popup_remove_button" />
+
+    </LinearLayout>
+
+
 
 </LinearLayout>
