@@ -13,6 +13,7 @@ import org.joda.time.LocalDate;
 import mobi.upod.timedurationpicker.TimeDurationPicker;
 import mobi.upod.timedurationpicker.TimeDurationPickerDialog;
 import ru.bmstu.queueapp.http.data.GenericSchedule;
+import ru.bmstu.queueapp.http.data.Schedule;
 
 public class ScheduleViewActivity extends AppCompatActivity {
 
@@ -21,14 +22,17 @@ public class ScheduleViewActivity extends AppCompatActivity {
     private EditText dateField;
     private EditText durationField;
 
-    private GenericSchedule genericSchedule;
+    private Schedule schedule;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_view);
 
-        genericSchedule = (GenericSchedule) getIntent().getSerializableExtra(SCHEDULE_EXTRA);
+        schedule = (Schedule) getIntent().getSerializableExtra(SCHEDULE_EXTRA);
+        if (schedule == null) {
+            schedule = new Schedule();
+        }
 
         dateField = findViewById(R.id.scheduleViewDate);
         dateField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -51,10 +55,12 @@ public class ScheduleViewActivity extends AppCompatActivity {
     }
 
     public void dateFieldClickHandler(View v) {
-
         LocalDate minDate = LocalDate.now();
+        if ((schedule.date != null) && schedule.date.isBefore(minDate)) {
+            minDate = schedule.date;
+        }
+        LocalDate selectedDate = (schedule.date != null) ? schedule.date : minDate;
 
-        // Launch Date Picker Dialog
         DatePickerDialog dpd = new DatePickerDialog(this,
             new DatePickerDialog.OnDateSetListener() {
 
@@ -63,18 +69,16 @@ public class ScheduleViewActivity extends AppCompatActivity {
                     dateField.setText(new LocalDate(year, monthOfYear, dayOfMonth).toString());
                 }
             },
-            minDate.getYear(),
-            minDate.getMonthOfYear() - 1,
-            minDate.getDayOfMonth()
+            selectedDate.getYear(),
+            selectedDate.getMonthOfYear() - 1,
+            selectedDate.getDayOfMonth()
         );
-//        dpd.updateDate(); //todo preset year/month/day
         dpd.getDatePicker().setMinDate(minDate.toDate().getTime());
         dpd.show();
     }
 
     public void durationFieldClickHandler(View v) {
-
-        final long minimalDuration = 300000; //5 minutes
+        final long millisInDay = 86400000;
 
         TimeDurationPickerDialog tdpd = new TimeDurationPickerDialog(this,
             new TimeDurationPickerDialog.OnDurationSetListener() {
@@ -83,22 +87,18 @@ public class ScheduleViewActivity extends AppCompatActivity {
                     durationField.setText(Duration.millis(duration).toPeriod().normalizedStandard().toString());
                 }
             },
-            0
+            (schedule.appointmentDuration != null) ? schedule.appointmentDuration.getMillis() : 0
         );
         TimeDurationPicker picker = tdpd.getDurationInput();
         picker.setTimeUnits(TimeDurationPicker.HH_MM);
         picker.setOnDurationChangeListener(new TimeDurationPicker.OnDurationChangedListener() {
             @Override
             public void onDurationChanged(TimeDurationPicker view, long duration) {
-                long millisInDay = 86400000;
                 if (duration > millisInDay) {
                     view.setDuration(millisInDay);
-                } else if (duration < minimalDuration) {
-                    view.setDuration(minimalDuration);
                 }
             }
         });
-        picker.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
 
         tdpd.show();
     }
