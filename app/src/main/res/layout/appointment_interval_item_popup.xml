@@ -61,11 +61,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="0dp"
+            android:visibility="gone"
             style="@style/PopupItem"
             android:text="@string/appointment_interval_popup_remove_button" />
 
     </LinearLayout>
-
-
 
 </LinearLayout>

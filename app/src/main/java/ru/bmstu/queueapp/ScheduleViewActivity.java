@@ -16,7 +16,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TimePicker;
@@ -40,8 +39,8 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
     private EditText dateField;
     private EditText durationField;
+    private EditText placeField;
     private ListView appointmentIntervalsListView;
-    private LinearLayout scheduleViewMainContainer;
     private PopupWindow popupWindow;
 
     private Schedule schedule;
@@ -50,8 +49,6 @@ public class ScheduleViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_view);
-
-        scheduleViewMainContainer = findViewById(R.id.scheduleViewMainContainer);
 
         schedule = (Schedule) getIntent().getSerializableExtra(SCHEDULE_EXTRA);
         if (schedule == null) {
@@ -69,22 +66,23 @@ public class ScheduleViewActivity extends AppCompatActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     dateFieldClickHandler(v);
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    hideKeyboard(v);
                 }
             }
         });
+
         durationField = findViewById(R.id.scheduleViewDuration);
         durationField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     durationFieldClickHandler(v);
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    hideKeyboard(v);
                 }
             }
         });
+
+        placeField = findViewById(R.id.scheduleViewPlace);
 
         appointmentIntervalsListView = findViewById(R.id.scheduleViewAppointmentIntervals);
         AppointmentIntervalItemAdapter adapter = new AppointmentIntervalItemAdapter(getApplicationContext(), schedule.appointmentIntervals);
@@ -94,6 +92,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 AppointmentInterval interval = (AppointmentInterval) parent.getItemAtPosition(position);
                 createAppointmentIntervalPopup(interval);
+                hideKeyboard(view);
             }
         });
     }
@@ -135,6 +134,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
         );
         TimeDurationPicker picker = tdpd.getDurationInput();
         picker.setTimeUnits(TimeDurationPicker.HH_MM);
+
         picker.setOnDurationChangeListener(new TimeDurationPicker.OnDurationChangedListener() {
             @Override
             public void onDurationChanged(TimeDurationPicker view, long duration) {
@@ -148,8 +148,6 @@ public class ScheduleViewActivity extends AppCompatActivity {
     }
 
     private void createAppointmentIntervalPopup(@Nullable final AppointmentInterval interval) {
-        scheduleViewMainContainer.setEnabled(false);
-
         LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.appointment_interval_item_popup,null);
 
@@ -177,11 +175,12 @@ public class ScheduleViewActivity extends AppCompatActivity {
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                scheduleViewMainContainer.setEnabled(true);
+                setFieldsEnabled(true);
                 popupWindow = null;
             }
         });
 
+        setFieldsEnabled(false);
         popupWindow.showAtLocation(appointmentIntervalsListView, Gravity.CENTER,0,0);
     }
 
@@ -287,6 +286,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
     }
 
     public void addAppointmentIntervalButtonHandler(View v) {
+        hideKeyboard(v);
         createAppointmentIntervalPopup(null);
     }
 
@@ -297,5 +297,16 @@ public class ScheduleViewActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    private void hideKeyboard(View v) {
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    }
+
+    private void setFieldsEnabled(boolean enabled) {
+        dateField.setEnabled(enabled);
+        durationField.setEnabled(enabled);
+        placeField.setEnabled(enabled);
     }
 }
