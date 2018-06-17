@@ -41,6 +41,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
     private EditText durationField;
     private EditText placeField;
     private ListView appointmentIntervalsListView;
+    private Button createButton;
     private PopupWindow popupWindow;
 
     private Schedule schedule;
@@ -70,6 +71,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
                 }
             }
         });
+        addCreateButtonTextMonitor(dateField);
 
         durationField = findViewById(R.id.scheduleViewDuration);
         durationField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -81,8 +83,10 @@ public class ScheduleViewActivity extends AppCompatActivity {
                 }
             }
         });
+        addCreateButtonTextMonitor(durationField);
 
         placeField = findViewById(R.id.scheduleViewPlace);
+        addCreateButtonTextMonitor(placeField);
 
         appointmentIntervalsListView = findViewById(R.id.scheduleViewAppointmentIntervals);
         AppointmentIntervalItemAdapter adapter = new AppointmentIntervalItemAdapter(getApplicationContext(), schedule.appointmentIntervals);
@@ -95,6 +99,9 @@ public class ScheduleViewActivity extends AppCompatActivity {
                 hideKeyboard(view);
             }
         });
+
+        createButton = findViewById(R.id.scheduleViewCreateButton);
+        createButton.setEnabled(false);
     }
 
     public void dateFieldClickHandler(View v) {
@@ -152,11 +159,11 @@ public class ScheduleViewActivity extends AppCompatActivity {
         View popupView = inflater.inflate(R.layout.appointment_interval_item_popup,null);
 
         popupWindow = new PopupWindow(popupView, 600, ViewGroup.LayoutParams.WRAP_CONTENT);
-        popupView.setElevation(5.0f);
 
         //todo preset by interval -> button text
         Button intervalButton = popupView.findViewById(R.id.appointmentIntervalPopupAddButton);
         setIntervalButton(popupView, intervalButton, interval);
+        intervalButton.setEnabled(false);
 
         if (interval != null) {
             Button removeButton = popupView.findViewById(R.id.appointmentIntervalPopupRemoveButton);
@@ -167,6 +174,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
                     schedule.appointmentIntervals.remove(interval);
                     AppointmentIntervalItemAdapter adapter = new AppointmentIntervalItemAdapter(getApplicationContext(), schedule.appointmentIntervals);
                     appointmentIntervalsListView.setAdapter(adapter);
+                    checkFields();
                     popupWindow.dismiss();
                 }
             });
@@ -185,7 +193,6 @@ public class ScheduleViewActivity extends AppCompatActivity {
     }
 
     public void setIntervalButton(View popupView, final Button button, @Nullable final AppointmentInterval interval) {
-        button.setEnabled(false);
         final EditText startText = popupView.findViewById(R.id.appointmentIntervalPopupStart);
         setTimeEditText(startText);
         final EditText endText = popupView.findViewById(R.id.appointmentIntervalPopupEnd);
@@ -200,12 +207,12 @@ public class ScheduleViewActivity extends AppCompatActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                button.setEnabled((count > 0) && (endText.length() > 0));
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+                button.setEnabled((s.length() > 0) && (endText.length() > 0));
+            }
         });
 
         endText.addTextChangedListener(new TextWatcher() {
@@ -213,12 +220,12 @@ public class ScheduleViewActivity extends AppCompatActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                button.setEnabled((count > 0) && (startText.length() > 0));
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+                button.setEnabled((s.length() > 0) && (startText.length() > 0));
+            }
         });
 
         final AppointmentInterval result = interval == null ? new AppointmentInterval() : interval;
@@ -255,13 +262,13 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
     private void timeEditTextClickHandler(final EditText text) {
         TimePickerDialog tpd = new TimePickerDialog(this,
-                new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        text.setText(new LocalTime(hourOfDay, minute).toString("HH:mm"));
-                    }
-                },
-                0, 0,true
+            new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                    text.setText(new LocalTime(hourOfDay, minute).toString("HH:mm"));
+                }
+            },
+            0, 0,true
         );
 
         tpd.show();
@@ -302,6 +309,30 @@ public class ScheduleViewActivity extends AppCompatActivity {
     private void hideKeyboard(View v) {
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    }
+
+    private void checkFields() {
+        createButton.setEnabled(
+            (dateField.length() > 0) &&
+            (durationField.length() > 0) &&
+            (placeField.length() > 0) &&
+            (appointmentIntervalsListView.getAdapter().getCount() > 0)
+        );
+    }
+
+    private void addCreateButtonTextMonitor(EditText text) {
+        text.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                checkFields();
+            }
+        });
     }
 
     private void setFieldsEnabled(boolean enabled) {
