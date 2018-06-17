@@ -7,8 +7,6 @@
     android:orientation="vertical"
     tools:context=".ScheduleViewActivity">
 
-    <!--appointmentIntervals: List[AppointmentInterval],-->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -45,6 +43,19 @@
             android:inputType="textPersonName"
             android:nextFocusDown="@id/scheduleViewDate"
             android:hint="Place" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_appointment_interval_button"
+            android:onClick="addAppointmentIntervalButtonHandler" />
+
+        <ListView
+            android:id="@+id/scheduleViewAppointmentIntervals"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+        </ListView>
 
     </LinearLayout>
 

@@ -1,18 +1,22 @@
 package ru.bmstu.queueapp;
 
 import android.app.DatePickerDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 
 import org.joda.time.Duration;
 import org.joda.time.LocalDate;
 
+import java.util.ArrayList;
+
 import mobi.upod.timedurationpicker.TimeDurationPicker;
 import mobi.upod.timedurationpicker.TimeDurationPickerDialog;
-import ru.bmstu.queueapp.http.data.GenericSchedule;
+import ru.bmstu.queueapp.adapters.AppointmentIntervalItemAdapter;
+import ru.bmstu.queueapp.adapters.AppointmentItemAdapter;
 import ru.bmstu.queueapp.http.data.Schedule;
 
 public class ScheduleViewActivity extends AppCompatActivity {
@@ -21,6 +25,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
     private EditText dateField;
     private EditText durationField;
+    private ListView appointmentIntervals;
 
     private Schedule schedule;
 
@@ -52,6 +57,12 @@ public class ScheduleViewActivity extends AppCompatActivity {
                 }
             }
         });
+
+        appointmentIntervals = findViewById(R.id.scheduleViewAppointmentIntervals);
+        if (schedule.appointmentIntervals != null) {
+            AppointmentIntervalItemAdapter adapter = new AppointmentIntervalItemAdapter(getApplicationContext(), schedule.appointmentIntervals);
+            appointmentIntervals.setAdapter(adapter);
+        }
     }
 
     public void dateFieldClickHandler(View v) {
@@ -101,5 +112,9 @@ public class ScheduleViewActivity extends AppCompatActivity {
         });
 
         tdpd.show();
+    }
+
+    public void addAppointmentIntervalButtonHandler(View v) {
+
     }
 }

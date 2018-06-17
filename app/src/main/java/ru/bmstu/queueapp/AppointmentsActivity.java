@@ -156,7 +156,7 @@ public class AppointmentsActivity extends AppCompatActivity {
     }
 
     private void setVisitorButton(Button button, final Appointment appointment) {
-         if (appointment.visitorId == null) {
+         if ((appointment.visitorId == null) && !host.id.equals(QueueApp.getUser().id)) {
             button.setText(R.string.create_appointment);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
