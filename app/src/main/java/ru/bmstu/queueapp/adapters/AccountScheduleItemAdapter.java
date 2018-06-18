@@ -10,6 +10,8 @@ import android.widget.TextView;
 import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +26,12 @@ public class AccountScheduleItemAdapter extends BaseAdapter {
     public AccountScheduleItemAdapter(Context context, HashMap<LocalDate, GenericSchedule> data) {
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.data = new ArrayList<>(data.entrySet());
+        Collections.sort(this.data, new Comparator<Map.Entry<LocalDate, GenericSchedule>>() {
+            @Override
+            public int compare(Map.Entry<LocalDate, GenericSchedule> o1, Map.Entry<LocalDate, GenericSchedule> o2) {
+                return o1.getKey().compareTo(o2.getKey());
+            }
+        });
     }
 
     @Override

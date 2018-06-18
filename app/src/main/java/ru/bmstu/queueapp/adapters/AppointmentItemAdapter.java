@@ -25,14 +25,14 @@ public class AppointmentItemAdapter extends BaseAdapter {
 
     public AppointmentItemAdapter(Context context, HashMap<LocalTime, Appointment> data) {
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        ArrayList<Map.Entry<LocalTime, Appointment>> res = new ArrayList<>(data.entrySet());
-        Collections.sort(res, new Comparator<Map.Entry<LocalTime, Appointment>>() {
+        this.data = new ArrayList<>(data.entrySet());
+        Collections.sort(this.data, new Comparator<Map.Entry<LocalTime, Appointment>>() {
             @Override
             public int compare(Map.Entry<LocalTime, Appointment> o1, Map.Entry<LocalTime, Appointment> o2) {
                 return o1.getKey().compareTo(o2.getKey());
             }
         });
-        this.data = res;
+
     }
 
     @Override
@@ -42,7 +42,7 @@ public class AppointmentItemAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return data.get(position);
+        return data.get(position).getValue();
     }
 
     @Override

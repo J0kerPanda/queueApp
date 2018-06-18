@@ -6,9 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 import ru.bmstu.queueapp.adapters.AccountScheduleItemAdapter;
 import ru.bmstu.queueapp.http.ApiHttpClient;
 import ru.bmstu.queueapp.http.ResponseHandler;
+import ru.bmstu.queueapp.http.data.GenericSchedule;
+import ru.bmstu.queueapp.http.data.Schedule;
 import ru.bmstu.queueapp.http.data.SchedulesData;
 
 public class AccountSchedulesActivity extends AppCompatActivity {
@@ -25,7 +29,6 @@ public class AccountSchedulesActivity extends AppCompatActivity {
         ApiHttpClient.instance().getScheduleData(QueueApp.getUser().id, new ResponseHandler<SchedulesData>() {
             @Override
             public void handle(SchedulesData result) {
-                //todo sort
                 AccountScheduleItemAdapter adapter = new AccountScheduleItemAdapter(getBaseContext(), result.schedules);
                 accountSchedulesListView.setAdapter(adapter);
             }

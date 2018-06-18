@@ -150,7 +150,9 @@ public class AppointmentsActivity extends AppCompatActivity {
     }
 
     private void setPopupButton(Button button, final Appointment appointment) {
-         if ((appointment.visitorId == null) && !host.id.equals(QueueApp.getUser().id)) {
+        boolean userIsHost = host.id.equals(QueueApp.getUser().id);
+        boolean appointmentTaken = appointment.visitorId != null;
+         if (!appointmentTaken && !userIsHost) {
             button.setText(R.string.create_appointment);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -159,7 +161,7 @@ public class AppointmentsActivity extends AppCompatActivity {
                     createAppointment(appointment);
                 }
             });
-        } else if (host.id.equals(QueueApp.getUser().id) || appointment.visitorId.equals(QueueApp.getUser().id)) {
+        } else if (appointmentTaken && (userIsHost || appointment.visitorId.equals(QueueApp.getUser().id))) {
             button.setText(R.string.cancel_appointment);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -168,6 +170,7 @@ public class AppointmentsActivity extends AppCompatActivity {
                 }
             });
         } else {
+             Log.d("MY_CUSTOM_LOG", "hehe");
             button.setText(R.string.create_appointment);
             button.setEnabled(false);
         }
