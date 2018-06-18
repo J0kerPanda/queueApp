@@ -108,8 +108,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
         });
 
         appointmentIntervalsListView = findViewById(R.id.scheduleViewAppointmentIntervals);
-        AppointmentIntervalItemAdapter adapter = new AppointmentIntervalItemAdapter(getApplicationContext(), schedule.appointmentIntervals);
-        appointmentIntervalsListView.setAdapter(adapter);
+        updateIntervals(schedule.appointmentIntervals);
         appointmentIntervalsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -195,8 +194,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     schedule.appointmentIntervals.remove(interval);
-                    AppointmentIntervalItemAdapter adapter = new AppointmentIntervalItemAdapter(getApplicationContext(), schedule.appointmentIntervals);
-                    appointmentIntervalsListView.setAdapter(adapter);
+                    updateIntervals(schedule.appointmentIntervals);
                     checkFields();
                     popupWindow.dismiss();
                 }
@@ -275,8 +273,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
                     schedule.appointmentIntervals.add(result);
                 }
 
-                AppointmentIntervalItemAdapter adapter = new AppointmentIntervalItemAdapter(getApplicationContext(), schedule.appointmentIntervals);
-                appointmentIntervalsListView.setAdapter(adapter);
+                updateIntervals(schedule.appointmentIntervals);
                 checkFields();
                 popupWindow.dismiss();
             }
@@ -335,10 +332,6 @@ public class ScheduleViewActivity extends AppCompatActivity {
     }
 
     private void checkFields() {
-        Log.d("MY_CUSTOM_LOG", String.valueOf(dateField.length() > 0));
-        Log.d("MY_CUSTOM_LOG", String.valueOf(durationField.length() > 0));
-        Log.d("MY_CUSTOM_LOG", String.valueOf(placeField.length() > 0));
-        Log.d("MY_CUSTOM_LOG", String.valueOf((appointmentIntervalsListView.getAdapter().getCount() > 0)));
 
         createButton.setEnabled(
             (dateField.length() > 0) &&
@@ -363,6 +356,11 @@ public class ScheduleViewActivity extends AppCompatActivity {
         });
     }
 
+    private void updateIntervals(ArrayList<AppointmentInterval> intervals) {
+        AppointmentIntervalItemAdapter adapter = new AppointmentIntervalItemAdapter(getApplicationContext(), intervals);
+        appointmentIntervalsListView.setAdapter(adapter);
+    }
+
     private void setFieldsEnabled(boolean enabled) {
         dateField.setEnabled(enabled);
         durationField.setEnabled(enabled);
@@ -370,11 +368,11 @@ public class ScheduleViewActivity extends AppCompatActivity {
     }
 
     public void createScheduleButtonHandler(View v) {
-        ApiHttpClient.instance().createSchedule(schedule, new ResponseHandler<Boolean>() {
+        ApiHttpClient.instance().createSchedule(schedule, new ResponseHandler<Integer>() {
             @Override
-            public void handle(Boolean result) {
-                Log.d("MY_CUSTOM_LOG", result.toString());
-                if (result) {
+            public void handle(Integer result) {
+                if (result != null) {
+                    Log.d("MY_CUSTOM_LOG", result.toString());
                     finish();
                 }
             }

@@ -31,6 +31,7 @@ import ru.bmstu.queueapp.http.request.CreateAppointmentRequest;
 import ru.bmstu.queueapp.http.request.LoginRequest;
 
 public class ApiHttpClient {
+//    private static final String BASE_URL = "https://queue-service.herokuapp.com/api";
     private static final String BASE_URL = "http://192.168.1.5:9000/api";
     private static final Gson gson = new JsonExtractor().gson;
 
@@ -248,19 +249,19 @@ public class ApiHttpClient {
         });
     }
 
-    public void createSchedule(final Schedule schedule, final ResponseHandler<Boolean> handler) {
+    public void createSchedule(final Schedule schedule, final ResponseHandler<Integer> handler) {
 
         Log.d("MY_CUSTOM_LOG", schedule.toString());
 
         post(QueueApp.getAppContext(), "/schedule/create", schedule, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                handler.handle(true);
+                handler.handle(Integer.valueOf(new String(responseBody)));
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                handler.handle(false);
+                handler.handle(null);
             }
         });
     }

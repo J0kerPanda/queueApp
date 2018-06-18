@@ -63,6 +63,9 @@ public class CalendarActivity extends AppCompatActivity {
 
         calendarView = findViewById(R.id.calendarView);
         calendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_MULTIPLE);
+        calendarView.state().edit()
+            .setMinimumDate(LocalDate.now().toDate())
+            .commit();
         calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
