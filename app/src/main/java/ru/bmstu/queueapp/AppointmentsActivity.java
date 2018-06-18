@@ -86,11 +86,7 @@ public class AppointmentsActivity extends AppCompatActivity {
             public void handle(ArrayList<Appointment> result) {
                 Log.d("MY_CUSTOM_LOG", String.valueOf(result.size()));
                 Log.d("MY_CUSTOM_LOG", result.toString());
-                HashMap<LocalTime, Appointment> clone = (HashMap<LocalTime, Appointment>) appointmentMap.clone();
-                for (Appointment a: result) {
-                    clone.put(a.start, a);
-                }
-                AppointmentItemAdapter adapter = new AppointmentItemAdapter(getApplicationContext(), new ArrayList<>(clone.values()));
+                AppointmentItemAdapter adapter = new AppointmentItemAdapter(getApplicationContext(), appointmentMap);
                 appointmentsListView.setAdapter(adapter);
             }
         });
