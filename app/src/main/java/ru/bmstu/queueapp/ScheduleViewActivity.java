@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +43,7 @@ import ru.bmstu.queueapp.http.error.ErrorHandler;
 
 public class ScheduleViewActivity extends AppCompatActivity {
 
-    public static final String SCHEDULE_EXTRA = "genericSchedule";
+    public static final String SCHEDULE_EXTRA = "SCHEDULE";
 
     private EditText dateField;
     private EditText durationField;
@@ -59,9 +60,9 @@ public class ScheduleViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_schedule_view);
 
         schedule = (Schedule) getIntent().getSerializableExtra(SCHEDULE_EXTRA);
+        Log.d("MY_CUSTOM_LOG", schedule.toString());
         if (schedule == null) {
             schedule = new Schedule();
-            schedule.hostId = QueueApp.getUser().id;
             schedule.appointmentIntervals = new ArrayList<>();
         }
 
@@ -123,6 +124,12 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
         createButton = findViewById(R.id.scheduleViewCreateButton);
         createButton.setEnabled(false);
+
+        if (schedule.appointmentIntervals.size() > 0) {
+            dateField.setText(schedule.date.toString());
+            durationField.setText(schedule.appointmentDuration.toString());
+            placeField.setText(schedule.place);
+        }
     }
 
     public void dateFieldClickHandler(View v) {

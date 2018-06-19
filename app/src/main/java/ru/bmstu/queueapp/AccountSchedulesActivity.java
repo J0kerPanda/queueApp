@@ -3,10 +3,15 @@ package ru.bmstu.queueapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import org.joda.time.LocalDate;
+
 import java.util.ArrayList;
+import java.util.Map;
 
 import ru.bmstu.queueapp.adapters.AccountScheduleItemAdapter;
 import ru.bmstu.queueapp.http.ApiHttpClient;
@@ -29,6 +34,17 @@ public class AccountSchedulesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_account_schedules);
 
         accountSchedulesListView = findViewById(R.id.accountSchedulesView);
+        accountSchedulesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Map.Entry<LocalDate, GenericSchedule> el = (Map.Entry<LocalDate, GenericSchedule>) parent.getItemAtPosition(position);
+                Intent intent = new Intent(getBaseContext(), ScheduleViewActivity.class);
+                Log.d("MY_CUSTOM_LOG", el.getKey().toString());
+                Log.d("MY_CUSTOM_LOG", el.getValue().toString());
+                intent.putExtra(ScheduleViewActivity.SCHEDULE_EXTRA, new Schedule(el.getKey(), el.getValue()));
+                startActivityForResult(intent, SCHEDULE_VIEW);
+            }
+        });
 
         ApiHttpClient.instance().getScheduleData(QueueApp.getUser().id, new ResponseHandler<SchedulesData>() {
             @Override
