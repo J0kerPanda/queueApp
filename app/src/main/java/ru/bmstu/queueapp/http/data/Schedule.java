@@ -6,32 +6,29 @@ import org.joda.time.Period;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import ru.bmstu.queueapp.QueueApp;
-
 public class Schedule implements Serializable {
 
-    public int hostId;
+    public Integer id;
     public LocalDate date;
     public ArrayList<AppointmentInterval> appointmentIntervals;
     public Period appointmentDuration;
     public String place;
 
-    public Schedule() {
-        this.hostId = QueueApp.getUser().id;
-    }
-
-    public Schedule(LocalDate date, GenericSchedule genericSchedule) {
-        this.hostId = QueueApp.getUser().id;
-        this.date = date;
-        this.appointmentIntervals = genericSchedule.appointmentIntervals;
-        this.appointmentDuration = genericSchedule.appointmentDuration;
-        this.place = genericSchedule.place;
+    public String timeIntervals() {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < appointmentIntervals.size(); ++i) {
+            builder.append(appointmentIntervals.get(i).toString());
+            if (i != appointmentIntervals.size() - 1) {
+                builder.append(", ");
+            }
+        }
+        return builder.toString();
     }
 
     @Override
     public String toString() {
         return "Schedule{" +
-                "hostId=" + hostId +
+                "id=" + id +
                 ", date=" + date +
                 ", appointmentIntervals=" + appointmentIntervals +
                 ", appointmentDuration=" + appointmentDuration +

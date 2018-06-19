@@ -9,9 +9,9 @@ import java.util.HashMap;
 public class SchedulesData implements Serializable {
 
     public Period period;
-    public HashMap<LocalDate, GenericSchedule> schedules;
+    public HashMap<LocalDate, Schedule> schedules;
 
-    public SchedulesData(Period period, HashMap<LocalDate, GenericSchedule> schedules) {
+    public SchedulesData(Period period, HashMap<LocalDate, Schedule> schedules) {
         this.period = period;
         this.schedules = schedules;
     }

@@ -62,11 +62,11 @@ public class ScheduleViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_schedule_view);
 
         schedule = (Schedule) getIntent().getSerializableExtra(SCHEDULE_EXTRA);
-        Log.d("MY_CUSTOM_LOG", schedule.toString());
         if (schedule == null) {
             schedule = new Schedule();
             schedule.appointmentIntervals = new ArrayList<>();
         }
+        Log.d("MY_CUSTOM_LOG", schedule.toString());
 
         setupForm();
     }

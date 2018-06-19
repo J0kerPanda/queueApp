@@ -271,4 +271,26 @@ public class ApiHttpClient {
             }
         });
     }
+
+    public void updateSchedule(final Schedule schedule, final ResponseHandler<SchedulesData> handler, final ErrorHandler<Object> errorHandler) {
+
+        Log.d("MY_CUSTOM_LOG", schedule.toString());
+
+        post(QueueApp.getAppContext(), "/schedule/update", schedule, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    handler.handle(gson.fromJson(response.toString(), SchedulesData.class));
+                } catch (Exception e) {
+                    DefaultErrorHandler.handle(e);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                errorHandler.handle(statusCode, throwable,null);
+            }
+        });
+    }
 }

@@ -19,7 +19,8 @@ import org.joda.time.Period;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 
-import ru.bmstu.queueapp.http.data.GenericSchedule;
+import ru.bmstu.queueapp.QueueApp;
+import ru.bmstu.queueapp.http.data.Schedule;
 import ru.bmstu.queueapp.http.data.SchedulesData;
 
 public class JsonExtractor {
@@ -77,8 +78,17 @@ public class JsonExtractor {
             public SchedulesData deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
                 JsonObject jo = json.getAsJsonObject();
                 Period period = context.deserialize(jo.get("period"), Period.class);
-                HashMap<LocalDate, GenericSchedule> schedules = context.deserialize(jo.get("schedules"), new TypeToken<HashMap<LocalDate, GenericSchedule>>(){}.getType());
+                HashMap<LocalDate, Schedule> schedules = context.deserialize(jo.get("schedules"), new TypeToken<HashMap<LocalDate, Schedule>>(){}.getType());
                 return new SchedulesData(period, schedules);
+            }
+        };
+
+        JsonSerializer<Schedule> gss = new JsonSerializer<Schedule>() {
+            @Override
+            public JsonElement serialize(Schedule src, Type typeOfSrc, JsonSerializationContext context) {
+                JsonObject obj = gson.toJsonTree(src).getAsJsonObject();
+                obj.add("hostId", new JsonPrimitive(QueueApp.getUser().id));
+                return obj;
             }
         };
 
@@ -89,6 +99,7 @@ public class JsonExtractor {
         builder.registerTypeAdapter(LocalTime.class, ltd);
         builder.registerTypeAdapter(LocalTime.class, lts);
         builder.registerTypeAdapter(SchedulesData.class, sdd);
+        builder.registerTypeAdapter(Schedule.class, gss);
         gson = builder.create();
     }
 }

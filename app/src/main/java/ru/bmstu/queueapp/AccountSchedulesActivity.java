@@ -10,13 +10,11 @@ import android.widget.ListView;
 
 import org.joda.time.LocalDate;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 import ru.bmstu.queueapp.adapters.AccountScheduleItemAdapter;
 import ru.bmstu.queueapp.http.ApiHttpClient;
 import ru.bmstu.queueapp.http.ResponseHandler;
-import ru.bmstu.queueapp.http.data.GenericSchedule;
 import ru.bmstu.queueapp.http.data.Schedule;
 import ru.bmstu.queueapp.http.data.SchedulesData;
 
@@ -37,11 +35,12 @@ public class AccountSchedulesActivity extends AppCompatActivity {
         accountSchedulesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Map.Entry<LocalDate, GenericSchedule> el = (Map.Entry<LocalDate, GenericSchedule>) parent.getItemAtPosition(position);
+                Map.Entry<LocalDate, Schedule> el = (Map.Entry<LocalDate, Schedule>) parent.getItemAtPosition(position);
                 Intent intent = new Intent(getBaseContext(), ScheduleViewActivity.class);
                 Log.d("MY_CUSTOM_LOG", el.getKey().toString());
                 Log.d("MY_CUSTOM_LOG", el.getValue().toString());
-                intent.putExtra(ScheduleViewActivity.SCHEDULE_EXTRA, new Schedule(el.getKey(), el.getValue()));
+                el.getValue().date = el.getKey();
+                intent.putExtra(ScheduleViewActivity.SCHEDULE_EXTRA, el.getValue());
                 startActivityForResult(intent, SCHEDULE_VIEW);
             }
         });
