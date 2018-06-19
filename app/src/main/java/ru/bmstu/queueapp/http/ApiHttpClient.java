@@ -26,6 +26,7 @@ import ru.bmstu.queueapp.http.data.Appointment;
 import ru.bmstu.queueapp.http.data.Schedule;
 import ru.bmstu.queueapp.http.data.SchedulesData;
 import ru.bmstu.queueapp.http.data.UserData;
+import ru.bmstu.queueapp.http.error.ErrorHandler;
 import ru.bmstu.queueapp.http.error.DefaultErrorHandler;
 import ru.bmstu.queueapp.http.request.CreateAppointmentRequest;
 import ru.bmstu.queueapp.http.request.LoginRequest;
@@ -249,19 +250,24 @@ public class ApiHttpClient {
         });
     }
 
-    public void createSchedule(final Schedule schedule, final ResponseHandler<Integer> handler) {
+    public void createSchedule(final Schedule schedule, final ResponseHandler<SchedulesData> handler, final ErrorHandler<Object> errorHandler) {
 
         Log.d("MY_CUSTOM_LOG", schedule.toString());
 
-        post(QueueApp.getAppContext(), "/schedule/create", schedule, new AsyncHttpResponseHandler() {
+        post(QueueApp.getAppContext(), "/schedule/create", schedule, new JsonHttpResponseHandler() {
+
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                handler.handle(Integer.valueOf(new String(responseBody)));
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    handler.handle(gson.fromJson(response.toString(), SchedulesData.class));
+                } catch (Exception e) {
+                    DefaultErrorHandler.handle(e);
+                }
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                handler.handle(null);
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                errorHandler.handle(statusCode, throwable,null);
             }
         });
     }

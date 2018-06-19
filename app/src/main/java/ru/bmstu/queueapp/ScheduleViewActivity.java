@@ -3,11 +3,11 @@ package ru.bmstu.queueapp;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +36,9 @@ import ru.bmstu.queueapp.http.ApiHttpClient;
 import ru.bmstu.queueapp.http.ResponseHandler;
 import ru.bmstu.queueapp.http.data.AppointmentInterval;
 import ru.bmstu.queueapp.http.data.Schedule;
+import ru.bmstu.queueapp.http.data.SchedulesData;
+import ru.bmstu.queueapp.http.error.DefaultErrorHandler;
+import ru.bmstu.queueapp.http.error.ErrorHandler;
 
 public class ScheduleViewActivity extends AppCompatActivity {
 
@@ -368,14 +371,26 @@ public class ScheduleViewActivity extends AppCompatActivity {
     }
 
     public void createScheduleButtonHandler(View v) {
-        ApiHttpClient.instance().createSchedule(schedule, new ResponseHandler<Integer>() {
-            @Override
-            public void handle(Integer result) {
-                if (result != null) {
-                    Log.d("MY_CUSTOM_LOG", result.toString());
-                    finish();
+        ApiHttpClient.instance().createSchedule(schedule,
+                new ResponseHandler<SchedulesData>() {
+                    @Override
+                    public void handle(SchedulesData result) {
+                        Intent intent = new Intent();
+                        intent.putExtra(AccountSchedulesActivity.SCHEDULE_EXTRA, result);
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
+                },
+                new ErrorHandler<Object>() {
+                    @Override
+                    public void handle(int code, Throwable e, @Nullable Object response) {
+                        if (code == 400) {
+                            // popup
+                        } else {
+                            DefaultErrorHandler.handle(e);
+                        }
+                    }
                 }
-            }
-        });
+        );
     }
 }

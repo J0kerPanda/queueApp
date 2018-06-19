@@ -86,6 +86,9 @@ public class AppointmentsActivity extends AppCompatActivity {
             public void handle(ArrayList<Appointment> result) {
                 Log.d("MY_CUSTOM_LOG", String.valueOf(result.size()));
                 Log.d("MY_CUSTOM_LOG", result.toString());
+                for (Appointment appointment: result) {
+                    appointmentMap.put(appointment.start, appointment);
+                }
                 AppointmentItemAdapter adapter = new AppointmentItemAdapter(getApplicationContext(), appointmentMap);
                 appointmentsListView.setAdapter(adapter);
             }
@@ -120,6 +123,7 @@ public class AppointmentsActivity extends AppCompatActivity {
             public void handle(Boolean result) {
                 //todo false case
                 if (result) {
+                    Log.d("MY_CUSTOM_LOG", result.toString());
                     reloadActivity();
                 }
             }
@@ -170,7 +174,6 @@ public class AppointmentsActivity extends AppCompatActivity {
                 }
             });
         } else {
-             Log.d("MY_CUSTOM_LOG", "hehe");
             button.setText(R.string.create_appointment);
             button.setEnabled(false);
         }

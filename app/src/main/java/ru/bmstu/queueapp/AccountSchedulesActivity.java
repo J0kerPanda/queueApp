@@ -19,6 +19,10 @@ public class AccountSchedulesActivity extends AppCompatActivity {
 
     private ListView accountSchedulesListView;
 
+    public static final String SCHEDULE_EXTRA = "SCHEDULE_DATA";
+
+    public static final int SCHEDULE_VIEW = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,14 +33,26 @@ public class AccountSchedulesActivity extends AppCompatActivity {
         ApiHttpClient.instance().getScheduleData(QueueApp.getUser().id, new ResponseHandler<SchedulesData>() {
             @Override
             public void handle(SchedulesData result) {
-                AccountScheduleItemAdapter adapter = new AccountScheduleItemAdapter(getBaseContext(), result.schedules);
-                accountSchedulesListView.setAdapter(adapter);
+                updateSchedules(result);
             }
         });
     }
 
     public void createScheduleTransitionButtonHandler(View v) {
         Intent intent = new Intent(getBaseContext(), ScheduleViewActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, SCHEDULE_VIEW);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if ((requestCode == SCHEDULE_VIEW) && (resultCode == RESULT_OK)) {
+            SchedulesData schedules = (SchedulesData) data.getSerializableExtra(SCHEDULE_EXTRA);
+            updateSchedules(schedules);
+        }
+    }
+
+    private void updateSchedules(SchedulesData data) {
+        AccountScheduleItemAdapter adapter = new AccountScheduleItemAdapter(getBaseContext(), data.schedules);
+        accountSchedulesListView.setAdapter(adapter);
     }
 }

@@ -1,6 +1,7 @@
 package ru.bmstu.queueapp.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ public class AppointmentItemAdapter extends BaseAdapter {
             }
         });
 
+        Log.d("MY_CUSTOM_LOG", this.data.toString());
     }
 
     @Override
