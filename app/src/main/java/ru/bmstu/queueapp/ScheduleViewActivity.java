@@ -1,6 +1,5 @@
 package ru.bmstu.queueapp;
 
-import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -16,11 +15,12 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TimePicker;
+
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import org.jetbrains.annotations.Nullable;
 import org.joda.time.Duration;
@@ -44,6 +44,8 @@ import ru.bmstu.queueapp.http.error.ErrorHandler;
 public class ScheduleViewActivity extends AppCompatActivity {
 
     public static final String SCHEDULE_EXTRA = "SCHEDULE";
+
+    private boolean updateMode;
 
     private EditText dateField;
     private EditText durationField;
@@ -129,6 +131,10 @@ public class ScheduleViewActivity extends AppCompatActivity {
             dateField.setText(schedule.date.toString());
             durationField.setText(schedule.appointmentDuration.toString());
             placeField.setText(schedule.place);
+            createButton.setText(R.string.update_schedule_button);
+            updateMode = true;
+        } else {
+            updateMode = false;
         }
     }
 
@@ -139,11 +145,10 @@ public class ScheduleViewActivity extends AppCompatActivity {
         }
         LocalDate selectedDate = (schedule.date != null) ? schedule.date : minDate;
 
-        DatePickerDialog dpd = new DatePickerDialog(this,
+        DatePickerDialog dpd = DatePickerDialog.newInstance(
             new DatePickerDialog.OnDateSetListener() {
-
                 @Override
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
                     LocalDate date = new LocalDate(year, monthOfYear + 1, dayOfMonth);
                     dateField.setText(date.toString());
                     schedule.date = date;
@@ -153,8 +158,10 @@ public class ScheduleViewActivity extends AppCompatActivity {
             selectedDate.getMonthOfYear() - 1,
             selectedDate.getDayOfMonth()
         );
-        dpd.getDatePicker().setMinDate(minDate.toDate().getTime());
-        dpd.show();
+
+        dpd.setMinDate(minDate.toDateTime(LocalTime.MIDNIGHT).toCalendar(null));
+        //todo available dates
+        dpd.show(getFragmentManager(), "DatePickerDialog");
     }
 
     public void durationFieldClickHandler(View v) {
@@ -378,26 +385,30 @@ public class ScheduleViewActivity extends AppCompatActivity {
     }
 
     public void createScheduleButtonHandler(View v) {
-        ApiHttpClient.instance().createSchedule(schedule,
-                new ResponseHandler<SchedulesData>() {
-                    @Override
-                    public void handle(SchedulesData result) {
-                        Intent intent = new Intent();
-                        intent.putExtra(AccountSchedulesActivity.SCHEDULE_EXTRA, result);
-                        setResult(RESULT_OK, intent);
-                        finish();
-                    }
-                },
-                new ErrorHandler<Object>() {
-                    @Override
-                    public void handle(int code, Throwable e, @Nullable Object response) {
-                        if (code == 400) {
-                            // popup
-                        } else {
-                            DefaultErrorHandler.handle(e);
+        if (updateMode) {
+
+        } else {
+            ApiHttpClient.instance().createSchedule(schedule,
+                    new ResponseHandler<SchedulesData>() {
+                        @Override
+                        public void handle(SchedulesData result) {
+                            Intent intent = new Intent();
+                            intent.putExtra(AccountSchedulesActivity.SCHEDULE_EXTRA, result);
+                            setResult(RESULT_OK, intent);
+                            finish();
+                        }
+                    },
+                    new ErrorHandler<Object>() {
+                        @Override
+                        public void handle(int code, Throwable e, @Nullable Object response) {
+                            if (code == 400) {
+                                // popup
+                            } else {
+                                DefaultErrorHandler.handle(e);
+                            }
                         }
                     }
-                }
-        );
+            );
+        }
     }
 }

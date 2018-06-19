@@ -20,6 +20,7 @@
     <string name="schedule_view_place_hint">Место приёма</string>
     <string name="add_appointment_interval_button">добавить время приёма</string>
     <string name="create_schedule_button">создать</string>
+    <string name="update_schedule_button">обновить</string>
     <string name="appointment_interval_popup_caption">Время приёма</string>
     <string name="appointment_interval_popup_create_button">Добавить</string>
     <string name="appointment_interval_popup_update_button">Обновить</string>
