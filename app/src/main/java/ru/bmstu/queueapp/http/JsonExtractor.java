@@ -19,7 +19,6 @@ import org.joda.time.Period;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 
-import ru.bmstu.queueapp.QueueApp;
 import ru.bmstu.queueapp.http.data.Schedule;
 import ru.bmstu.queueapp.http.data.SchedulesData;
 
@@ -83,15 +82,6 @@ public class JsonExtractor {
             }
         };
 
-        JsonSerializer<Schedule> gss = new JsonSerializer<Schedule>() {
-            @Override
-            public JsonElement serialize(Schedule src, Type typeOfSrc, JsonSerializationContext context) {
-                JsonObject obj = gson.toJsonTree(src).getAsJsonObject();
-                obj.add("hostId", new JsonPrimitive(QueueApp.getUser().id));
-                return obj;
-            }
-        };
-
         builder.registerTypeAdapter(Period.class, pd);
         builder.registerTypeAdapter(Period.class, ps);
         builder.registerTypeAdapter(LocalDate.class, ldd);
@@ -99,7 +89,6 @@ public class JsonExtractor {
         builder.registerTypeAdapter(LocalTime.class, ltd);
         builder.registerTypeAdapter(LocalTime.class, lts);
         builder.registerTypeAdapter(SchedulesData.class, sdd);
-        builder.registerTypeAdapter(Schedule.class, gss);
         gson = builder.create();
     }
 }

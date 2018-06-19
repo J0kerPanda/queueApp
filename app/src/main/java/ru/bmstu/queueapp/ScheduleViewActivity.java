@@ -29,6 +29,7 @@ import org.joda.time.LocalTime;
 import org.joda.time.Period;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import mobi.upod.timedurationpicker.TimeDurationPicker;
 import mobi.upod.timedurationpicker.TimeDurationPickerDialog;
@@ -44,6 +45,7 @@ import ru.bmstu.queueapp.http.error.ErrorHandler;
 public class ScheduleViewActivity extends AppCompatActivity {
 
     public static final String SCHEDULE_EXTRA = "SCHEDULE";
+    public static final String EXCLUDED_DATES = "EXCLUDED";
 
     private boolean updateMode;
 
@@ -55,6 +57,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
     private PopupWindow popupWindow;
 
     private Schedule schedule;
+    private Calendar[] excludedDates;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,9 @@ public class ScheduleViewActivity extends AppCompatActivity {
             schedule.appointmentIntervals = new ArrayList<>();
         }
         Log.d("MY_CUSTOM_LOG", schedule.toString());
+
+        excludedDates = (Calendar[]) getIntent().getSerializableExtra(EXCLUDED_DATES);
+        Log.d("MY_CUSTOM_LOG", excludedDates.toString());
 
         setupForm();
     }
@@ -159,8 +165,10 @@ public class ScheduleViewActivity extends AppCompatActivity {
             selectedDate.getDayOfMonth()
         );
 
-        dpd.setMinDate(minDate.toDateTime(LocalTime.MIDNIGHT).toCalendar(null));
-        //todo available dates
+        Log.d("MY_CUSTOM_LOG", minDate.toDateTime(LocalTime.MIDNIGHT).toCalendar(null).toString());
+
+        dpd.setMinDate(minDate.plusDays(1).toDateTimeAtStartOfDay().toCalendar(null));
+        dpd.setDisabledDays(excludedDates);
         dpd.show(getFragmentManager(), "DatePickerDialog");
     }
 
@@ -393,7 +401,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
                         @Override
                         public void handle(SchedulesData result) {
                             Intent intent = new Intent();
-                            intent.putExtra(AccountSchedulesActivity.SCHEDULE_EXTRA, result);
+                            intent.putExtra(AccountSchedulesActivity.SCHEDULE_DATA_EXTRA, result);
                             setResult(RESULT_OK, intent);
                             finish();
                         }
