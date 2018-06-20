@@ -400,7 +400,6 @@ public class ScheduleViewActivity extends AppCompatActivity {
                     public void handle(SchedulesData result) {
                         Intent intent = new Intent();
                         intent.putExtra(AccountSchedulesActivity.SCHEDULE_DATA_EXTRA, result);
-                        Log.d("MY_CUSTOM_LOG", result.schedules.toString());
                         setResult(RESULT_OK, intent);
                         finish();
                     }
@@ -412,32 +411,32 @@ public class ScheduleViewActivity extends AppCompatActivity {
                         if (code == 400) {
                             // popup
                         } else {
-                            DefaultErrorHandler.handle(e);
+                            DefaultErrorHandler.handleHttp(code, e, response);
                         }
                     }
                 }
             );
         } else {
             ApiHttpClient.instance().createSchedule(schedule,
-                    new ResponseHandler<SchedulesData>() {
-                        @Override
-                        public void handle(SchedulesData result) {
-                            Intent intent = new Intent();
-                            intent.putExtra(AccountSchedulesActivity.SCHEDULE_DATA_EXTRA, result);
-                            setResult(RESULT_OK, intent);
-                            finish();
-                        }
-                    },
-                    new ErrorHandler<Object>() {
-                        @Override
-                        public void handle(int code, Throwable e, @Nullable Object response) {
-                            if (code == 400) {
-                                // popup
-                            } else {
-                                DefaultErrorHandler.handle(e);
-                            }
+                new ResponseHandler<SchedulesData>() {
+                    @Override
+                    public void handle(SchedulesData result) {
+                        Intent intent = new Intent();
+                        intent.putExtra(AccountSchedulesActivity.SCHEDULE_DATA_EXTRA, result);
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
+                },
+                new ErrorHandler<Object>() {
+                    @Override
+                    public void handle(int code, Throwable e, @Nullable Object response) {
+                        if (code == 400) {
+                            // popup
+                        } else {
+                            DefaultErrorHandler.handleHttp(code, e, response);
                         }
                     }
+                }
             );
         }
     }

@@ -2,6 +2,7 @@ package ru.bmstu.queueapp;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 
 import ru.bmstu.queueapp.http.ApiHttpClient;
@@ -80,5 +81,13 @@ public class QueueApp extends Application {
         edit.remove(userIsHostKey);
         user = null;
         edit.apply();
+    }
+
+    public static void logout() {
+        QueueApp.removeUser();
+        Context context = getAppContext();
+        Intent intent = new Intent(context, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 }

@@ -2,15 +2,24 @@ package ru.bmstu.queueapp.http.error;
 
 import android.util.Log;
 
+import org.jetbrains.annotations.Nullable;
+
+import ru.bmstu.queueapp.QueueApp;
+
 public final class DefaultErrorHandler {
 
-    private DefaultErrorHandler() {}
+    public static void handleHttp(int code, Throwable e, @Nullable Object response) {
+        Log.d("API_ERROR", String.format("%d: %s", code, e.getMessage(), response == null ? "" : response.toString()));
+        switch (code) {
+            case 403:
+                QueueApp.logout();
+                break;
+        }
+    }
 
     public static void handle(Throwable e) {
-        Log.e("UNEXPECTED_ERROR", "", e);
+        Log.d("UNEXPECTED_ERROR", e.getMessage());
     }
 
-    public static void handle(Throwable e, String msg) {
-        Log.e("UNEXPECTED_ERROR", msg, e);
-    }
+    private DefaultErrorHandler() {}
 }

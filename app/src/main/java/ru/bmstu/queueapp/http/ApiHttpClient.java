@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -90,12 +89,12 @@ public class ApiHttpClient {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse) {
-                DefaultErrorHandler.handle(e);
+                DefaultErrorHandler.handleHttp(statusCode, e, errorResponse);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable e) {
-                DefaultErrorHandler.handle(e);
+                DefaultErrorHandler.handleHttp(statusCode, e, responseString);
             }
         });
     }
@@ -108,7 +107,6 @@ public class ApiHttpClient {
                 try {
                     ArrayList<UserData> result = gson.fromJson(response.toString(), new TypeToken<ArrayList<UserData>>(){}.getType());
                     handler.handle(result);
-
                 } catch (Exception e) {
                     DefaultErrorHandler.handle(e);
                 }
@@ -116,12 +114,12 @@ public class ApiHttpClient {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse) {
-                DefaultErrorHandler.handle(e);
+                DefaultErrorHandler.handleHttp(statusCode, e, errorResponse);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable e) {
-                DefaultErrorHandler.handle(e);
+                DefaultErrorHandler.handleHttp(statusCode, e, responseString);
             }
         });
     }
@@ -140,7 +138,6 @@ public class ApiHttpClient {
                         new TypeToken<ArrayList<Appointment>>(){}.getType()
                     );
                     handler.handle(result);
-
                 } catch (Exception e) {
                     DefaultErrorHandler.handle(e);
                 }
@@ -148,12 +145,12 @@ public class ApiHttpClient {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse) {
-                DefaultErrorHandler.handle(e);
+                DefaultErrorHandler.handleHttp(statusCode, e, errorResponse);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseBody, Throwable e) {
-                DefaultErrorHandler.handle(e);
+                DefaultErrorHandler.handleHttp(statusCode, e, responseBody);
             }
         });
     }
@@ -172,7 +169,6 @@ public class ApiHttpClient {
                         new TypeToken<ArrayList<AccountAppointment>>(){}.getType()
                     );
                     handler.handle(result);
-
                 } catch (Exception e) {
                     DefaultErrorHandler.handle(e);
                 }
@@ -180,12 +176,12 @@ public class ApiHttpClient {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse) {
-                DefaultErrorHandler.handle(e);
+                DefaultErrorHandler.handleHttp(statusCode, e, errorResponse);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseBody, Throwable e) {
-                DefaultErrorHandler.handle(e);
+                DefaultErrorHandler.handleHttp(statusCode, e, responseBody);
             }
         });
     }
@@ -241,12 +237,12 @@ public class ApiHttpClient {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse) {
-                DefaultErrorHandler.handle(e);
+                DefaultErrorHandler.handleHttp(statusCode, e, errorResponse);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseBody, Throwable e) {
-                DefaultErrorHandler.handle(e);
+                DefaultErrorHandler.handleHttp(statusCode, e, responseBody);
             }
         });
     }
