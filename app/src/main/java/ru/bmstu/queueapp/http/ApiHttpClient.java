@@ -26,7 +26,6 @@ import ru.bmstu.queueapp.http.data.Appointment;
 import ru.bmstu.queueapp.http.data.Schedule;
 import ru.bmstu.queueapp.http.data.SchedulesData;
 import ru.bmstu.queueapp.http.data.UserData;
-import ru.bmstu.queueapp.http.error.ErrorHandler;
 import ru.bmstu.queueapp.http.error.DefaultErrorHandler;
 import ru.bmstu.queueapp.http.request.CreateAppointmentRequest;
 import ru.bmstu.queueapp.http.request.LoginRequest;
@@ -88,13 +87,13 @@ public class ApiHttpClient {
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse) {
-                DefaultErrorHandler.handleHttp(statusCode, e, errorResponse);
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                DefaultErrorHandler.handleHttp(statusCode, throwable, errorResponse);
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable e) {
-                DefaultErrorHandler.handleHttp(statusCode, e, responseString);
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                DefaultErrorHandler.handleHttp(statusCode, throwable, responseString);
             }
         });
     }
@@ -113,13 +112,13 @@ public class ApiHttpClient {
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse) {
-                DefaultErrorHandler.handleHttp(statusCode, e, errorResponse);
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                DefaultErrorHandler.handleHttp(statusCode, throwable, errorResponse);
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable e) {
-                DefaultErrorHandler.handleHttp(statusCode, e, responseString);
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                DefaultErrorHandler.handleHttp(statusCode, throwable, responseString);
             }
         });
     }
@@ -144,13 +143,13 @@ public class ApiHttpClient {
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse) {
-                DefaultErrorHandler.handleHttp(statusCode, e, errorResponse);
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                DefaultErrorHandler.handleHttp(statusCode, throwable, errorResponse);
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, String responseBody, Throwable e) {
-                DefaultErrorHandler.handleHttp(statusCode, e, responseBody);
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                DefaultErrorHandler.handleHttp(statusCode, throwable, responseString);
             }
         });
     }
@@ -175,13 +174,13 @@ public class ApiHttpClient {
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse) {
-                DefaultErrorHandler.handleHttp(statusCode, e, errorResponse);
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                DefaultErrorHandler.handleHttp(statusCode, throwable, errorResponse);
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, String responseBody, Throwable e) {
-                DefaultErrorHandler.handleHttp(statusCode, e, responseBody);
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                DefaultErrorHandler.handleHttp(statusCode, throwable, responseString);
             }
         });
     }
@@ -236,18 +235,18 @@ public class ApiHttpClient {
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject errorResponse) {
-                DefaultErrorHandler.handleHttp(statusCode, e, errorResponse);
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                DefaultErrorHandler.handleHttp(statusCode, throwable, errorResponse);
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, String responseBody, Throwable e) {
-                DefaultErrorHandler.handleHttp(statusCode, e, responseBody);
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                DefaultErrorHandler.handleHttp(statusCode, throwable, responseString);
             }
         });
     }
 
-    public void createSchedule(final Schedule schedule, final ResponseHandler<SchedulesData> handler, final ErrorHandler<Object> errorHandler) {
+    public void createSchedule(final Schedule schedule, final ResponseHandler<SchedulesData> handler) {
 
         Log.d("MY_CUSTOM_LOG", schedule.toString());
 
@@ -264,12 +263,17 @@ public class ApiHttpClient {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                errorHandler.handle(statusCode, throwable,null);
+                DefaultErrorHandler.handleHttp(statusCode, throwable, errorResponse);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                DefaultErrorHandler.handleHttp(statusCode, throwable, responseString);
             }
         });
     }
 
-    public void updateSchedule(final Schedule schedule, final ResponseHandler<SchedulesData> handler, final ErrorHandler<Object> errorHandler) {
+    public void updateSchedule(final Schedule schedule, final ResponseHandler<SchedulesData> handler) {
 
         Log.d("MY_CUSTOM_LOG", schedule.toString());
 
@@ -286,8 +290,12 @@ public class ApiHttpClient {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d("MY_CUSTOM_LOG", errorResponse.toString());
-                errorHandler.handle(statusCode, throwable,null);
+                DefaultErrorHandler.handleHttp(statusCode, throwable, errorResponse);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                DefaultErrorHandler.handleHttp(statusCode, throwable, responseString);
             }
         });
     }

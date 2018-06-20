@@ -39,8 +39,6 @@ import ru.bmstu.queueapp.http.ResponseHandler;
 import ru.bmstu.queueapp.http.data.AppointmentInterval;
 import ru.bmstu.queueapp.http.data.Schedule;
 import ru.bmstu.queueapp.http.data.SchedulesData;
-import ru.bmstu.queueapp.http.error.DefaultErrorHandler;
-import ru.bmstu.queueapp.http.error.ErrorHandler;
 
 public class ScheduleViewActivity extends AppCompatActivity {
 
@@ -54,6 +52,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
     private EditText placeField;
     private ListView appointmentIntervalsListView;
     private Button createButton;
+    private Button deleteButton;
     private PopupWindow popupWindow;
 
     private Schedule schedule;
@@ -133,11 +132,15 @@ public class ScheduleViewActivity extends AppCompatActivity {
         createButton = findViewById(R.id.scheduleViewCreateButton);
         createButton.setEnabled(false);
 
+        deleteButton = findViewById(R.id.scheduleViewDeleteButton);
+
+
         if (schedule.appointmentIntervals.size() > 0) {
             dateField.setText(schedule.date.toString());
             durationField.setText(schedule.appointmentDuration.toString());
             placeField.setText(schedule.place);
             createButton.setText(R.string.update_schedule_button);
+            deleteButton.setVisibility(View.VISIBLE);
             updateMode = true;
         } else {
             updateMode = false;
@@ -357,7 +360,6 @@ public class ScheduleViewActivity extends AppCompatActivity {
     }
 
     private void checkFields() {
-
         createButton.setEnabled(
             (dateField.length() > 0) &&
             (durationField.length() > 0) &&
@@ -393,51 +395,24 @@ public class ScheduleViewActivity extends AppCompatActivity {
     }
 
     public void createScheduleButtonHandler(View v) {
+        ResponseHandler<SchedulesData> okHandler = new ResponseHandler<SchedulesData>() {
+            @Override
+            public void handle(SchedulesData result) {
+                Intent intent = new Intent();
+                intent.putExtra(AccountSchedulesActivity.SCHEDULE_DATA_EXTRA, result);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        };
+
         if (updateMode) {
-            ApiHttpClient.instance().updateSchedule(schedule,
-                new ResponseHandler<SchedulesData>() {
-                    @Override
-                    public void handle(SchedulesData result) {
-                        Intent intent = new Intent();
-                        intent.putExtra(AccountSchedulesActivity.SCHEDULE_DATA_EXTRA, result);
-                        setResult(RESULT_OK, intent);
-                        finish();
-                    }
-                },
-                new ErrorHandler<Object>() {
-                    @Override
-                    public void handle(int code, Throwable e, @Nullable Object response) {
-                        Log.d("MY_CUSTOM_LOG", "" + code);
-                        if (code == 400) {
-                            // popup
-                        } else {
-                            DefaultErrorHandler.handleHttp(code, e, response);
-                        }
-                    }
-                }
-            );
+            ApiHttpClient.instance().updateSchedule(schedule, okHandler);
         } else {
-            ApiHttpClient.instance().createSchedule(schedule,
-                new ResponseHandler<SchedulesData>() {
-                    @Override
-                    public void handle(SchedulesData result) {
-                        Intent intent = new Intent();
-                        intent.putExtra(AccountSchedulesActivity.SCHEDULE_DATA_EXTRA, result);
-                        setResult(RESULT_OK, intent);
-                        finish();
-                    }
-                },
-                new ErrorHandler<Object>() {
-                    @Override
-                    public void handle(int code, Throwable e, @Nullable Object response) {
-                        if (code == 400) {
-                            // popup
-                        } else {
-                            DefaultErrorHandler.handleHttp(code, e, response);
-                        }
-                    }
-                }
-            );
+            ApiHttpClient.instance().createSchedule(schedule, okHandler);
         }
+    }
+
+    public void deleteButtonHandler(View v) {
+
     }
 }

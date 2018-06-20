@@ -72,6 +72,15 @@
             android:text="@string/create_schedule_button"
             android:onClick="createScheduleButtonHandler" />
 
+        <Button
+            android:id="@+id/scheduleViewDeleteButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:visibility="invisible"
+            android:text="@string/create_schedule_button"
+            android:onClick="createScheduleButtonHandler" />
+
     </LinearLayout>
 
 </LinearLayout>
