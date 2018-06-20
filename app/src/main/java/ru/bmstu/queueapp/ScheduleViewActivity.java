@@ -394,7 +394,29 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
     public void createScheduleButtonHandler(View v) {
         if (updateMode) {
-
+            ApiHttpClient.instance().updateSchedule(schedule,
+                new ResponseHandler<SchedulesData>() {
+                    @Override
+                    public void handle(SchedulesData result) {
+                        Intent intent = new Intent();
+                        intent.putExtra(AccountSchedulesActivity.SCHEDULE_DATA_EXTRA, result);
+                        Log.d("MY_CUSTOM_LOG", result.schedules.toString());
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
+                },
+                new ErrorHandler<Object>() {
+                    @Override
+                    public void handle(int code, Throwable e, @Nullable Object response) {
+                        Log.d("MY_CUSTOM_LOG", "" + code);
+                        if (code == 400) {
+                            // popup
+                        } else {
+                            DefaultErrorHandler.handle(e);
+                        }
+                    }
+                }
+            );
         } else {
             ApiHttpClient.instance().createSchedule(schedule,
                     new ResponseHandler<SchedulesData>() {

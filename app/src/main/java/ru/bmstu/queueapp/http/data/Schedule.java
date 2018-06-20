@@ -16,6 +16,7 @@ public class Schedule implements Serializable {
     public ArrayList<AppointmentInterval> appointmentIntervals;
     public Period appointmentDuration;
     public String place;
+    public Boolean isBlocked = false;
 
     public String timeIntervals() {
         StringBuilder builder = new StringBuilder();
