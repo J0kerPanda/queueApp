@@ -65,6 +65,10 @@ public class ApiHttpClient {
         client.post(context, getAbsoluteUrl(url), new StringEntity(entityStr, StandardCharsets.UTF_8), ContentType.APPLICATION_JSON.getMimeType(), responseHandler);
     }
 
+    private void post(Context context, String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+        client.post(context, getAbsoluteUrl(url), null, params, ContentType.TEXT_PLAIN.getMimeType(), responseHandler);
+    }
+
     private String getAbsoluteUrl(String relativeUrl) {
         Log.d("MY_CUSTOM_LOG", BASE_URL + relativeUrl);
         return BASE_URL + relativeUrl;
@@ -278,6 +282,32 @@ public class ApiHttpClient {
         Log.d("MY_CUSTOM_LOG", schedule.toString());
 
         post(QueueApp.getAppContext(), "/schedule/update", schedule, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    handler.handle(gson.fromJson(response.toString(), SchedulesData.class));
+                } catch (Exception e) {
+                    DefaultErrorHandler.handle(e);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                DefaultErrorHandler.handleHttp(statusCode, throwable, errorResponse);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                DefaultErrorHandler.handleHttp(statusCode, throwable, responseString);
+            }
+        });
+    }
+
+    public void deleteSchedule(Integer scheduleId, final ResponseHandler<SchedulesData> handler) {
+        String url = String.format("/schedule/delete/%d", scheduleId);
+
+        post(QueueApp.getAppContext(), url, null, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

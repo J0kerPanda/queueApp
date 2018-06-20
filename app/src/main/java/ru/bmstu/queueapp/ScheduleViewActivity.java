@@ -412,7 +412,16 @@ public class ScheduleViewActivity extends AppCompatActivity {
         }
     }
 
-    public void deleteButtonHandler(View v) {
+    public void deleteScheduleButtonHandler(View v) {
 
+        ApiHttpClient.instance().deleteSchedule(schedule.id, new ResponseHandler<SchedulesData>() {
+            @Override
+            public void handle(SchedulesData result) {
+                Intent intent = new Intent();
+                intent.putExtra(AccountSchedulesActivity.SCHEDULE_DATA_EXTRA, result);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
     }
 }

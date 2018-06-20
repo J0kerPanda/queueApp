@@ -78,8 +78,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:visibility="invisible"
-            android:text="@string/create_schedule_button"
-            android:onClick="createScheduleButtonHandler" />
+            android:text="@string/delete_schedule_button"
+            android:onClick="deleteScheduleButtonHandler" />
 
     </LinearLayout>
 
