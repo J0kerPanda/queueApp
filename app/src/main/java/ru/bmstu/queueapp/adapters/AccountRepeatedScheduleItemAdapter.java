@@ -17,7 +17,6 @@ import java.util.Map;
 
 import ru.bmstu.queueapp.R;
 import ru.bmstu.queueapp.http.data.RepeatedSchedule;
-import ru.bmstu.queueapp.http.data.Schedule;
 
 public class AccountRepeatedScheduleItemAdapter extends BaseAdapter {
 

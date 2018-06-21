@@ -3,11 +3,12 @@ package ru.bmstu.queueapp.http.data;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import ru.bmstu.queueapp.QueueApp;
 
-public class RepeatedSchedule {
+public class RepeatedSchedule implements Serializable {
 
     public Integer id;
     public Integer hostId = QueueApp.getUser().id;

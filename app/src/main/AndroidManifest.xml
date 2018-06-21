@@ -28,6 +28,7 @@
         <activity android:name=".AccountAppointmentsActivity" />
         <activity android:name=".AccountSchedulesActivity" />
         <activity android:name=".ScheduleViewActivity" />
+        <activity android:name=".AccountRepeatedSchedulesActivity"></activity>
     </application>
 
 </manifest>
