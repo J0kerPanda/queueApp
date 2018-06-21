@@ -34,6 +34,7 @@ import java.util.Calendar;
 import mobi.upod.timedurationpicker.TimeDurationPicker;
 import mobi.upod.timedurationpicker.TimeDurationPickerDialog;
 import ru.bmstu.queueapp.adapters.AppointmentIntervalItemAdapter;
+import ru.bmstu.queueapp.http.ApiHttpClient;
 import ru.bmstu.queueapp.http.ResponseHandler;
 import ru.bmstu.queueapp.http.data.AppointmentInterval;
 import ru.bmstu.queueapp.http.data.RepeatedSchedule;
@@ -85,12 +86,17 @@ public class RepeatedScheduleViewActivity extends AppCompatActivity {
         addCreateButtonTextMonitor(dateField);
 
         repeatPeriodField = findViewById(R.id.repeatedScheduleViewRepeatPeriod);
-        repeatPeriodField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        repeatPeriodField.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    repeatPeriodFieldClickHandler(v);
-                    hideKeyboard(v);
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 0) {
+                    schedule.repeatPeriod = Period.days(Integer.parseInt(s.toString()));
                 }
             }
         });
@@ -143,7 +149,7 @@ public class RepeatedScheduleViewActivity extends AppCompatActivity {
 
         if (schedule.appointmentIntervals.size() > 0) {
             dateField.setText(schedule.repeatDate.toString());
-            repeatPeriodField.setText(schedule.repeatPeriod.normalizedStandard().toString());
+            repeatPeriodField.setText(Integer.toString(schedule.repeatPeriod.getDays()));
             durationField.setText(schedule.appointmentDuration.normalizedStandard().toString());
             placeField.setText(schedule.place);
             createButton.setVisibility(View.GONE);
@@ -176,35 +182,6 @@ public class RepeatedScheduleViewActivity extends AppCompatActivity {
         dpd.setMinDate(minDate.plusDays(1).toDateTimeAtStartOfDay().toCalendar(null));
         dpd.setDisabledDays(excludedDates);
         dpd.show(getFragmentManager(), "DatePickerDialog");
-    }
-
-    public void repeatPeriodFieldClickHandler(View v) {
-        final long millisInDay = 86400000;
-
-        TimeDurationPickerDialog tdpd = new TimeDurationPickerDialog(this,
-                new TimeDurationPickerDialog.OnDurationSetListener() {
-                    @Override
-                    public void onDurationSet(TimeDurationPicker view, long duration) {
-                        Period repeatPeriod = Duration.millis(duration).toPeriod();
-                        repeatPeriodField.setText(repeatPeriod.normalizedStandard().toString());
-                        schedule.repeatPeriod = repeatPeriod;
-                    }
-                },
-                (schedule.repeatPeriod != null) ? schedule.repeatPeriod.getMillis() : 0
-        );
-        TimeDurationPicker picker = tdpd.getDurationInput();
-        picker.setTimeUnits(TimeDurationPicker.HH_MM);
-
-        picker.setOnDurationChangeListener(new TimeDurationPicker.OnDurationChangedListener() {
-            @Override
-            public void onDurationChanged(TimeDurationPicker view, long duration) {
-                if (duration > millisInDay) {
-                    view.setDuration(millisInDay);
-                }
-            }
-        });
-
-        tdpd.show();
     }
 
     public void durationFieldClickHandler(View v) {
@@ -429,7 +406,7 @@ public class RepeatedScheduleViewActivity extends AppCompatActivity {
     }
 
     public void createScheduleButtonHandler(View v) {
-        ResponseHandler<RepeatedSchedulesData> okHandler = new ResponseHandler<RepeatedSchedulesData>() {
+        ApiHttpClient.instance().createRepeatedSchedule(schedule, new ResponseHandler<RepeatedSchedulesData>() {
             @Override
             public void handle(RepeatedSchedulesData result) {
                 Intent intent = new Intent();
@@ -437,9 +414,7 @@ public class RepeatedScheduleViewActivity extends AppCompatActivity {
                 setResult(RESULT_OK, intent);
                 finish();
             }
-        };
-
-        //todo repeated schedule create
+        });
     }
 
     public void deleteScheduleButtonHandler(View v) {

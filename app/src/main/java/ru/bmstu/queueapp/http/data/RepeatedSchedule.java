@@ -20,9 +20,11 @@ public class RepeatedSchedule implements Serializable {
 
     @Override
     public String toString() {
-        return "Schedule{" +
+        return "RepeatedSchedule{" +
                 "id=" + id +
+                ", hostId=" + hostId +
                 ", repeatDate=" + repeatDate +
+                ", repeatPeriod=" + repeatPeriod +
                 ", appointmentIntervals=" + appointmentIntervals +
                 ", appointmentDuration=" + appointmentDuration +
                 ", place='" + place + '\'' +

@@ -17,8 +17,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ru.bmstu.queueapp.adapters.AccountRepeatedScheduleItemAdapter;
+import ru.bmstu.queueapp.http.ApiHttpClient;
+import ru.bmstu.queueapp.http.ResponseHandler;
 import ru.bmstu.queueapp.http.data.RepeatedSchedule;
 import ru.bmstu.queueapp.http.data.RepeatedSchedulesData;
+import ru.bmstu.queueapp.http.data.SchedulesData;
 
 public class AccountRepeatedSchedulesActivity extends AppCompatActivity {
 
@@ -44,6 +47,13 @@ public class AccountRepeatedSchedulesActivity extends AppCompatActivity {
         });
 
         accountRepeatedSchedulesListView.setAdapter(new AccountRepeatedScheduleItemAdapter(getBaseContext(), new HashMap<LocalDate, RepeatedSchedule>()));
+
+        ApiHttpClient.instance().getRepeatedScheduleData(QueueApp.getUser().id, new ResponseHandler<RepeatedSchedulesData>() {
+            @Override
+            public void handle(RepeatedSchedulesData result) {
+                updateSchedules(result);
+            }
+        });
 
         //todo get schedules -> forbidden dates
         // todo get repeated -> display

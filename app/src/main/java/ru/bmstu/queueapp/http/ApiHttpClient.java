@@ -23,6 +23,8 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 import ru.bmstu.queueapp.QueueApp;
 import ru.bmstu.queueapp.http.data.AccountAppointment;
 import ru.bmstu.queueapp.http.data.Appointment;
+import ru.bmstu.queueapp.http.data.RepeatedSchedule;
+import ru.bmstu.queueapp.http.data.RepeatedSchedulesData;
 import ru.bmstu.queueapp.http.data.Schedule;
 import ru.bmstu.queueapp.http.data.SchedulesData;
 import ru.bmstu.queueapp.http.data.UserData;
@@ -313,6 +315,60 @@ public class ApiHttpClient {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
                     handler.handle(gson.fromJson(response.toString(), SchedulesData.class));
+                } catch (Exception e) {
+                    DefaultErrorHandler.handle(e);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                DefaultErrorHandler.handleHttp(statusCode, throwable, errorResponse);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                DefaultErrorHandler.handleHttp(statusCode, throwable, responseString);
+            }
+        });
+    }
+
+    public void getRepeatedScheduleData(int hostId, final ResponseHandler<RepeatedSchedulesData> handler) {
+        String url = String.format("/schedule/repeated/host/%d", hostId);
+
+        get(url, new RequestParams(), new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
+                try {
+                    Log.d("my_custom_log", response.toString());
+                    handler.handle(gson.fromJson(response.toString(), RepeatedSchedulesData.class));
+                } catch (Exception e) {
+                    DefaultErrorHandler.handle(e);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                DefaultErrorHandler.handleHttp(statusCode, throwable, errorResponse);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                DefaultErrorHandler.handleHttp(statusCode, throwable, responseString);
+            }
+        });
+    }
+
+    public void createRepeatedSchedule(final RepeatedSchedule schedule, final ResponseHandler<RepeatedSchedulesData> handler) {
+
+        Log.d("MY_CUSTOM_LOG", schedule.toString());
+
+        post(QueueApp.getAppContext(), "/schedule/repeated/create", schedule, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    handler.handle(gson.fromJson(response.toString(), RepeatedSchedulesData.class));
                 } catch (Exception e) {
                     DefaultErrorHandler.handle(e);
                 }
