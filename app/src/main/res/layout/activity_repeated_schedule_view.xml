@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RepeatedScheduleViewActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/ActivityTitle"
+        android:text="@string/schedule_view_caption" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:editable="false"
+            android:inputType="" />
+
+        <EditText
+            android:id="@+id/repeatedScheduleViewDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:cursorVisible="false"
+            android:editable="false"
+            android:onClick="dateFieldClickHandler"
+            android:nextFocusUp="@id/scheduleViewDate"
+            android:hint="@string/schedule_view_date_hint"/>
+
+        <EditText
+            android:id="@+id/repeatedScheduleViewDuration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:cursorVisible="false"
+            android:editable="false"
+            android:onClick="durationFieldClickHandler"
+            android:hint="@string/schedule_view_duration_hint"/>
+
+        <EditText
+            android:id="@+id/repeatedScheduleViewPlace"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="@string/schedule_view_place_hint" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_appointment_interval_button"
+            android:onClick="addAppointmentIntervalButtonHandler" />
+
+        <ListView
+            android:id="@+id/repeatedScheduleViewAppointmentIntervals"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+        </ListView>
+
+        <Button
+            android:id="@+id/repeatedScheduleViewCreateButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="@string/create_schedule_button"
+            android:onClick="createScheduleButtonHandler" />
+
+        <Button
+            android:id="@+id/repeatedScheduleViewDeleteButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:visibility="invisible"
+            android:text="@string/delete_schedule_button"
+            android:onClick="deleteScheduleButtonHandler" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

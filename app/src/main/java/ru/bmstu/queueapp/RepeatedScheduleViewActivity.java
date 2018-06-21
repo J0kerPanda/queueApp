@@ -34,18 +34,15 @@ import java.util.Calendar;
 import mobi.upod.timedurationpicker.TimeDurationPicker;
 import mobi.upod.timedurationpicker.TimeDurationPickerDialog;
 import ru.bmstu.queueapp.adapters.AppointmentIntervalItemAdapter;
-import ru.bmstu.queueapp.http.ApiHttpClient;
 import ru.bmstu.queueapp.http.ResponseHandler;
 import ru.bmstu.queueapp.http.data.AppointmentInterval;
-import ru.bmstu.queueapp.http.data.Schedule;
+import ru.bmstu.queueapp.http.data.RepeatedSchedule;
 import ru.bmstu.queueapp.http.data.SchedulesData;
 
-public class ScheduleViewActivity extends AppCompatActivity {
+public class RepeatedScheduleViewActivity extends AppCompatActivity {
 
     public static final String SCHEDULE_EXTRA = "SCHEDULE";
     public static final String EXCLUDED_DATES = "EXCLUDED";
-
-    private boolean updateMode;
 
     private EditText dateField;
     private EditText durationField;
@@ -55,7 +52,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
     private Button deleteButton;
     private PopupWindow popupWindow;
 
-    private Schedule schedule;
+    private RepeatedSchedule schedule;
     private Calendar[] excludedDates;
 
     @Override
@@ -63,21 +60,18 @@ public class ScheduleViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_view);
 
-        schedule = (Schedule) getIntent().getSerializableExtra(SCHEDULE_EXTRA);
+        schedule = (RepeatedSchedule) getIntent().getSerializableExtra(SCHEDULE_EXTRA);
         if (schedule == null) {
-            schedule = new Schedule();
+            schedule = new RepeatedSchedule();
             schedule.appointmentIntervals = new ArrayList<>();
         }
-        Log.d("MY_CUSTOM_LOG", schedule.toString());
 
         excludedDates = (Calendar[]) getIntent().getSerializableExtra(EXCLUDED_DATES);
-        Log.d("MY_CUSTOM_LOG", excludedDates.toString());
-
         setupForm();
     }
 
     private void setupForm() {
-        dateField = findViewById(R.id.scheduleViewDate);
+        dateField = findViewById(R.id.repeatedScheduleViewDate);
         dateField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -89,7 +83,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
         });
         addCreateButtonTextMonitor(dateField);
 
-        durationField = findViewById(R.id.scheduleViewDuration);
+        durationField = findViewById(R.id.repeatedScheduleViewDuration);
         durationField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -101,7 +95,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
         });
         addCreateButtonTextMonitor(durationField);
 
-        placeField = findViewById(R.id.scheduleViewPlace);
+        placeField = findViewById(R.id.repeatedScheduleViewPlace);
         addCreateButtonTextMonitor(placeField);
         placeField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -118,7 +112,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
             }
         });
 
-        appointmentIntervalsListView = findViewById(R.id.scheduleViewAppointmentIntervals);
+        appointmentIntervalsListView = findViewById(R.id.repeatedScheduleViewAppointmentIntervals);
         updateIntervals(schedule.appointmentIntervals);
         appointmentIntervalsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -129,42 +123,39 @@ public class ScheduleViewActivity extends AppCompatActivity {
             }
         });
 
-        createButton = findViewById(R.id.scheduleViewCreateButton);
+        createButton = findViewById(R.id.repeatedScheduleViewCreateButton);
         createButton.setEnabled(false);
 
-        deleteButton = findViewById(R.id.scheduleViewDeleteButton);
+        deleteButton = findViewById(R.id.repeatedScheduleViewDeleteButton);
+
 
         if (schedule.appointmentIntervals.size() > 0) {
-            dateField.setText(schedule.date.toString());
+            dateField.setText(schedule.repeatDate.toString());
             durationField.setText(schedule.appointmentDuration.toString());
             placeField.setText(schedule.place);
-            createButton.setText(R.string.update_schedule_button);
-            deleteButton.setVisibility(View.VISIBLE);
-            updateMode = true;
-        } else {
-            updateMode = false;
+            createButton.setVisibility(View.GONE);
         }
     }
 
     public void dateFieldClickHandler(View v) {
         LocalDate minDate = LocalDate.now();
-        if ((schedule.date != null) && schedule.date.isBefore(minDate)) {
-            minDate = schedule.date;
+        if ((schedule.repeatDate != null) && schedule.repeatDate.isBefore(minDate)) {
+            minDate = schedule.repeatDate;
         }
-        LocalDate selectedDate = (schedule.date != null) ? schedule.date : minDate;
+        LocalDate selectedDate = (schedule.repeatDate != null) ? schedule.repeatDate : minDate;
 
         DatePickerDialog dpd = DatePickerDialog.newInstance(
-            new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-                    LocalDate date = new LocalDate(year, monthOfYear + 1, dayOfMonth);
-                    dateField.setText(date.toString());
-                    schedule.date = date;
-                }
-            },
-            selectedDate.getYear(),
-            selectedDate.getMonthOfYear() - 1,
-            selectedDate.getDayOfMonth()
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+                        LocalDate date = new LocalDate(year, monthOfYear + 1, dayOfMonth);
+                        dateField.setText(date.toString());
+                        schedule.repeatDate = date;
+                    }
+                },
+                selectedDate.getYear(),
+                selectedDate.getMonthOfYear() - 1,
+                selectedDate.getDayOfMonth()
         );
 
         Log.d("MY_CUSTOM_LOG", minDate.toDateTime(LocalTime.MIDNIGHT).toCalendar(null).toString());
@@ -178,15 +169,15 @@ public class ScheduleViewActivity extends AppCompatActivity {
         final long millisInDay = 86400000;
 
         TimeDurationPickerDialog tdpd = new TimeDurationPickerDialog(this,
-            new TimeDurationPickerDialog.OnDurationSetListener() {
-                @Override
-                public void onDurationSet(TimeDurationPicker view, long duration) {
-                    Period appointmentDuration = Duration.millis(duration).toPeriod();
-                    durationField.setText(appointmentDuration.normalizedStandard().toString());
-                    schedule.appointmentDuration = appointmentDuration;
-                }
-            },
-            (schedule.appointmentDuration != null) ? schedule.appointmentDuration.getMillis() : 0
+                new TimeDurationPickerDialog.OnDurationSetListener() {
+                    @Override
+                    public void onDurationSet(TimeDurationPicker view, long duration) {
+                        Period appointmentDuration = Duration.millis(duration).toPeriod();
+                        durationField.setText(appointmentDuration.normalizedStandard().toString());
+                        schedule.appointmentDuration = appointmentDuration;
+                    }
+                },
+                (schedule.appointmentDuration != null) ? schedule.appointmentDuration.getMillis() : 0
         );
         TimeDurationPicker picker = tdpd.getDurationInput();
         picker.setTimeUnits(TimeDurationPicker.HH_MM);
@@ -309,13 +300,13 @@ public class ScheduleViewActivity extends AppCompatActivity {
 
     private void timeEditTextClickHandler(final EditText text) {
         TimePickerDialog tpd = new TimePickerDialog(this,
-            new TimePickerDialog.OnTimeSetListener() {
-                @Override
-                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                    text.setText(new LocalTime(hourOfDay, minute).toString("HH:mm"));
-                }
-            },
-            0, 0,true
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        text.setText(new LocalTime(hourOfDay, minute).toString("HH:mm"));
+                    }
+                },
+                0, 0,true
         );
 
         tpd.show();
@@ -404,23 +395,11 @@ public class ScheduleViewActivity extends AppCompatActivity {
             }
         };
 
-        if (updateMode) {
-            ApiHttpClient.instance().updateSchedule(schedule, okHandler);
-        } else {
-            ApiHttpClient.instance().createSchedule(schedule, okHandler);
-        }
+        //todo repeated schedule create
     }
 
     public void deleteScheduleButtonHandler(View v) {
 
-        ApiHttpClient.instance().deleteSchedule(schedule.id, new ResponseHandler<SchedulesData>() {
-            @Override
-            public void handle(SchedulesData result) {
-                Intent intent = new Intent();
-                intent.putExtra(AccountSchedulesActivity.SCHEDULE_DATA_EXTRA, result);
-                setResult(RESULT_OK, intent);
-                finish();
-            }
-        });
+        //todo repeated schedule delete
     }
 }
