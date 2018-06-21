@@ -37,7 +37,7 @@ import ru.bmstu.queueapp.adapters.AppointmentIntervalItemAdapter;
 import ru.bmstu.queueapp.http.ResponseHandler;
 import ru.bmstu.queueapp.http.data.AppointmentInterval;
 import ru.bmstu.queueapp.http.data.RepeatedSchedule;
-import ru.bmstu.queueapp.http.data.SchedulesData;
+import ru.bmstu.queueapp.http.data.RepeatedSchedulesData;
 
 public class RepeatedScheduleViewActivity extends AppCompatActivity {
 
@@ -385,11 +385,11 @@ public class RepeatedScheduleViewActivity extends AppCompatActivity {
     }
 
     public void createScheduleButtonHandler(View v) {
-        ResponseHandler<SchedulesData> okHandler = new ResponseHandler<SchedulesData>() {
+        ResponseHandler<RepeatedSchedulesData> okHandler = new ResponseHandler<RepeatedSchedulesData>() {
             @Override
-            public void handle(SchedulesData result) {
+            public void handle(RepeatedSchedulesData result) {
                 Intent intent = new Intent();
-                intent.putExtra(AccountSchedulesActivity.SCHEDULE_DATA_EXTRA, result);
+                intent.putExtra(AccountRepeatedSchedulesActivity.SCHEDULE_DATA_EXTRA, result);
                 setResult(RESULT_OK, intent);
                 finish();
             }

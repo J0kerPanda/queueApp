@@ -1,8 +1,8 @@
 package ru.bmstu.queueapp;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -15,11 +15,8 @@ import java.util.Calendar;
 import java.util.Map;
 
 import ru.bmstu.queueapp.adapters.AccountRepeatedScheduleItemAdapter;
-import ru.bmstu.queueapp.adapters.AccountScheduleItemAdapter;
 import ru.bmstu.queueapp.http.data.RepeatedSchedule;
 import ru.bmstu.queueapp.http.data.RepeatedSchedulesData;
-import ru.bmstu.queueapp.http.data.Schedule;
-import ru.bmstu.queueapp.http.data.SchedulesData;
 
 public class AccountRepeatedSchedulesActivity extends AppCompatActivity {
 
@@ -49,18 +46,18 @@ public class AccountRepeatedSchedulesActivity extends AppCompatActivity {
     }
 
     public void transitionToScheduleView(@Nullable RepeatedSchedule schedule) {
-        Intent intent = new Intent(getBaseContext(), ScheduleViewActivity.class);
-        intent.putExtra(ScheduleViewActivity.SCHEDULE_EXTRA, schedule);
+        Intent intent = new Intent(getBaseContext(), RepeatedScheduleViewActivity.class);
+        intent.putExtra(RepeatedScheduleViewActivity.SCHEDULE_EXTRA, schedule);
 
         int dateCount = accountRepeatedSchedulesListView.getAdapter().getCount();
         ArrayList<Calendar> excluded = new ArrayList<>();
         for (int i = 0; i < dateCount; ++i) {
-            LocalDate date = ((Map.Entry<LocalDate, Schedule>) accountRepeatedSchedulesListView.getItemAtPosition(i)).getKey();
+            LocalDate date = ((Map.Entry<LocalDate, RepeatedSchedule>) accountRepeatedSchedulesListView.getItemAtPosition(i)).getKey();
             if ((schedule == null) || !schedule.repeatDate.isEqual(date)) {
                 excluded.add(date.plusDays(1).toDateTimeAtStartOfDay().toCalendar(null));
             }
         }
-        intent.putExtra(ScheduleViewActivity.EXCLUDED_DATES, excluded.toArray(new Calendar[excluded.size()]));
+        intent.putExtra(RepeatedScheduleViewActivity.EXCLUDED_DATES, excluded.toArray(new Calendar[excluded.size()]));
         startActivityForResult(intent, SCHEDULE_VIEW);
     }
 
