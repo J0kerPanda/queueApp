@@ -203,7 +203,7 @@ public class ApiHttpClient {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                handler.handle(false);
+                DefaultErrorHandler.handleHttp(statusCode, error, new String(responseBody));
             }
         });
     }
@@ -220,7 +220,7 @@ public class ApiHttpClient {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                handler.handle(false);
+                DefaultErrorHandler.handleHttp(statusCode, error, new String(responseBody));
             }
         });
     }

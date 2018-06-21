@@ -107,8 +107,6 @@ public class AppointmentsActivity extends AppCompatActivity {
         ApiHttpClient.instance().createAppointment(req, new ResponseHandler<Boolean>() {
             @Override
             public void handle(Boolean result) {
-                //todo false case
-                Log.i("MY_CUSTOM_LOG", String.valueOf(result));
                 if (result) {
                     reloadActivity();
                 }
@@ -121,9 +119,7 @@ public class AppointmentsActivity extends AppCompatActivity {
         ApiHttpClient.instance().cancelAppointment(selected.id, new ResponseHandler<Boolean>() {
             @Override
             public void handle(Boolean result) {
-                //todo false case
                 if (result) {
-                    Log.d("MY_CUSTOM_LOG", result.toString());
                     reloadActivity();
                 }
             }
@@ -156,12 +152,19 @@ public class AppointmentsActivity extends AppCompatActivity {
     private void setPopupButton(Button button, final Appointment appointment) {
         boolean userIsHost = host.id.equals(QueueApp.getUser().id);
         boolean appointmentTaken = appointment.visitorId != null;
-         if (!appointmentTaken && !userIsHost) {
+        boolean userHasAppointment = false;
+        for (Appointment a: appointmentMap.values()) {
+            if ((a.visitorId != null) && a.visitorId.equals(QueueApp.getUser().id)) {
+                userHasAppointment = true;
+                break;
+            }
+        }
+
+        if (!appointmentTaken && !userIsHost && !userHasAppointment) {
             button.setText(R.string.create_appointment);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //todo check if not taken
                     createAppointment(appointment);
                 }
             });

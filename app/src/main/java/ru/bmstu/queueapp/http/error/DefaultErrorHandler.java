@@ -9,8 +9,7 @@ import ru.bmstu.queueapp.QueueApp;
 public final class DefaultErrorHandler {
 
     public static void handleHttp(int code, Throwable e, @Nullable Object response) {
-        Log.d("MY_CUSTOM_LOG", response.toString());
-        Log.d("API_ERROR", String.format("%d: %s", code, e.getMessage(), response == null ? "" : response.toString()));
+        Log.d("API_ERROR", String.format("%d: %s\n%s", code, e.getMessage(), response == null ? "" : response.toString()));
         switch (code) {
             case 403:
                 QueueApp.logout();
