@@ -12,10 +12,14 @@
     <string name="account_appointments_button">мои записи</string>
     <string name="account_appointments_list">Мои записи</string>
     <string name="account_schedules_button">мои расписания</string>
-    <string name="account_schedules_list">Мои расписания</string>
+    <string name="account_schedules_list">Расписания</string>
+    <string name="account_repeated_schedules_list">Повторяемые расписания</string>
     <string name="account_repeated_schedules_button">мои повторяемые расписания</string>
     <string name="schedule_view_caption">Расписание</string>
+    <string name="repeated_schedule_view_caption">Повторяемое расписание</string>
     <string name="schedule_view_date_hint">Дата приёма</string>
+    <string name="repeated_schedule_view_date_hint">Дата первого приёма</string>
+    <string name="repeated_schedule_view_period_hint">Интервал повтора</string>
     <string name="schedule_view_duration_hint">Продолжительность одного приёма</string>
     <string name="schedule_view_place_hint">Место приёма</string>
     <string name="add_appointment_interval_button">добавить время приёма</string>

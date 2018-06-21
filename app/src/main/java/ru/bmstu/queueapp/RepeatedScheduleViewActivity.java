@@ -45,6 +45,7 @@ public class RepeatedScheduleViewActivity extends AppCompatActivity {
     public static final String EXCLUDED_DATES = "EXCLUDED";
 
     private EditText dateField;
+    private EditText repeatPeriodField;
     private EditText durationField;
     private EditText placeField;
     private ListView appointmentIntervalsListView;
@@ -58,7 +59,7 @@ public class RepeatedScheduleViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_schedule_view);
+        setContentView(R.layout.activity_repeated_schedule_view);
 
         schedule = (RepeatedSchedule) getIntent().getSerializableExtra(SCHEDULE_EXTRA);
         if (schedule == null) {
@@ -82,6 +83,18 @@ public class RepeatedScheduleViewActivity extends AppCompatActivity {
             }
         });
         addCreateButtonTextMonitor(dateField);
+
+        repeatPeriodField = findViewById(R.id.repeatedScheduleViewRepeatPeriod);
+        repeatPeriodField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    dateFieldClickHandler(v);
+                    hideKeyboard(v);
+                }
+            }
+        });
+        addCreateButtonTextMonitor(repeatPeriodField);
 
         durationField = findViewById(R.id.repeatedScheduleViewDuration);
         durationField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -128,10 +141,10 @@ public class RepeatedScheduleViewActivity extends AppCompatActivity {
 
         deleteButton = findViewById(R.id.repeatedScheduleViewDeleteButton);
 
-
         if (schedule.appointmentIntervals.size() > 0) {
             dateField.setText(schedule.repeatDate.toString());
-            durationField.setText(schedule.appointmentDuration.toString());
+            repeatPeriodField.setText(schedule.repeatPeriod.normalizedStandard().toString());
+            durationField.setText(schedule.appointmentDuration.normalizedStandard().toString());
             placeField.setText(schedule.place);
             createButton.setVisibility(View.GONE);
         }
@@ -352,6 +365,7 @@ public class RepeatedScheduleViewActivity extends AppCompatActivity {
     private void checkFields() {
         createButton.setEnabled(
             (dateField.length() > 0) &&
+            (repeatPeriodField.length() > 0) &&
             (durationField.length() > 0) &&
             (placeField.length() > 0) &&
             (appointmentIntervalsListView.getAdapter().getCount() > 0)
@@ -380,6 +394,7 @@ public class RepeatedScheduleViewActivity extends AppCompatActivity {
 
     private void setFieldsEnabled(boolean enabled) {
         dateField.setEnabled(enabled);
+        repeatPeriodField.setEnabled(enabled);
         durationField.setEnabled(enabled);
         placeField.setEnabled(enabled);
     }

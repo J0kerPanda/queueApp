@@ -3,6 +3,7 @@ package ru.bmstu.queueapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -12,6 +13,7 @@ import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Map;
 
 import ru.bmstu.queueapp.adapters.AccountRepeatedScheduleItemAdapter;
@@ -41,6 +43,8 @@ public class AccountRepeatedSchedulesActivity extends AppCompatActivity {
             }
         });
 
+        accountRepeatedSchedulesListView.setAdapter(new AccountRepeatedScheduleItemAdapter(getBaseContext(), new HashMap<LocalDate, RepeatedSchedule>()));
+
         //todo get schedules -> forbidden dates
         // todo get repeated -> display
     }
@@ -48,6 +52,8 @@ public class AccountRepeatedSchedulesActivity extends AppCompatActivity {
     public void transitionToScheduleView(@Nullable RepeatedSchedule schedule) {
         Intent intent = new Intent(getBaseContext(), RepeatedScheduleViewActivity.class);
         intent.putExtra(RepeatedScheduleViewActivity.SCHEDULE_EXTRA, schedule);
+
+        Log.d("MY_CUSTOM_LOG", accountRepeatedSchedulesListView.getAdapter().toString());
 
         int dateCount = accountRepeatedSchedulesListView.getAdapter().getCount();
         ArrayList<Calendar> excluded = new ArrayList<>();
