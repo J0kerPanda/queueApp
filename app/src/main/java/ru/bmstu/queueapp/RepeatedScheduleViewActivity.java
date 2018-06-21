@@ -153,6 +153,7 @@ public class RepeatedScheduleViewActivity extends AppCompatActivity {
             durationField.setText(schedule.appointmentDuration.normalizedStandard().toString());
             placeField.setText(schedule.place);
             createButton.setVisibility(View.GONE);
+            deleteButton.setVisibility(View.VISIBLE);
         }
     }
 
@@ -419,6 +420,14 @@ public class RepeatedScheduleViewActivity extends AppCompatActivity {
 
     public void deleteScheduleButtonHandler(View v) {
 
-        //todo repeated schedule delete
+        ApiHttpClient.instance().deleteRepeatedSchedule(schedule.id, new ResponseHandler<RepeatedSchedulesData>() {
+            @Override
+            public void handle(RepeatedSchedulesData result) {
+                Intent intent = new Intent();
+                intent.putExtra(AccountSchedulesActivity.SCHEDULE_DATA_EXTRA, result);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
     }
 }

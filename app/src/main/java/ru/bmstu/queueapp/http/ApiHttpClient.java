@@ -385,4 +385,30 @@ public class ApiHttpClient {
             }
         });
     }
+
+    public void deleteRepeatedSchedule(Integer scheduleId, final ResponseHandler<RepeatedSchedulesData> handler) {
+        String url = String.format("/schedule/repeated/delete/%d", scheduleId);
+
+        post(QueueApp.getAppContext(), url, null, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    handler.handle(gson.fromJson(response.toString(), RepeatedSchedulesData.class));
+                } catch (Exception e) {
+                    DefaultErrorHandler.handle(e);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                DefaultErrorHandler.handleHttp(statusCode, throwable, errorResponse);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                DefaultErrorHandler.handleHttp(statusCode, throwable, responseString);
+            }
+        });
+    }
 }
