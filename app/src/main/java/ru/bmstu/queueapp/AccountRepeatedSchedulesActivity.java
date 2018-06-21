@@ -31,7 +31,7 @@ public class AccountRepeatedSchedulesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_repeated_schedules);
 
-        accountRepeatedSchedulesListView = findViewById(R.id.accountSchedulesView);
+        accountRepeatedSchedulesListView = findViewById(R.id.accountRepeatedSchedulesView);
         accountRepeatedSchedulesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

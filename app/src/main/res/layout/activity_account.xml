@@ -39,7 +39,7 @@
             android:id="@+id/accountRepeatedSchedulesButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="accountSchedulesButtonHandler"
+            android:onClick="accountRepeatedSchedulesButtonHandler"
             android:text="@string/account_repeated_schedules_button" />
     </LinearLayout>
 

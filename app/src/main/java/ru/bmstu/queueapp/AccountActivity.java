@@ -30,6 +30,11 @@ public class AccountActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void accountRepeatedSchedulesButtonHandler(View v) {
+        Intent intent = new Intent(getBaseContext(), AccountRepeatedSchedulesActivity.class);
+        startActivity(intent);
+    }
+
     public void logoutButtonHandler(View v) {
         QueueApp.removeUser();
         Intent intent = new Intent(getBaseContext(), LoginActivity.class);
