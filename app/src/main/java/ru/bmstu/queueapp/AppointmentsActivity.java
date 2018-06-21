@@ -84,13 +84,7 @@ public class AppointmentsActivity extends AppCompatActivity {
         ApiHttpClient.instance().getAppointments(schedule.id, new ResponseHandler<ArrayList<Appointment>>() {
             @Override
             public void handle(ArrayList<Appointment> result) {
-                Log.d("MY_CUSTOM_LOG", String.valueOf(result.size()));
-                Log.d("MY_CUSTOM_LOG", result.toString());
-                for (Appointment appointment: result) {
-                    appointmentMap.put(appointment.start, appointment);
-                }
-                AppointmentItemAdapter adapter = new AppointmentItemAdapter(getApplicationContext(), appointmentMap);
-                appointmentsListView.setAdapter(adapter);
+                updateAppointments(result);
             }
         });
     }
@@ -104,24 +98,20 @@ public class AppointmentsActivity extends AppCompatActivity {
             selected.end
         );
 
-        ApiHttpClient.instance().createAppointment(req, new ResponseHandler<Boolean>() {
+        ApiHttpClient.instance().createAppointment(req, new ResponseHandler<ArrayList<Appointment>>() {
             @Override
-            public void handle(Boolean result) {
-                if (result) {
-                    reloadActivity();
-                }
+            public void handle(ArrayList<Appointment> result) {
+                updateAppointments(result);
             }
         });
     }
 
     public void cancelAppointment(Appointment selected) {
 
-        ApiHttpClient.instance().cancelAppointment(selected.id, new ResponseHandler<Boolean>() {
+        ApiHttpClient.instance().cancelAppointment(selected.id, new ResponseHandler<ArrayList<Appointment>>() {
             @Override
-            public void handle(Boolean result) {
-                if (result) {
-                    reloadActivity();
-                }
+            public void handle(ArrayList<Appointment> result) {
+                updateAppointments(result);
             }
         });
     }
@@ -166,6 +156,7 @@ public class AppointmentsActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     createAppointment(appointment);
+                    popupWindow.dismiss();
                 }
             });
         } else if (appointmentTaken && (userIsHost || appointment.visitorId.equals(QueueApp.getUser().id))) {
@@ -174,6 +165,7 @@ public class AppointmentsActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     cancelAppointment(appointment);
+                    popupWindow.dismiss();
                 }
             });
         } else {
@@ -191,14 +183,12 @@ public class AppointmentsActivity extends AppCompatActivity {
         }
     }
 
-    private void reloadActivity() {
-        if (popupWindow != null) {
-            popupWindow.dismiss();
+    private void updateAppointments(ArrayList<Appointment> update) {
+        appointmentMap = generateAppointments(schedule);
+        for (Appointment appointment: update) {
+            appointmentMap.put(appointment.start, appointment);
         }
-        finish();
-        startActivity(getIntent());
-        //todo put sorted stuff in intent?
-        //todo plain add without refresh -> confirmation?
-        overridePendingTransition(0, 0);
+        AppointmentItemAdapter adapter = new AppointmentItemAdapter(getApplicationContext(), appointmentMap);
+        appointmentsListView.setAdapter(adapter);
     }
 }
