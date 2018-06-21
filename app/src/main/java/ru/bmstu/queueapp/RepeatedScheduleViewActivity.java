@@ -89,7 +89,7 @@ public class RepeatedScheduleViewActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    dateFieldClickHandler(v);
+                    repeatPeriodFieldClickHandler(v);
                     hideKeyboard(v);
                 }
             }
@@ -176,6 +176,35 @@ public class RepeatedScheduleViewActivity extends AppCompatActivity {
         dpd.setMinDate(minDate.plusDays(1).toDateTimeAtStartOfDay().toCalendar(null));
         dpd.setDisabledDays(excludedDates);
         dpd.show(getFragmentManager(), "DatePickerDialog");
+    }
+
+    public void repeatPeriodFieldClickHandler(View v) {
+        final long millisInDay = 86400000;
+
+        TimeDurationPickerDialog tdpd = new TimeDurationPickerDialog(this,
+                new TimeDurationPickerDialog.OnDurationSetListener() {
+                    @Override
+                    public void onDurationSet(TimeDurationPicker view, long duration) {
+                        Period repeatPeriod = Duration.millis(duration).toPeriod();
+                        repeatPeriodField.setText(repeatPeriod.normalizedStandard().toString());
+                        schedule.repeatPeriod = repeatPeriod;
+                    }
+                },
+                (schedule.repeatPeriod != null) ? schedule.repeatPeriod.getMillis() : 0
+        );
+        TimeDurationPicker picker = tdpd.getDurationInput();
+        picker.setTimeUnits(TimeDurationPicker.HH_MM);
+
+        picker.setOnDurationChangeListener(new TimeDurationPicker.OnDurationChangedListener() {
+            @Override
+            public void onDurationChanged(TimeDurationPicker view, long duration) {
+                if (duration > millisInDay) {
+                    view.setDuration(millisInDay);
+                }
+            }
+        });
+
+        tdpd.show();
     }
 
     public void durationFieldClickHandler(View v) {

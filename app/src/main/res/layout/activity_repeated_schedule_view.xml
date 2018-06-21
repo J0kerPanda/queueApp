@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:cursorVisible="false"
             android:editable="false"
-            android:onClick="durationFieldClickHandler"
+            android:onClick="repeatPeriodFieldClickHandler"
             android:hint="@string/repeated_schedule_view_period_hint"/>
 
         <EditText
