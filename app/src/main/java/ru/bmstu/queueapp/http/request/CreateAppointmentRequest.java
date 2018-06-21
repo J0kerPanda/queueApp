@@ -24,7 +24,7 @@ public class CreateAppointmentRequest {
         return "CreateAppointmentRequest{" +
                 "hostId=" + scheduleId +
                 ", visitorId=" + visitorId +
-                ", date=" + date +
+                ", repeatDate=" + date +
                 ", start=" + start +
                 ", end=" + end +
                 '}';

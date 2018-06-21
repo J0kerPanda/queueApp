@@ -4,14 +4,14 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/scheduleItemDate"
+        android:id="@+id/repeatedScheduleItemDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/ListItemText"
         android:text="ScheduleDate" />
 
     <TextView
-        android:id="@+id/scheduleItemPlace"
+        android:id="@+id/repeatedScheduleItemPlace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/ListItemText"

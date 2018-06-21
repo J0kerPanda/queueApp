@@ -16,19 +16,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ru.bmstu.queueapp.R;
+import ru.bmstu.queueapp.http.data.RepeatedSchedule;
 import ru.bmstu.queueapp.http.data.Schedule;
 
-public class AccountScheduleItemAdapter extends BaseAdapter {
+public class AccountRepeatedScheduleItemAdapter extends BaseAdapter {
 
-    private ArrayList<Map.Entry<LocalDate, Schedule>> data;
+    private ArrayList<Map.Entry<LocalDate, RepeatedSchedule>> data;
     private LayoutInflater inflater;
 
-    public AccountScheduleItemAdapter(Context context, HashMap<LocalDate, Schedule> data) {
+    public AccountRepeatedScheduleItemAdapter(Context context, HashMap<LocalDate, RepeatedSchedule> data) {
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.data = new ArrayList<>(data.entrySet());
-        Collections.sort(this.data, new Comparator<Map.Entry<LocalDate, Schedule>>() {
+        Collections.sort(this.data, new Comparator<Map.Entry<LocalDate, RepeatedSchedule>>() {
             @Override
-            public int compare(Map.Entry<LocalDate, Schedule> o1, Map.Entry<LocalDate, Schedule> o2) {
+            public int compare(Map.Entry<LocalDate, RepeatedSchedule> o1, Map.Entry<LocalDate, RepeatedSchedule> o2) {
                 return o1.getKey().compareTo(o2.getKey());
             }
         });
@@ -53,11 +54,11 @@ public class AccountScheduleItemAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi = convertView;
         if (vi == null) {
-            vi = inflater.inflate(R.layout.account_schedule_item_display, parent, false);
+            vi = inflater.inflate(R.layout.account_repeated_schedule_item_display, parent, false);
         }
-        Map.Entry<LocalDate, Schedule> el = data.get(position);
-        ((TextView) vi.findViewById(R.id.scheduleItemDate)).setText(el.getKey().toString());
-        ((TextView) vi.findViewById(R.id.scheduleItemPlace)).setText(el.getValue().place);
+        Map.Entry<LocalDate, RepeatedSchedule> el = data.get(position);
+        ((TextView) vi.findViewById(R.id.repeatedScheduleItemDate)).setText(el.getKey().toString());
+        ((TextView) vi.findViewById(R.id.repeatedScheduleItemPlace)).setText(el.getValue().place);
         return vi;
     }
 }

@@ -3,26 +3,25 @@ package ru.bmstu.queueapp.http.data;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import ru.bmstu.queueapp.QueueApp;
 
-public class Schedule implements Serializable {
+public class RepeatedSchedule {
 
     public Integer id;
     public Integer hostId = QueueApp.getUser().id;
-    public LocalDate date;
+    public LocalDate repeatDate;
+    public Period repeatPeriod;
     public ArrayList<AppointmentInterval> appointmentIntervals;
     public Period appointmentDuration;
     public String place;
-    public Boolean isBlocked = false;
 
     @Override
     public String toString() {
         return "Schedule{" +
                 "id=" + id +
-                ", repeatDate=" + date +
+                ", repeatDate=" + repeatDate +
                 ", appointmentIntervals=" + appointmentIntervals +
                 ", appointmentDuration=" + appointmentDuration +
                 ", place='" + place + '\'' +
