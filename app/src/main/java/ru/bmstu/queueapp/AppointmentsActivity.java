@@ -106,6 +106,16 @@ public class AppointmentsActivity extends AppCompatActivity {
         });
     }
 
+    public void completeAppointment(Appointment selected) {
+
+        ApiHttpClient.instance().completeAppointment(selected.id, new ResponseHandler<ArrayList<Appointment>>() {
+            @Override
+            public void handle(ArrayList<Appointment> result) {
+                updateAppointments(result);
+            }
+        });
+    }
+
     public void cancelAppointment(Appointment selected) {
 
         ApiHttpClient.instance().cancelAppointment(selected.id, new ResponseHandler<ArrayList<Appointment>>() {
@@ -121,12 +131,11 @@ public class AppointmentsActivity extends AppCompatActivity {
 
         LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.appointment_item_popup,null);
+        setPopupButtons(popupView, appointment);
 
         popupWindow = new PopupWindow(popupView, 600, LayoutParams.WRAP_CONTENT);
 
         ((TextView) popupView.findViewById(R.id.appointmentPopupCaption)).setText(appointment.timeInterval());
-        Button appointmentButton = popupView.findViewById(R.id.appointmentPopupButton);
-        setPopupButton(appointmentButton, appointment);
 
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
@@ -139,7 +148,9 @@ public class AppointmentsActivity extends AppCompatActivity {
         popupWindow.showAtLocation(appointmentsListView, Gravity.CENTER,0,0);
     }
 
-    private void setPopupButton(Button button, final Appointment appointment) {
+    private void setPopupButtons(View popupView, final Appointment appointment) {
+        Button mainButton = popupView.findViewById(R.id.appointmentPopupMainButton);
+
         boolean userIsHost = host.id.equals(QueueApp.getUser().id);
         boolean appointmentTaken = appointment.visitorId != null;
         boolean userHasAppointment = false;
@@ -151,8 +162,8 @@ public class AppointmentsActivity extends AppCompatActivity {
         }
 
         if (!appointmentTaken && !userIsHost && !userHasAppointment) {
-            button.setText(R.string.create_appointment);
-            button.setOnClickListener(new View.OnClickListener() {
+            mainButton.setText(R.string.create_appointment);
+            mainButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     createAppointment(appointment);
@@ -160,17 +171,28 @@ public class AppointmentsActivity extends AppCompatActivity {
                 }
             });
         } else if (appointmentTaken && (userIsHost || appointment.visitorId.equals(QueueApp.getUser().id))) {
-            button.setText(R.string.cancel_appointment);
-            button.setOnClickListener(new View.OnClickListener() {
+            mainButton.setText(R.string.cancel_appointment);
+            mainButton.setEnabled(!appointment.visited);
+            mainButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     cancelAppointment(appointment);
                     popupWindow.dismiss();
                 }
             });
+            Button completeButton = popupView.findViewById(R.id.appointmentPopupCompleteButton);
+            completeButton.setVisibility(View.VISIBLE);
+            completeButton.setEnabled(!appointment.visited);
+            completeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    completeAppointment(appointment);
+                    popupWindow.dismiss();
+                }
+            });
         } else {
-            button.setText(R.string.create_appointment);
-            button.setEnabled(false);
+            mainButton.setText(R.string.create_appointment);
+            mainButton.setEnabled(false);
         }
     }
 

@@ -14,14 +14,31 @@
         android:textAlignment="center"
         style="@style/PopupItem" />
 
-    <Button
-        android:id="@+id/appointmentPopupButton"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="5dp"
-        android:layout_gravity="center"
-        android:text="@string/close_button"
-        android:textSize="20sp" />
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/appointmentPopupCompleteButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_gravity="center"
+            android:text="@string/complete_button"
+            android:visibility="gone"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/appointmentPopupMainButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_gravity="center"
+            android:text="@string/close_button"
+            android:textSize="20sp" />
+
+    </LinearLayout>
 
 </LinearLayout>

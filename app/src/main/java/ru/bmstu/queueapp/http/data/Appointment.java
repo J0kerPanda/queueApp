@@ -50,6 +50,7 @@ public class Appointment {
                 ", visitorPatronymic='" + visitorPatronymic + '\'' +
                 ", start=" + start +
                 ", end=" + end +
+                ", visited " + visited +
                 '}';
     }
 }

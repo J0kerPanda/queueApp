@@ -220,6 +220,37 @@ public class ApiHttpClient {
         });
     }
 
+    public void completeAppointment(long appointmentId, final ResponseHandler<ArrayList<Appointment>> handler) {
+
+        String url = String.format("/appointment/complete/%d", appointmentId);
+
+        post(QueueApp.getAppContext(), url, null, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                try {
+                    ArrayList<Appointment> result = gson.fromJson(
+                            response.toString(),
+                            new TypeToken<ArrayList<Appointment>>(){}.getType()
+                    );
+                    handler.handle(result);
+                } catch (Exception e) {
+                    DefaultErrorHandler.handle(e);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                DefaultErrorHandler.handleHttp(statusCode, throwable, errorResponse);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                DefaultErrorHandler.handleHttp(statusCode, throwable, responseString);
+            }
+        });
+    }
+
     public void cancelAppointment(long appointmentId, final ResponseHandler<ArrayList<Appointment>> handler) {
 
         String url = String.format("/appointment/cancel/%d", appointmentId);
