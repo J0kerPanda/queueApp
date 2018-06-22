@@ -67,7 +67,6 @@
             android:id="@+id/scheduleViewCreateButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
             android:text="@string/create_schedule_button"
             android:onClick="createScheduleButtonHandler" />
 
@@ -75,7 +74,6 @@
             android:id="@+id/scheduleViewDeleteButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
             android:visibility="gone"
             android:text="@string/delete_schedule_button"
             android:onClick="deleteScheduleButtonHandler" />
