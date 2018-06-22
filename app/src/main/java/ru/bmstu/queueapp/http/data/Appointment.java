@@ -12,12 +12,13 @@ public class Appointment {
     public String visitorPatronymic;
     public LocalTime start;
     public LocalTime end;
+    public Boolean visited;
 
     public static Appointment Empty(int scheduleId, LocalTime start, LocalTime end) {
-        return new Appointment(scheduleId,null, null, null, null, start, end);
+        return new Appointment(scheduleId,null, null, null, null, start, end, false);
     }
 
-    public Appointment(Integer scheduleId, Integer visitorId, String visitorFirstName, String visitorSurname, String visitorPatronymic, LocalTime start, LocalTime end) {
+    public Appointment(Integer scheduleId, Integer visitorId, String visitorFirstName, String visitorSurname, String visitorPatronymic, LocalTime start, LocalTime end, Boolean visited) {
         this.scheduleId = scheduleId;
         this.visitorId = visitorId;
         this.visitorFirstName = visitorFirstName;
@@ -25,6 +26,7 @@ public class Appointment {
         this.visitorPatronymic = visitorPatronymic;
         this.start = start;
         this.end = end;
+        this.visited = false;
     }
 
     public String timeInterval() {
@@ -40,9 +42,9 @@ public class Appointment {
     @Override
     public String toString() {
         return "Appointment{" +
-                "id=" + id +
-                "scheduleId=" + scheduleId +
-                "visitorId=" + visitorId +
+                ", id=" + id +
+                ", scheduleId=" + scheduleId +
+                ", visitorId=" + visitorId +
                 ", visitorFirstName='" + visitorFirstName + '\'' +
                 ", visitorSurname='" + visitorSurname + '\'' +
                 ", visitorPatronymic='" + visitorPatronymic + '\'' +

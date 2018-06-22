@@ -61,6 +61,9 @@ public class AppointmentItemAdapter extends BaseAdapter {
         Appointment el = data.get(position).getValue();
         ((TextView) vi.findViewById(R.id.appointmentItemInterval)).setText(el.timeInterval());
         ((TextView) vi.findViewById(R.id.appointmentItemUser)).setText(el.visitorFullName());
+        if (el.visited) {
+            vi.setBackgroundResource(R.color.appointmentVisited);
+        }
         return vi;
     }
 }

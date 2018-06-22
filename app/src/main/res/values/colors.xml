@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="mainTextColor">#000000</color>
     <color name="dimmedBackgroundColor">#EEEEEE</color>
+    <color name="appointmentVisited">#98FB98</color>
 </resources>

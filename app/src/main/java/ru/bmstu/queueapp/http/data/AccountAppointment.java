@@ -14,6 +14,7 @@ public class AccountAppointment {
     public LocalDate date;
     public LocalTime start;
     public LocalTime end;
+    public Boolean visited;
 
     public String hostFullName() {
         return (hostId != null) ?
@@ -32,6 +33,7 @@ public class AccountAppointment {
                 ", visitorPatronymic='" + hostPatronymic + '\'' +
                 ", start=" + start +
                 ", end=" + end +
+                ", visited=" + visited +
                 '}';
     }
 }

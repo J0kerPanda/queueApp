@@ -47,6 +47,9 @@ public class AccountAppointmentItemAdapter extends BaseAdapter {
         ((TextView) vi.findViewById(R.id.appointmentItemDate)).setText(el.date.toString());
         ((TextView) vi.findViewById(R.id.appointmentItemInterval)).setText(el.start.toString("HH:mm"));
         ((TextView) vi.findViewById(R.id.appointmentItemUser)).setText(el.hostFullName());
+        if (el.visited) {
+            vi.setBackgroundResource(R.color.appointmentVisited);
+        }
         return vi;
     }
 }
