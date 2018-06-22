@@ -14,10 +14,10 @@ public class AccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
         ((TextView) findViewById(R.id.profileNameText)).setText(QueueApp.getUser().fullName());
-        Button schedulesButton = findViewById(R.id.accountSchedulesButton);
-//        if (!QueueApp.getUser().isHost) {
-//            schedulesButton.setVisibility(View.GONE);
-//        }
+        if (!QueueApp.getUser().isHost) {
+            findViewById(R.id.accountSchedulesButton).setVisibility(View.GONE);
+            findViewById(R.id.accountRepeatedSchedulesButton).setVisibility(View.GONE);
+        }
     }
 
     public void accountAppointmentsButtonHandler(View v) {
