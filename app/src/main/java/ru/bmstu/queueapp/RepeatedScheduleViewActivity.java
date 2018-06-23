@@ -407,6 +407,7 @@ public class RepeatedScheduleViewActivity extends AppCompatActivity {
     }
 
     public void createScheduleButtonHandler(View v) {
+        schedule.repeatDate.minus(schedule.repeatPeriod);
         ApiHttpClient.instance().createRepeatedSchedule(schedule, new ResponseHandler<RepeatedSchedulesData>() {
             @Override
             public void handle(RepeatedSchedulesData result) {

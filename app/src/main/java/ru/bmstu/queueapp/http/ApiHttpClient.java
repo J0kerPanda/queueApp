@@ -33,8 +33,7 @@ import ru.bmstu.queueapp.http.request.CreateAppointmentRequest;
 import ru.bmstu.queueapp.http.request.LoginRequest;
 
 public class ApiHttpClient {
-//    private static final String BASE_URL = "https://queue-service.herokuapp.com/api";
-    private static final String BASE_URL = "http://192.168.1.5:9000/api";
+    private static final String BASE_URL = "https://queue-service.herokuapp.com/api";
     private static final Gson gson = new JsonExtractor().gson;
 
     private PersistentCookieStore cookieStore;
