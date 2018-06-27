@@ -23,13 +23,15 @@ import android.widget.TimePicker;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import org.jetbrains.annotations.Nullable;
-import org.joda.time.Duration;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.Period;
+import org.joda.time.format.PeriodFormat;
+import org.joda.time.format.PeriodFormatter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 import mobi.upod.timedurationpicker.TimeDurationPicker;
 import mobi.upod.timedurationpicker.TimeDurationPickerDialog;
@@ -54,6 +56,7 @@ public class RepeatedScheduleViewActivity extends AppCompatActivity {
     private Button createButton;
     private Button deleteButton;
     private PopupWindow popupWindow;
+    private final PeriodFormatter periodFormat = PeriodFormat.wordBased(new Locale("ru"));
 
     private RepeatedSchedule schedule;
     private Calendar[] excludedDates;
@@ -152,7 +155,7 @@ public class RepeatedScheduleViewActivity extends AppCompatActivity {
         if (schedule.appointmentIntervals.size() > 0) {
             dateField.setText(schedule.repeatDate.toString());
             repeatPeriodField.setText(Integer.toString(schedule.repeatPeriod.getDays()));
-            durationField.setText(schedule.appointmentDuration.normalizedStandard().toString());
+            durationField.setText(periodFormat.print(schedule.appointmentDuration));
             placeField.setText(schedule.place);
             createButton.setVisibility(View.GONE);
             deleteButton.setVisibility(View.VISIBLE);
@@ -194,8 +197,8 @@ public class RepeatedScheduleViewActivity extends AppCompatActivity {
                 new TimeDurationPickerDialog.OnDurationSetListener() {
                     @Override
                     public void onDurationSet(TimeDurationPicker view, long duration) {
-                        Period appointmentDuration = Duration.millis(duration).toPeriod();
-                        durationField.setText(appointmentDuration.normalizedStandard().toString());
+                        Period appointmentDuration = new Period(duration);
+                        durationField.setText(periodFormat.print(appointmentDuration));
                         schedule.appointmentDuration = appointmentDuration;
                     }
                 },
@@ -411,7 +414,8 @@ public class RepeatedScheduleViewActivity extends AppCompatActivity {
     }
 
     public void createScheduleButtonHandler(View v) {
-        schedule.repeatDate.minus(schedule.repeatPeriod);
+        schedule.repeatDate = schedule.repeatDate.minus(schedule.repeatPeriod);
+
         ApiHttpClient.instance().createRepeatedSchedule(schedule, new ResponseHandler<RepeatedSchedulesData>() {
             @Override
             public void handle(RepeatedSchedulesData result) {

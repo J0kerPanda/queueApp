@@ -9,9 +9,11 @@ import android.widget.ListView;
 
 import org.jetbrains.annotations.Nullable;
 import org.joda.time.LocalDate;
+import org.joda.time.Period;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Map;
 
 import ru.bmstu.queueapp.adapters.AccountScheduleItemAdapter;
@@ -34,6 +36,7 @@ public class AccountSchedulesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_account_schedules);
 
         accountSchedulesListView = findViewById(R.id.accountSchedulesView);
+        updateSchedules(new SchedulesData(Period.ZERO, new HashMap<LocalDate, Schedule>()));
         accountSchedulesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
