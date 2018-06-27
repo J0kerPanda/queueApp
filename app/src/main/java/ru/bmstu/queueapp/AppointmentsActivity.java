@@ -172,7 +172,7 @@ public class AppointmentsActivity extends AppCompatActivity {
             });
         } else if (appointmentTaken && (userIsHost || appointment.visitorId.equals(QueueApp.getUser().id))) {
             mainButton.setText(R.string.cancel_appointment);
-            mainButton.setEnabled(!appointment.visited);
+            mainButton.setEnabled(!appointment.visited || userIsHost);
             mainButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
