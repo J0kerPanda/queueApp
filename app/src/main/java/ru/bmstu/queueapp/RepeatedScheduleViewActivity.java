@@ -49,6 +49,7 @@ public class RepeatedScheduleViewActivity extends AppCompatActivity {
     private EditText repeatPeriodField;
     private EditText durationField;
     private EditText placeField;
+    private Button addIntervalButton;
     private ListView appointmentIntervalsListView;
     private Button createButton;
     private Button deleteButton;
@@ -131,6 +132,7 @@ public class RepeatedScheduleViewActivity extends AppCompatActivity {
             }
         });
 
+        addIntervalButton = findViewById(R.id.repeatedScheduleViewAddIntervalButton);
         appointmentIntervalsListView = findViewById(R.id.repeatedScheduleViewAppointmentIntervals);
         updateIntervals(schedule.appointmentIntervals);
         appointmentIntervalsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -242,12 +244,12 @@ public class RepeatedScheduleViewActivity extends AppCompatActivity {
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                setFieldsEnabled(true);
+                setFormEnabled(true);
                 popupWindow = null;
             }
         });
 
-        setFieldsEnabled(false);
+        setFormEnabled(false);
         popupWindow.showAtLocation(appointmentIntervalsListView, Gravity.CENTER,0,0);
     }
 
@@ -399,11 +401,13 @@ public class RepeatedScheduleViewActivity extends AppCompatActivity {
         appointmentIntervalsListView.setAdapter(adapter);
     }
 
-    private void setFieldsEnabled(boolean enabled) {
+    private void setFormEnabled(boolean enabled) {
         dateField.setEnabled(enabled);
         repeatPeriodField.setEnabled(enabled);
         durationField.setEnabled(enabled);
         placeField.setEnabled(enabled);
+        addIntervalButton.setEnabled(enabled);
+        appointmentIntervalsListView.setEnabled(enabled);
     }
 
     public void createScheduleButtonHandler(View v) {

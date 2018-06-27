@@ -60,6 +60,7 @@
             android:hint="@string/schedule_view_place_hint" />
 
         <Button
+            android:id="@+id/repeatedScheduleViewAddIntervalButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/add_appointment_interval_button"

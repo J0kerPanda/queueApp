@@ -50,6 +50,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
     private EditText dateField;
     private EditText durationField;
     private EditText placeField;
+    private Button addAppointmentButton;
     private ListView appointmentIntervalsListView;
     private Button createButton;
     private Button deleteButton;
@@ -118,6 +119,7 @@ public class ScheduleViewActivity extends AppCompatActivity {
             }
         });
 
+        addAppointmentButton = findViewById(R.id.scheduleViewAddIntervalButton);
         appointmentIntervalsListView = findViewById(R.id.scheduleViewAppointmentIntervals);
         updateIntervals(schedule.appointmentIntervals);
         appointmentIntervalsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -231,12 +233,12 @@ public class ScheduleViewActivity extends AppCompatActivity {
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                setFieldsEnabled(true);
+                setFormEnabled(true);
                 popupWindow = null;
             }
         });
 
-        setFieldsEnabled(false);
+        setFormEnabled(false);
         popupWindow.showAtLocation(appointmentIntervalsListView, Gravity.CENTER,0,0);
     }
 
@@ -387,10 +389,12 @@ public class ScheduleViewActivity extends AppCompatActivity {
         appointmentIntervalsListView.setAdapter(adapter);
     }
 
-    private void setFieldsEnabled(boolean enabled) {
+    private void setFormEnabled(boolean enabled) {
         dateField.setEnabled(enabled);
         durationField.setEnabled(enabled);
         placeField.setEnabled(enabled);
+        addAppointmentButton.setEnabled(enabled);
+        appointmentIntervalsListView.setEnabled(enabled);
     }
 
     public void createScheduleButtonHandler(View v) {
